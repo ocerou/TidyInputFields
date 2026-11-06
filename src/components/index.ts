@@ -2,10 +2,14 @@
 import { register } from '../core/registry.ts'
 import { TifDate } from './date.ts'
 import { TifDateTime } from './date-time.ts'
+import { TifLookup } from './lookup.ts'
+import { TifMultiSelect } from './multi-select.ts'
 import { TifNumber } from './number.ts'
 import { TifPeriod } from './period.ts'
+import { TifSearchSelect } from './search-select.ts'
 import { TifSelect } from './select.ts'
 import { TifSelector } from './selector.ts'
+import { TifSortableList } from './sortable-list.ts'
 import { TifSwitch } from './switch.ts'
 import { TifText } from './text.ts'
 import { TifTextarea } from './textarea.ts'
@@ -25,10 +29,31 @@ export { TifDate } from './date.ts'
 export { TifTime } from './time.ts'
 export { TifDateTime } from './date-time.ts'
 export { TifPeriod, periodLabel, periodUnitName, toPeriod } from './period.ts'
+export { ListSelect, type ListOption } from './list.ts'
+export { TifSearchSelect, type ListSource } from './search-select.ts'
+export { TifMultiSelect } from './multi-select.ts'
+export { TifLookup, type LookupSource } from './lookup.ts'
+export { TifSortableList, type SortableItem } from './sortable-list.ts'
 export type { Unit } from '../utils/unit.ts'
 export type { DatePeriod, PeriodUnit } from '../utils/period.ts'
 export { periodRange } from '../utils/period.ts'
 
-for (const type of [TifText, TifNumber, TifTextarea, TifSelect, TifSwitch, TifUnit, TifSelector, TifDate, TifTime, TifDateTime, TifPeriod]) {
+for (const type of [
+  TifText,
+  TifNumber,
+  TifTextarea,
+  TifSelect,
+  TifSwitch,
+  TifUnit,
+  TifSelector,
+  TifDate,
+  TifTime,
+  TifDateTime,
+  TifPeriod,
+  TifSearchSelect,
+  TifMultiSelect,
+  TifLookup,
+  TifSortableList,
+]) {
   register(type)
 }

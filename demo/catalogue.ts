@@ -252,6 +252,103 @@ app.append(
 )
 showDates()
 
+// Listes : avec recherche, à choix multiple, champ de recherche, liste ordonnable.
+const people = [
+  'Ada Lovelace',
+  'Alan Turing',
+  'Grace Hopper',
+  'Éric Dupont',
+  'Edsger Dijkstra',
+  'Barbara Liskov',
+  'Donald Knuth',
+  'Margaret Hamilton',
+  'Ken Thompson',
+  'Frances Allen',
+].map((label, i) => ({ value: `u${i + 1}`, label, group: i < 6 ? 'Users' : 'Teams', pill: i < 6 ? 'User' : 'Team', inactive: i === 4 || undefined }))
+// Source distante simulée : 300 contacts, recherche par mots, 20 premiers résultats.
+const contacts = Array.from({ length: 300 }, (_, i) => ({ value: `c${i + 1}`, label: `Contact ${String(i + 1).padStart(3, '0')} ${['Paris', 'Lyon', 'Nantes', 'Lille'][i % 4]}` }))
+const remote: Tif.ListSource = (query, { limit, signal }) =>
+  new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      const words = query.toLowerCase().split(/\s+/).filter(Boolean)
+      const found = contacts.filter((c) => words.every((w) => c.label.toLowerCase().includes(w)))
+      resolve({ options: found.slice(0, limit), total: found.length })
+    }, 150)
+    signal.addEventListener('abort', () => {
+      clearTimeout(timer)
+      reject(new DOMException('aborted', 'AbortError'))
+    })
+  })
+const labelOf = async (value: string) => contacts.find((c) => c.value === value)?.label ?? null
+
+const listsForm = document.createElement('form')
+listsForm.id = 'lists-form'
+listsForm.className = 'demo-form'
+listsForm.innerHTML = `
+  <span>Search select — <code>&lt;tif-search-select&gt;</code></span>
+  <tif-search-select name="country" label="Country" empty-label="— None —" id="l-country">
+    <option value="fr">France</option><option value="de">Germany</option><option value="it">Italy</option>
+    <option value="es">Spain</option><option value="pt">Portugal</option><option value="be">Belgium</option>
+  </tif-search-select>
+  <span>Groups, pills, deactivated</span>
+  <div id="l-owner"></div>
+  <span>Remote source (300)</span>
+  <div id="l-contact"></div>
+  <span>Multi select — <code>&lt;select multiple data-tif&gt;</code></span>
+  <select name="sectors" multiple data-tif="multi-select" data-tif-label="All sectors" data-tif-unit="sectors" id="l-sectors">
+    <option>Bank</option><option>Insurance</option><option>Industry</option><option>Retail</option><option>Public</option>
+    <option>Health</option><option>Energy</option><option>Transport</option><option>Media</option>
+  </select>
+  <label for="l-lookup">Lookup</label>
+  <div id="l-lookup-host"></div>
+  <span>Sortable list</span>
+  <tif-sortable-list name="domains" reorderable add label="Domains" remove-detail="The mailbox is not deleted." id="l-domains">
+    <li data-key="example.com">example.com</li><li data-key="example.org">example.org</li><li data-key="example.net">example.net</li>
+  </tif-sortable-list>
+`
+Tif.init(listsForm)
+new Tif.TifSearchSelect(listsForm.querySelector<HTMLElement>('#l-owner')!, { name: 'owner', label: 'Owner', options: people, groupOrder: ['Teams'], required: true })
+new Tif.TifSearchSelect(listsForm.querySelector<HTMLElement>('#l-contact')!, {
+  name: 'contact',
+  label: 'Contact',
+  source: remote,
+  sourceLabel: labelOf,
+  value: 'c42',
+  create: true,
+})
+new Tif.TifLookup(listsForm.querySelector<HTMLElement>('#l-lookup-host')!, {
+  name: 'account',
+  inputId: 'l-lookup',
+  source: async (query: string, { limit }: { limit: number }) => (await remote(query, { onlyActive: true, limit, signal: new AbortController().signal })).options,
+  sourceLabel: labelOf,
+})
+listsForm.addEventListener('add.tif.sortable-list', (event) => {
+  const list = Tif.TifSortableList.getInstance(event.target as HTMLElement)
+  const n = (list?.items.length ?? 0) + 1
+  list?.add({ key: `domain${n}.example`, label: `domain${n}.example` })
+})
+const listsSent = h('pre', { id: 'lists-data', class: 'demo-sent' })
+const showLists = () => {
+  const data = new FormData(listsForm)
+  const entries: Record<string, string | string[]> = {}
+  for (const key of new Set(data.keys())) {
+    const all = data.getAll(key).map(String)
+    entries[key] = all.length > 1 || key === 'sectors' || key === 'domains' ? all : all[0]
+  }
+  listsSent.textContent = JSON.stringify(entries, null, 2)
+}
+listsForm.addEventListener('input', showLists)
+listsForm.addEventListener('change', showLists)
+
+app.append(
+  section(
+    'Lists',
+    'Full-text search (every word, any order, no accents), groups, pills, deactivated options, a remote source, multiple choice, lookup and a sortable list with confirmation.',
+    h('div', { class: 'demo-columns' }, listsForm, listsSent),
+  ),
+)
+showLists()
+
 // Modale Bootstrap : panneau et confirmation à l'intérieur.
 if (withBootstrap) {
   const modal = h(

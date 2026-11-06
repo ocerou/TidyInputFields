@@ -1,0 +1,268 @@
+/* Listes : avec recherche, à choix multiple, champ de recherche, liste ordonnable. Le bouton et le panneau de liste
+   (.tif-select-button, .tif-listbox*) sont dans pickers.css. */
+
+tif-search-select,
+tif-multi-select,
+tif-lookup {
+  display: inline-block;
+  position: relative;
+  max-inline-size: 100%;
+  vertical-align: middle;
+}
+
+tif-sortable-list {
+  display: block;
+}
+
+/* Bouton : libellé vide en gris, zone obligatoire vide en orange, lien posé sur le libellé. */
+.tif-select-button.tif-is-empty .tif-select-value {
+  color: var(--_ink-mute);
+}
+
+.tif-select-button.tif-missing {
+  border-color: var(--_warn-line);
+}
+
+.tif-select-button.tif-missing .tif-select-value {
+  color: var(--_warn);
+  font-weight: 600;
+}
+
+.tif-select-button.tif-under-link .tif-select-value {
+  color: transparent;
+}
+
+.tif-select-link {
+  position: absolute;
+  inset-inline-start: calc(var(--_field-pad-x, 0.7em) + 1px);
+  top: 50%;
+  max-inline-size: calc(100% - 46px);
+  overflow: hidden;
+  transform: translateY(-50%);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tif-select-link[hidden] {
+  display: none;
+}
+
+/* Pastille d'une option (type, catégorie). */
+.tif-pill {
+  flex: none;
+  padding: 1px 7px;
+  border: 1px solid var(--_line);
+  border-radius: 999px;
+  background: var(--_alt);
+  color: var(--_ink-soft);
+  font-size: 0.82em;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+/* Options regroupées, cochables, raccourcis, inactives. */
+.tif-option-group {
+  padding: 8px 10px 3px;
+  color: var(--_accent);
+  font-size: 0.82em;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: default;
+}
+
+.tif-option.tif-in-group {
+  padding-inline-start: 16px;
+}
+
+.tif-option-check {
+  justify-content: flex-start;
+}
+
+.tif-option-box {
+  flex: none;
+  margin: 0;
+  accent-color: var(--_accent);
+  pointer-events: none;
+}
+
+.tif-option-shortcut {
+  color: var(--_ink-soft);
+  font-style: italic;
+}
+
+.tif-option-inactive .tif-option-label {
+  color: var(--_ink-mute);
+}
+
+/* Pied de liste : compteur, interrupteur, actions calées à droite. */
+.tif-listbox-foot[hidden] {
+  display: none;
+}
+
+.tif-listbox-count {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.tif-listbox-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tif-listbox-switch .tif-switch {
+  transform: scale(0.8);
+}
+
+.tif-btn.tif-btn-sm {
+  block-size: auto;
+  padding: 1px 8px;
+  font-size: 1em;
+}
+
+/* Champ de recherche : loupe, saisie, croix. */
+.tif-lookup {
+  inline-size: 18em;
+  color: var(--_ink-mute);
+}
+
+.tif-lookup-input {
+  inline-size: 100%;
+  color: var(--_ink);
+}
+
+.tif-lookup-clear {
+  inline-size: 22px;
+  block-size: 22px;
+}
+
+.tif-lookup-clear[hidden] {
+  display: none;
+}
+
+/* Liste ordonnable : une ligne par élément, poignée, n° d'ordre collé à la poignée, nom, croix. */
+.tif-sortable-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0 0 6px;
+  padding: 0;
+  list-style: none;
+}
+
+.tif-sortable-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-block-size: 34px;
+  box-sizing: border-box;
+  padding: 4px 6px;
+  border: 1px solid var(--_line);
+  border-radius: var(--_radius);
+  background: var(--_surface);
+  line-height: 20px;
+}
+
+.tif-sortable-list li[draggable='true'] {
+  cursor: grab;
+}
+
+.tif-sortable-list li.tif-dragging {
+  border-style: dashed;
+  opacity: 0.5;
+}
+
+.tif-sortable-list li.tif-drop-before {
+  box-shadow: inset 0 3px 0 var(--_accent);
+}
+
+.tif-sortable-list li.tif-drop-after {
+  box-shadow: inset 0 -3px 0 var(--_accent);
+}
+
+.tif-sortable-grip {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  inline-size: 14px;
+  block-size: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--_ink-mute);
+  cursor: grab;
+}
+
+.tif-sortable-grip:focus-visible {
+  outline: 2px solid var(--_accent);
+  border-radius: 3px;
+}
+
+.tif-sortable-rank {
+  flex: none;
+  min-inline-size: 7px;
+  color: var(--_ink-mute);
+  font-family: var(--tif-mono, 'Cascadia Mono', Consolas, ui-monospace, monospace);
+  font-size: 0.85em;
+  line-height: 20px;
+  text-align: end;
+}
+
+.tif-sortable-grip + .tif-sortable-rank {
+  margin-inline-start: -6px;
+}
+
+.tif-sortable-name {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tif-sortable-name > a {
+  color: var(--_accent);
+}
+
+.tif-sortable-remove {
+  inline-size: 24px;
+  block-size: 24px;
+}
+
+.tif-sortable-empty {
+  border-style: dashed !important;
+  color: var(--_ink-mute);
+}
+
+.tif-sortable-add {
+  inline-size: 26px;
+  block-size: 26px;
+  border: 1px solid var(--_line-strong);
+  background: var(--_surface);
+}
+
+.tif-sortable-add[hidden] {
+  display: none;
+}
+
+.tif-sortable.tif-missing .tif-sortable-add {
+  border-color: var(--_warn-line);
+  background: var(--_warn-wash);
+  color: var(--_warn);
+}
+
+.tif-dialog-text {
+  margin: 0;
+}
+
+.tif-dialog-detail {
+  margin: 6px 0 0;
+  color: var(--_ink-mute);
+}

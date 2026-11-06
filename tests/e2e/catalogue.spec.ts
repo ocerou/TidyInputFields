@@ -231,6 +231,79 @@ test.describe('dates and times', () => {
   })
 })
 
+test.describe('lists', () => {
+  const sent = async (page: import('@playwright/test').Page) => JSON.parse((await page.locator('#lists-data').textContent()) ?? '{}')
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/')
+  })
+
+  test('open with a letter, search every word and choose with Enter', async ({ page }) => {
+    const button = page.locator('#l-owner .tif-select-button')
+    await button.focus()
+    // La lettre tapée sur le bouton ouvre la liste et commence la recherche : « h », puis « amil ».
+    await page.keyboard.press('h')
+    const panel = page.locator('.tif-listbox-panel')
+    await expect(panel.locator('.tif-listbox-search-input')).toBeFocused()
+    await expect(panel.locator('.tif-listbox-search-input')).toHaveValue('h')
+    await page.keyboard.type('amil')
+    await expect(panel.getByRole('option')).toHaveCount(1)
+    await page.keyboard.press('Enter')
+    await expect(panel).toHaveCount(0)
+    await expect(button).toHaveText(/Margaret Hamilton/)
+    await expect(button).toBeFocused()
+    expect((await sent(page)).owner).toBe('u8')
+  })
+
+  test('ask a remote source and show how many there are', async ({ page }) => {
+    await page.locator('#l-contact .tif-select-button').click()
+    const panel = page.locator('.tif-listbox-panel')
+    await page.keyboard.type('nantes 2')
+    await expect(panel.locator('.tif-listbox-count')).toHaveText(/First 20 of \d+/)
+    await panel.getByRole('option').first().click()
+    expect((await sent(page)).contact).toMatch(/^c\d+$/)
+  })
+
+  test('send every checked value of a multi select', async ({ page }) => {
+    const button = page.locator('#l-sectors + .tif-select-button')
+    await button.click()
+    const panel = page.locator('.tif-listbox-panel')
+    await panel.getByRole('option', { name: 'Bank' }).click()
+    await panel.getByRole('option', { name: 'Retail' }).click()
+    await expect(panel).toBeVisible()
+    await page.keyboard.press('Escape')
+    await expect(button).toHaveText('2 sectors')
+    expect((await sent(page)).sectors).toEqual(['Bank', 'Retail'])
+  })
+
+  test('look up a record', async ({ page }) => {
+    await page.fill('#l-lookup', 'lille 00')
+    const option = page.locator('.tif-lookup-panel').getByRole('option').first()
+    await expect(option).toContainText('Lille')
+    await page.keyboard.press('Enter')
+    await expect(page.locator('#l-lookup')).toHaveValue(/Contact 00\d Lille/)
+    expect((await sent(page)).account).toMatch(/^c\d+$/)
+  })
+
+  test('reorder by drag and drop and by keyboard, remove after confirmation', async ({ page }) => {
+    const list = page.locator('#l-domains')
+    await list.locator('[data-key="example.net"]').dragTo(list.locator('[data-key="example.com"]'))
+    await expect.poll(async () => (await sent(page)).domains).toEqual(['example.net', 'example.com', 'example.org'])
+    await list.locator('[data-key="example.net"] .tif-sortable-grip').focus()
+    await page.keyboard.press('ArrowDown')
+    await expect(list.locator('[data-key="example.net"] .tif-sortable-grip')).toBeFocused()
+    await expect.poll(async () => (await sent(page)).domains).toEqual(['example.com', 'example.net', 'example.org'])
+    await list.locator('[data-key="example.org"] .tif-sortable-remove').click()
+    const dialog = page.locator('dialog.tif-dialog')
+    await expect(dialog).toContainText('example.org')
+    await expect(dialog).toContainText('The mailbox is not deleted.')
+    await dialog.locator('.tif-btn-danger').click()
+    await expect.poll(async () => (await sent(page)).domains).toEqual(['example.com', 'example.net'])
+    await list.locator('.tif-sortable-add').click()
+    await expect(list.locator('li')).toHaveCount(3)
+  })
+})
+
 test.describe('with Bootstrap', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/bootstrap.html')

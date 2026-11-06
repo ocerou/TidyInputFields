@@ -84,7 +84,7 @@ npm run test:e2e   # browser tests (Playwright; locally with the installed Edge)
 | Native fields | `text`, `number`, `textarea`, `select`, `switch` | available |
 | Simple | `unit` (number followed by its unit), `selector` (segmented choice) | available |
 | Date and time | `date`, `time`, `date-time`, `period` | available |
-| Lists | `search-select`, `multi-select`, `lookup`, `sortable-list` | planned |
+| Lists | `search-select`, `multi-select`, `lookup`, `sortable-list` | available |
 | Colour | `color-picker` | planned |
 
 Common options of the native fields: `name`, `value`, `placeholder`, `required`, `disabled`, `readonly`, `label`
