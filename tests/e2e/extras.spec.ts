@@ -53,6 +53,32 @@ test.describe('money', () => {
   })
 })
 
+test.describe('file', () => {
+  test('adds chosen and dropped files, sets aside the wrong ones, and the form sends them', async ({ page }) => {
+    await page.goto(`${docs}#/file`)
+    const block = page.locator('.bd-example-block').first()
+    const component = block.locator('tif-file')
+    // Choisis dans la fenêtre du système (le champ natif).
+    await component.locator('input[type="file"]').setInputFiles([
+      { name: 'photo.png', mimeType: 'image/png', buffer: Buffer.from('png') },
+      { name: 'notes.txt', mimeType: 'text/plain', buffer: Buffer.from('txt') },
+    ])
+    await expect(component.locator('.tif-file-name')).toHaveText(['photo.png'])
+    await expect(component.locator('.tif-file-message')).toContainText('notes.txt')
+    // Déposés sur la zone.
+    const transfer = await page.evaluateHandle(() => {
+      const dt = new DataTransfer()
+      dt.items.add(new File(['%PDF'], 'invoice.pdf', { type: 'application/pdf' }))
+      return dt
+    })
+    await component.locator('.tif-file-drop').dispatchEvent('drop', { dataTransfer: transfer })
+    await expect(component.locator('.tif-file-name')).toHaveText(['photo.png', 'invoice.pdf'])
+    await expect(block.locator('output')).toHaveText('["photo.png","invoice.pdf"]')
+    await component.getByRole('button', { name: 'Remove photo.png' }).click()
+    await expect(block.locator('output')).toHaveText('["invoice.pdf"]')
+  })
+})
+
 test.describe('tags', () => {
   test('creates, suggests, removes, and the form sends one value per tag', async ({ page }) => {
     await page.goto(`${docs}#/tags`)

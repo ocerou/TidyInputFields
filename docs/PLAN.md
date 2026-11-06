@@ -114,7 +114,7 @@ l'appelant), react-router, `recordLink`, `ConfirmDialog`. Utilitaires repris pre
 
 Chaque lot : reprise du composant, section du catalogue, tests, commit.
 
-**État au 2026-11-06 : les lots 0 à 6 sont faits** (15 composants, 101 tests unitaires, 27 tests navigateur,
+**État au 2026-11-06 : les lots 0 à 7 sont faits** (20 composants, 129 tests unitaires, 33 tests navigateur,
 CI GitHub Actions). Documentation en ligne : https://ocerou.github.io/TidyInputFields/ (publiée par la CI).
 `tidyinputfields/react` livré (TifField, useTif). Rien sur npm pour l'instant (décision d'Olivier).
 

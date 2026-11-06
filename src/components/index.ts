@@ -3,6 +3,7 @@ import { register } from '../core/registry.ts'
 import { TifColorPicker } from './color-picker.ts'
 import { TifDate } from './date.ts'
 import { TifDateTime } from './date-time.ts'
+import { TifFile } from './file.ts'
 import { TifLookup } from './lookup.ts'
 import { TifMoney } from './money.ts'
 import { TifMultiSelect } from './multi-select.ts'
@@ -44,6 +45,7 @@ export { TifTags } from './tags.ts'
 export { TifRange } from './range.ts'
 export { TifRating } from './rating.ts'
 export { TifMoney, parseAmount } from './money.ts'
+export { TifFile, formatSize, parseSize } from './file.ts'
 export { parseColor, splitColor, composeColor, type Color } from '../utils/color.ts'
 export type { Unit } from '../utils/unit.ts'
 export type { DatePeriod, PeriodUnit } from '../utils/period.ts'
@@ -70,6 +72,7 @@ for (const type of [
   TifRange,
   TifRating,
   TifMoney,
+  TifFile,
 ]) {
   register(type)
 }

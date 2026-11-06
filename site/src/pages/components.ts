@@ -505,4 +505,39 @@ export const components: Page[] = [
       },
     ],
   },
+  {
+    id: 'file',
+    group: forms,
+    title: 'File',
+    lead: 'A drop zone and a button to choose files, then the list of the files kept.',
+    blocks: [
+      {
+        example: 'file-basic',
+        title: 'Examples',
+        text: 'Files are dropped on the zone or chosen with <b>browse</b>; each one shows its name and size, and its cross removes it. <code>accept</code>, <code>max-size</code> (<code>5MB</code>, <code>500 Ko</code>, or bytes) and <code>max-files</code> set aside what does not fit, with a message under the zone. Without <code>multiple</code>, a new file replaces the previous one. The files stay in the native <code>&lt;input type="file"&gt;</code>: the form sends them as usual (<code>multipart/form-data</code>).',
+      },
+      { heading: 'Options' },
+      {
+        options: Tif.TifFile,
+        descriptions: {
+          ...field,
+          value: 'Not used: files cannot be set from text.',
+          accept: 'Accepted types, like the native attribute: <code>image/*,.pdf</code>.',
+          multiple: 'Several files.',
+          maxSize: 'Largest size of a file: bytes or text (<code>5MB</code>); 0: no limit.',
+          maxFiles: 'Largest number of files; 0: no limit.',
+        },
+      },
+      {
+        table: [
+          ['<code>value</code>', 'The files kept (<code>File[]</code>).'],
+          ['<code>addFiles(files)</code>', 'Adds files, setting aside those that do not fit; returns those kept.'],
+          ['<code>removeFile(file)</code>', 'Removes a file.'],
+          ['<code>input</code>, <code>change</code>', 'Sent by the native field after each change.'],
+          ['<code>Tif.formatSize(bytes)</code>, <code>Tif.parseSize(text)</code>', 'Sizes in the language, and read from a text.'],
+        ],
+        columns: ['Property / method / event', 'Description'],
+      },
+    ],
+  },
 ]
