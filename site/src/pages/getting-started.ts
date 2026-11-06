@@ -1,9 +1,7 @@
 // Pages « Getting started ».
-import tifReactRaw from '../../examples/tif-react.tsx?raw'
 import type { Page } from '../page.ts'
 
 const group = 'Getting started'
-const tifReactSource = tifReactRaw.replace("import 'tidyinputfields' // declares", "import 'tidyinputfields' // registers the components and declares")
 
 export const gettingStarted: Page[] = [
   {
@@ -158,17 +156,38 @@ $('.due').tifDate('dispose')`,
     id: 'react',
     group,
     title: 'React',
-    lead: 'The tags work in React as they are. A 40-line wrapper adds controlled values and onChange.',
+    lead: '<code>tidyinputfields/react</code>: <code>TifField</code> for controlled fields, <code>useTif</code> to dress a field React renders.',
     blocks: [
       {
-        text: '<p>Copy this wrapper into your project. It renders the <code>&lt;tif-…&gt;</code> tag; text props become attributes, and non-text options (arrays, functions) go through <code>options</code>. Every example of this documentation has a <b>React</b> tab that runs it.</p>',
+        text: '<p>React is an optional peer dependency: the library itself does not need it, only this entry point imports it. Every example of this documentation has a <b>React</b> tab that runs it.</p>',
       },
-      { code: tifReactSource, language: 'tsx' },
-      { heading: 'Controlled fields' },
-      { example: 'quick-start' },
-      { heading: 'Dressing an existing field' },
+      { code: 'npm install tidyinputfields react', language: 'bash' },
+      { heading: 'TifField' },
       {
-        text: '<p>Any component can also dress a field rendered by React. Do it in <code>useLayoutEffect</code>, not <code>useEffect</code>: some components wrap the field in their own frame, and it must be given back before React removes it. The wrapper above avoids the question — the component creates its own field inside the tag.</p>',
+        text: '<p><code>TifField</code> renders the <code>&lt;tif-…&gt;</code> tag. Text, number and boolean props become attributes; options that are arrays, objects or functions (a list of options, a remote source, a unit that agrees with the number) go through <code>options</code>. <code>value</code> and <code>onChange</code> make it a controlled field.</p>',
+      },
+      {
+        code: `import { TifField } from 'tidyinputfields/react'
+import 'tidyinputfields/css'
+
+<TifField component="date" name="due" value={due} onChange={(value) => setDue(String(value))} />
+<TifField component="search-select" name="owner" options={{ options: owners, groupOrder: ['Teams'] }} />`,
+        language: 'tsx',
+      },
+      {
+        table: [
+          ['<code>component</code>', 'Component name: <code>date</code>, <code>search-select</code>, <code>sortable-list</code>… (typed).'],
+          ['<code>value</code>', 'Controlled value; leave it undefined for an uncontrolled field.'],
+          ['<code>onChange(value)</code>', 'Called with the new value after each change made by the user.'],
+          ['<code>options</code>', 'Options that are not text, applied with <code>setOptions()</code>.'],
+          ['any other prop', 'An attribute of the tag: <code>name</code>, <code>required</code>, <code>placeholder</code>, <code>label</code>, <code>input-id</code>…'],
+        ],
+        columns: ['Prop', 'Description'],
+      },
+      { example: 'quick-start' },
+      { heading: 'useTif' },
+      {
+        text: '<p><code>useTif(Component, ref, options)</code> dresses a field rendered by React and gives it back before React removes it (it runs in <code>useLayoutEffect</code>: some components wrap the field in their own frame). It returns a ref to the instance.</p>',
       },
       { example: 'usage-data' },
     ],

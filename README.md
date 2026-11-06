@@ -68,9 +68,17 @@ i18next.on('languageChanged', Tif.setLocale)
 
 Elements added later (dialogs, HTMX, Turbo): `Tif.observe()` initialises and disposes them automatically.
 
+In React, `tidyinputfields/react` (React as an optional peer dependency):
+
+```tsx
+import { TifField } from 'tidyinputfields/react'
+
+<TifField component="date" name="due" value={due} onChange={(value) => setDue(String(value))} />
+```
+
 ## Documentation
 
-Every component, with live examples in HTML, JavaScript and React, options, events and keyboard:
+**https://ocerou.github.io/TidyInputFields/** — every component, each example in three ways (tag, `data-tif` attributes, JavaScript API) and in React, with options, events and keyboard.
 
 ```bash
 npm run docs       # documentation on http://localhost:5181

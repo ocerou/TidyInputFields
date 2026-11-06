@@ -1,4 +1,4 @@
-import { TifField } from './tif-react.tsx'
+import { TifField } from 'tidyinputfields/react'
 import * as Tif from 'tidyinputfields'
 
 export const html = `

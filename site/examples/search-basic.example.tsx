@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import * as Tif from 'tidyinputfields'
 import { countries } from './data.ts'
-import { TifField } from './tif-react.tsx'
+import { TifField } from 'tidyinputfields/react'
 
 export const tag = `
 <tif-search-select name="country" label="Country" empty-label="— None —" value="fr">

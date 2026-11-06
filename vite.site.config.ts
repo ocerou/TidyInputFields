@@ -13,6 +13,8 @@ export default defineConfig({
   plugins: [react(), viteSingleFile()],
   resolve: {
     alias: {
+      // Du plus précis au plus général : 'tidyinputfields' seul viserait aussi 'tidyinputfields/react'.
+      'tidyinputfields/react': fileURLToPath(new URL('./src/react/index.ts', import.meta.url)),
       'tidyinputfields/css': fileURLToPath(new URL('./src/styles/index.css', import.meta.url)),
       tidyinputfields: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
     },

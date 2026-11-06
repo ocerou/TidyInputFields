@@ -20,8 +20,9 @@
     "jsx": "react-jsx",
     "paths": {
       "tidyinputfields": ["./src/index.ts"],
-      "tidyinputfields/css": ["./src/styles/index.css"]
+      "tidyinputfields/css": ["./src/styles/index.css"],
+      "tidyinputfields/react": ["./src/react/index.ts"]
     }
   },
-  "include": ["src", "tests", "demo", "site", "scripts", "vite.config.ts", "vite.site.config.ts", "vitest.config.ts", "playwright.config.ts"]
+  "include": ["src", "tests", "demo", "site", "scripts", "vite.config.ts", "vite.site.config.ts", "vite.react.config.ts", "vitest.config.ts", "playwright.config.ts"]
 }

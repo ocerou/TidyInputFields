@@ -1,6 +1,6 @@
 import * as Tif from 'tidyinputfields'
 import { owners } from './data.ts'
-import { TifField } from './tif-react.tsx'
+import { TifField } from 'tidyinputfields/react'
 
 export const tag = `
 <tif-multi-select name="owners" label="All owners" unit="owners" search-threshold="0"

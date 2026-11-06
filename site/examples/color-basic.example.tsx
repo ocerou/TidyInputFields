@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import * as Tif from 'tidyinputfields'
-import { TifField } from './tif-react.tsx'
+import { TifField } from 'tidyinputfields/react'
 
 export const tag = `
 <form class="bd-stack">

@@ -1,4 +1,4 @@
-import { TifField } from './tif-react.tsx'
+import { TifField } from 'tidyinputfields/react'
 
 export const html = `
 <tif-unit name="duration" unit="months" value="12"></tif-unit>

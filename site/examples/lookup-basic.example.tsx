@@ -1,6 +1,6 @@
 import * as Tif from 'tidyinputfields'
 import { contactLabel, searchContacts } from './data.ts'
-import { TifField } from './tif-react.tsx'
+import { TifField } from 'tidyinputfields/react'
 
 export const tag = `
 <tif-lookup name="account" placeholder='Type two letters: "lyon 01"…' id="account"></tif-lookup>

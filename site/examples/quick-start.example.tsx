@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { TifField } from './tif-react.tsx'
+import { TifField } from 'tidyinputfields/react'
 
 export const html = `
 <form class="bd-stack" id="signup">

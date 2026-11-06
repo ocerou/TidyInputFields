@@ -1,4 +1,4 @@
-import { TifField } from './tif-react.tsx'
+import { TifField } from 'tidyinputfields/react'
 
 export const html = `
 <dl class="bd-stack" style="margin: 0">

@@ -1,5 +1,6 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useRef } from 'react'
 import * as Tif from 'tidyinputfields'
+import { useTif } from 'tidyinputfields/react'
 
 export const html = `
 <input name="duration" value="12" data-tif="unit" data-tif-unit="months">
@@ -7,13 +8,9 @@ export const html = `
 
 // @react
 export function ReactExample() {
-  // An existing field can be dressed after rendering. useLayoutEffect (not useEffect): the field is given
-  // back to React before React removes it, since some components wrap it in their own frame.
+  // An existing field rendered by React, dressed after rendering and given back before React removes it.
   const input = useRef<HTMLInputElement>(null)
-  useLayoutEffect(() => {
-    const unit = new Tif.TifUnit(input.current!, { unit: 'months' })
-    return () => unit.dispose()
-  }, [])
+  useTif(Tif.TifUnit, input, { unit: 'months' })
   return (
     <div>
       <input ref={input} name="duration" defaultValue="12" />

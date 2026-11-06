@@ -1,4 +1,4 @@
-import { TifField } from './tif-react.tsx'
+import { TifField } from 'tidyinputfields/react'
 
 export const html = `
 <div class="bd-row">

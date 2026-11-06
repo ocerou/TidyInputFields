@@ -1,6 +1,6 @@
 import * as Tif from 'tidyinputfields'
 import { owners } from './data.ts'
-import { TifField } from './tif-react.tsx'
+import { TifField } from 'tidyinputfields/react'
 
 export const tag = `
 <tif-search-select name="owner" label="Owner" required group-order='["Teams"]'>

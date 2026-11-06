@@ -1,6 +1,6 @@
 import * as Tif from 'tidyinputfields'
 import { contactLabel, searchContacts } from './data.ts'
-import { TifField } from './tif-react.tsx'
+import { TifField } from 'tidyinputfields/react'
 
 export const tag = `
 <tif-search-select name="contact" label="Contact" value="c42" create
