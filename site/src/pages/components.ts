@@ -465,4 +465,44 @@ export const components: Page[] = [
       { table: nativeEvents, columns: ['Event', 'Description'] },
     ],
   },
+  {
+    id: 'money',
+    group: forms,
+    title: 'Money',
+    lead: 'An amount in the format of the language, with the decimals of its currency; the form receives a plain number.',
+    blocks: [
+      {
+        example: 'money-basic',
+        title: 'Examples',
+        text: 'At rest the amount is formatted (<code>1 234,50</code> in French, <code>1,234.50</code> in English); on focus it is shown raw for typing. <code>1 234,50</code>, <code>1234.5</code>, <code>1.234,5</code> and <code>1\'234.50</code> are all read. The currency is fixed (<code>currency</code>) or chosen in a list (<code>currencies</code>), sent under <code>currency-name</code>. The value is a JSON number: <code>1234.5</code>.',
+      },
+      keyboard([
+        ['Enter', 'Validates the typing.'],
+        ['Escape', 'Cancels the typing.'],
+      ]),
+      { heading: 'Options' },
+      {
+        options: Tif.TifMoney,
+        descriptions: {
+          ...field,
+          value: 'Initial amount, a number (<code>1234.5</code>).',
+          currency: 'ISO code of the currency (<code>EUR</code>, <code>USD</code>…).',
+          currencies: 'Currencies offered in a list (ISO codes); empty: fixed currency.',
+          currencyName: 'Name under which the form sends the chosen currency.',
+          decimals: 'Decimals; by default those of the currency (2 for the euro, 0 for the yen).',
+          min: 'Smallest amount.',
+          max: 'Largest amount.',
+        },
+      },
+      {
+        table: [
+          ['<code>value</code>', 'The amount as a JSON number (<code>"1234.5"</code>), <code>\'\'</code> when empty.'],
+          ['<code>amount</code>', 'The amount as a number, or null.'],
+          ['<code>currency</code>', 'The chosen currency.'],
+          ['<code>Tif.parseAmount(text, locale?)</code>', 'Reads an amount written by hand.'],
+        ],
+        columns: ['Property / function', 'Description'],
+      },
+    ],
+  },
 ]

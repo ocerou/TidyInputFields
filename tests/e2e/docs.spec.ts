@@ -27,7 +27,7 @@ test.describe('documentation', () => {
 
   test('every component example is shown in three ways, each one building a real component', async ({ page }) => {
     test.setTimeout(120000)
-    const pages = ['text', 'select', 'switch', 'unit', 'selector', 'date', 'time', 'date-time', 'period', 'search-select', 'multi-select', 'lookup', 'sortable-list', 'color-picker', 'tags', 'range', 'rating']
+    const pages = ['text', 'select', 'switch', 'unit', 'selector', 'date', 'time', 'date-time', 'period', 'search-select', 'multi-select', 'lookup', 'sortable-list', 'color-picker', 'tags', 'range', 'rating', 'money']
     for (const id of pages) {
       await page.goto(`${docs}#/${id}`)
       const blocks = page.locator('.bd-example-block').filter({ has: page.getByRole('tab', { name: 'data-tif attributes' }) })

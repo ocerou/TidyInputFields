@@ -233,3 +233,35 @@ button.tif-star:focus-visible {
 .tif-rating[aria-disabled] button.tif-star {
   cursor: not-allowed;
 }
+
+/* Montant : chiffres calés à droite, devise à la suite (texte ou liste). */
+.tif-money {
+  inline-size: 12em;
+  max-inline-size: 100%;
+  padding-inline-end: 4px;
+}
+
+.tif-money-input {
+  inline-size: 100%;
+  text-align: end;
+}
+
+.tif-money-currency {
+  flex: none;
+  padding-inline-end: 4px;
+  color: var(--_ink-mute);
+  cursor: text;
+}
+
+.tif-money-select {
+  flex: none !important;
+  padding-inline: 4px 2px !important;
+  border-inline-start: 1px solid var(--_line) !important;
+  color: var(--_ink-soft) !important;
+  cursor: pointer;
+}
+
+.tif-money-currency[hidden],
+.tif-money-select[hidden] {
+  display: none;
+}

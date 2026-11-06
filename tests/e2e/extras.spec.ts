@@ -34,6 +34,25 @@ test.describe('rating', () => {
   })
 })
 
+test.describe('money', () => {
+  test('edits raw, shows the format of the language, and sends a number and its currency', async ({ page }) => {
+    await page.goto(`${docs}#/money`)
+    const block = page.locator('.bd-example-block').first()
+    const price = block.locator('tif-money').first().locator('input.tif-money-input')
+    await expect(price).toHaveValue('1,234.50')
+    await price.click()
+    await expect(price).toHaveValue('1234.5')
+    await page.keyboard.type('9876.543')
+    await page.keyboard.press('Tab')
+    await expect(price).toHaveValue('9,876.54')
+    const budget = block.locator('tif-money').nth(1)
+    await budget.locator('select').selectOption('GBP')
+    await budget.locator('input.tif-money-input').fill('2500')
+    await budget.locator('input.tif-money-input').press('Enter')
+    await expect(block.locator('output')).toHaveText('{"price":"9876.54","budget":"2500","budget_currency":"GBP"}')
+  })
+})
+
 test.describe('tags', () => {
   test('creates, suggests, removes, and the form sends one value per tag', async ({ page }) => {
     await page.goto(`${docs}#/tags`)
