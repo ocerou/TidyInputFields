@@ -13,7 +13,7 @@ import { icon } from '../core/icons.ts'
 import { t } from '../i18n/i18n.ts'
 import { byGroup, highlight, matchesWords, wordsOf } from '../utils/search.ts'
 import { dispatchChange } from './field.ts'
-import { footSwitch, ListSelect, optionsFromElements, pill, type ListOption } from './list.ts'
+import { emptyLabelFromElements, footSwitch, ListSelect, optionsFromElements, pill, type ListOption } from './list.ts'
 
 /** Source distante : options correspondant à la recherche ; `total` : nombre de résultats au-delà de ceux rendus. */
 export type ListSource = (
@@ -74,6 +74,10 @@ export class TifSearchSelect extends ListSelect {
     super(element, options)
     const native = element instanceof HTMLSelectElement ? element : null
     this.#native = native
+    // Une option vide écrite avec un libellé (« — Aucun — ») vaut emptyLabel.
+    if (!this.options.emptyLabel) {
+      this.options.emptyLabel = emptyLabelFromElements(element)
+    }
     if (native) {
       if (!(this.options.options as ListOption[]).length) {
         this.options.options = optionsFromElements(native)
@@ -131,7 +135,8 @@ export class TifSearchSelect extends ListSelect {
     if (keys.includes('options') && this.holder instanceof HTMLSelectElement && this.#native) {
       // Le <select> habillé garde des options à jour : le formulaire n'envoie qu'une valeur qu'il connaît.
       const kept = this.holder.value
-      this.holder.replaceChildren(...this.#all().map((x) => h('option', { value: x.value }, x.label)))
+      // Une option vide en tête : sans choix, le formulaire envoie '' (et non rien).
+      this.holder.replaceChildren(h('option', { value: '' }), ...this.#all().map((x) => h('option', { value: x.value }, x.label)))
       this.holder.value = kept
     }
     if (keys.includes('value')) {

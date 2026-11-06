@@ -1,22 +1,29 @@
-import { TifField } from './tif-react.tsx'
 import * as Tif from 'tidyinputfields'
+import { TifField } from './tif-react.tsx'
 
-export const html = `
-<div class="bd-row">
-  <tif-select name="country" placeholder="Choose a country">
-    <option value="fr">France</option>
-    <option value="de">Germany</option>
-    <option value="it">Italy</option>
-  </tif-select>
-  <div id="product"></div>
-</div>
+export const tag = `
+<tif-select name="product" placeholder="Choose a product" value="pro">
+  <optgroup label="Plans"><option value="free">Free</option><option value="pro">Pro</option></optgroup>
+  <optgroup label="Services"><option value="audit">Audit</option><option value="training">Training</option></optgroup>
+</tif-select>
 `
 
-// @js
-export function js(root: HTMLElement) {
-  // Options and groups from an array.
+export const attributes = `
+<select name="product" data-tif="select" data-tif-placeholder="Choose a product">
+  <optgroup label="Plans"><option value="free">Free</option><option value="pro" selected>Pro</option></optgroup>
+  <optgroup label="Services"><option value="audit">Audit</option><option value="training">Training</option></optgroup>
+</select>
+`
+
+export const apiHtml = `
+<div id="product"></div>
+`
+
+// @api
+export function api(root: HTMLElement) {
   new Tif.TifSelect(root.querySelector<HTMLElement>('#product')!, {
     name: 'product',
+    placeholder: 'Choose a product',
     value: 'pro',
     options: [
       { value: 'free', label: 'Free', group: 'Plans' },
@@ -30,26 +37,19 @@ export function js(root: HTMLElement) {
 // @react
 export function ReactExample() {
   return (
-    <div className="bd-row">
-      <TifField
-        component="select"
-        name="country"
-        placeholder="Choose a country"
-        options={{ options: [{ value: 'fr', label: 'France' }, { value: 'de', label: 'Germany' }, { value: 'it', label: 'Italy' }] }}
-      />
-      <TifField
-        component="select"
-        name="product"
-        value="pro"
-        options={{
-          options: [
-            { value: 'free', label: 'Free', group: 'Plans' },
-            { value: 'pro', label: 'Pro', group: 'Plans' },
-            { value: 'audit', label: 'Audit', group: 'Services' },
-            { value: 'training', label: 'Training', group: 'Services' },
-          ],
-        }}
-      />
-    </div>
+    <TifField
+      component="select"
+      name="product"
+      placeholder="Choose a product"
+      value="pro"
+      options={{
+        options: [
+          { value: 'free', label: 'Free', group: 'Plans' },
+          { value: 'pro', label: 'Pro', group: 'Plans' },
+          { value: 'audit', label: 'Audit', group: 'Services' },
+          { value: 'training', label: 'Training', group: 'Services' },
+        ],
+      }}
+    />
   )
 }

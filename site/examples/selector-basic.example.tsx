@@ -1,18 +1,45 @@
 import { useState } from 'react'
+import * as Tif from 'tidyinputfields'
 import { TifField } from './tif-react.tsx'
 
-export const html = `
+export const tag = `
+<tif-selector name="mode" label="Update mode" value="keep">
+  <option value="keep">Keep</option>
+  <option value="update">Update</option>
+  <option value="ask">Ask each time</option>
+</tif-selector>
+`
+
+export const attributes = `
+<select name="mode" data-tif="selector" data-tif-label="Update mode">
+  <option value="keep" selected>Keep</option>
+  <option value="update">Update</option>
+  <option value="ask">Ask each time</option>
+</select>
+`
+
+export const apiHtml = `
 <div class="bd-stack">
-  <tif-selector name="mode" label="Update mode" value="keep">
-    <option value="keep">Keep</option>
-    <option value="update">Update</option>
-    <option value="ask">Ask each time</option>
-  </tif-selector>
-  <select name="size" data-tif="selector">
-    <option>S</option><option selected>M</option><option>L</option><option>XL</option>
-  </select>
+  <div id="mode"></div>
+  <output id="chosen"></output>
 </div>
 `
+
+// @api
+export function api(root: HTMLElement) {
+  const host = root.querySelector<HTMLElement>('#mode')!
+  const mode = new Tif.TifSelector(host, {
+    name: 'mode',
+    label: 'Update mode',
+    value: 'keep',
+    options: [
+      { value: 'keep', label: 'Keep' },
+      { value: 'update', label: 'Update', title: 'Overwrite with the new values' },
+      { value: 'ask', label: 'Ask each time', icon: 'warning' },
+    ],
+  })
+  host.addEventListener('change', () => (root.querySelector('#chosen')!.textContent = `mode = ${mode.value}`))
+}
 
 // @react
 export function ReactExample() {

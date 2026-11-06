@@ -1,15 +1,35 @@
-// Un exemple de la documentation : un rendu vivant et son code en onglets (HTML, JavaScript, React).
-// Chaque exemple est un fichier site/examples/<id>.example.tsx qui exporte :
-//   html          le HTML de l'exemple (inséré tel quel, puis Tif.init) ;
-//   js(root)      le JavaScript qui l'accompagne, s'il y en a (après le repère « // @js ») ;
-//   ReactExample  la même chose en React (après le repère « // @react »).
-// Le code affiché est lu dans le fichier lui-même : ce qu'on voit est ce qui tourne.
+// Un exemple de la documentation : un rendu vivant et son code, en onglets. Chaque onglet a son propre rendu.
+//
+// Exemple de composant (site/examples/<id>.example.tsx), les trois façons d'écrire le même champ, plus React :
+//   export const tag          le HTML avec la balise <tif-…> ;
+//   export const attributes   le HTML avec les attributs data-tif ;
+//   export const apiHtml      le HTML d'accueil de l'API JavaScript ;
+//   // @tag         export function tagScript(root)         JavaScript complémentaire de la balise (facultatif) ;
+//   // @attributes  export function attributesScript(root)  idem pour data-tif (facultatif) ;
+//   // @api         export function api(root)               l'API JavaScript ;
+//   // @react       export function ReactExample()          la même chose en React.
+//
+// Exemple général (pages « Getting started », utilitaires) : export const html, // @js export function js(root),
+// // @react export function ReactExample().
+//
+// Le code affiché est lu dans le fichier lui-même, entre ses repères : ce qu'on voit est ce qui tourne.
 import { createElement } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import * as Tif from 'tidyinputfields'
-import { codeBlock } from './highlight.ts'
+import { codeBlock, type Language } from './highlight.ts'
 
-type ExampleModule = { html?: string; js?: (root: HTMLElement) => void; ReactExample?: () => unknown }
+type Script = (root: HTMLElement) => void
+type ExampleModule = {
+  html?: string
+  js?: Script
+  tag?: string
+  tagScript?: Script
+  attributes?: string
+  attributesScript?: Script
+  apiHtml?: string
+  api?: Script
+  ReactExample?: () => unknown
+}
 
 const modules = import.meta.glob<ExampleModule>('../examples/*.example.tsx', { eager: true })
 const sources = import.meta.glob<string>('../examples/*.example.tsx', { eager: true, query: '?raw', import: 'default' })
@@ -24,14 +44,15 @@ function dedent(text: string): string {
   return lines.map((l) => l.slice(indent)).join('\n')
 }
 
-/** Partie du fichier entre deux repères. */
-function region(source: string, start: string, end?: string): string {
-  const from = source.indexOf(start)
-  if (from < 0) {
+/** Code qui suit un repère « // @nom », jusqu'au repère suivant ou à la fin du fichier. */
+function region(source: string, marker: string): string {
+  const start = source.indexOf(`\n// @${marker}\n`)
+  if (start < 0) {
     return ''
   }
-  const to = end ? source.indexOf(end, from) : -1
-  return source.slice(from + start.length, to < 0 ? undefined : to)
+  const from = start + marker.length + 6
+  const next = source.indexOf('\n// @', from)
+  return dedent(source.slice(from, next < 0 ? undefined : next))
 }
 
 /** Lignes d'import dont un nom sert dans le code montré. */
@@ -50,6 +71,11 @@ function importsFor(source: string, code: string): string[] {
     // Imports relatifs montrés sans extension, comme on les écrit dans un projet.
     .map((line) => line.replace(/'(\.\/[^']+)\.tsx?'/, "'$1'"))
 }
+
+/** Code JavaScript montré : ses imports, puis la fonction. */
+const withImports = (source: string, code: string) => [...importsFor(source, code), '', code].join('\n').trim()
+
+type Pane = { label: string; blocks: { code: string; language: Language }[]; show: () => void; react?: boolean }
 
 /** Rend un exemple : titre, texte, rendu, onglets de code. */
 export function renderExample(id: string, title?: string, text?: string): HTMLElement {
@@ -72,9 +98,6 @@ export function renderExample(id: string, title?: string, text?: string): HTMLEl
     return section
   }
   const { module, source } = entry
-  const html = module.html ? dedent(module.html) : ''
-  const js = module.js ? dedent(region(source, '// @js', '// @react')) : ''
-  const react = module.ReactExample ? dedent(region(source, '// @react')) : ''
 
   const preview = document.createElement('div')
   preview.className = 'bd-example'
@@ -86,49 +109,71 @@ export function renderExample(id: string, title?: string, text?: string): HTMLEl
   section.append(preview, tabs, code)
 
   let root: Root | null = null
-  const showVanilla = () => {
+  const clear = () => {
     root?.unmount()
     root = null
     Tif.dispose(preview)
-    preview.innerHTML = html
-    Tif.init(preview)
-    module.js?.(preview)
-    preview.dataset.mode = 'vanilla'
-  }
-  const showReact = () => {
-    Tif.dispose(preview)
     preview.replaceChildren()
+  }
+  /** Rendu sans React : le HTML, l'initialisation des data-tif, puis le script. */
+  const vanilla = (html: string, script?: Script, mode = 'vanilla') => () => {
+    clear()
+    preview.innerHTML = dedent(html)
+    Tif.init(preview)
+    script?.(preview)
+    preview.dataset.mode = mode
+  }
+  const react = () => {
+    clear()
     root = createRoot(preview)
     root.render(createElement(module.ReactExample as () => null))
     preview.dataset.mode = 'react'
   }
 
-  const panes: { label: string; code: string; language: 'html' | 'ts' | 'tsx'; react: boolean }[] = []
-  if (html) {
-    panes.push({ label: 'HTML', code: html, language: 'html', react: false })
+  const panes: Pane[] = []
+  const html = (text: string) => ({ code: dedent(text), language: 'html' as const })
+  const script = (marker: string) => {
+    const text = region(source, marker)
+    return text ? [{ code: withImports(source, text), language: 'ts' as const }] : []
   }
-  if (js) {
-    const imports = importsFor(source, js).filter((l) => l.includes('tidyinputfields'))
-    panes.push({ label: 'JavaScript', code: [...imports, '', js].join('\n').trim(), language: 'ts', react: false })
+  if (module.tag) {
+    panes.push({ label: 'Tag', blocks: [html(module.tag), ...script('tag')], show: vanilla(module.tag, module.tagScript, 'tag') })
   }
-  if (react) {
-    panes.push({ label: 'React', code: [...importsFor(source, react), '', react].join('\n').trim(), language: 'tsx', react: true })
+  if (module.attributes) {
+    panes.push({ label: 'data-tif attributes', blocks: [html(module.attributes), ...script('attributes')], show: vanilla(module.attributes, module.attributesScript, 'attributes') })
   }
-  let current = -1
+  if (module.api) {
+    panes.push({ label: 'JavaScript API', blocks: [...(module.apiHtml ? [html(module.apiHtml)] : []), ...script('api')], show: vanilla(module.apiHtml ?? '', module.api, 'api') })
+  }
+  if (module.html) {
+    panes.push({ label: 'HTML', blocks: [html(module.html)], show: vanilla(module.html, module.js) })
+  }
+  if (module.js && region(source, 'js')) {
+    // Exemple général : le JavaScript accompagne le HTML, même rendu.
+    panes.push({ label: 'JavaScript', blocks: script('js'), show: vanilla(module.html ?? '', module.js) })
+  }
+  if (module.ReactExample) {
+    const text = region(source, 'react')
+    panes.push({ label: 'React', blocks: [{ code: withImports(source, text), language: 'tsx' }], show: react, react: true })
+  }
+
+  let shown: (() => void) | null = null
   const select = (index: number) => {
     const pane = panes[index]
     tabs.querySelectorAll('button').forEach((b, i) => b.setAttribute('aria-selected', String(i === index)))
-    code.replaceChildren(codeBlock(pane.code, pane.language))
-    // L'onglet React montre aussi le rendu React ; les autres, le rendu HTML + JavaScript.
-    const wasReact = current >= 0 && panes[current].react
-    if (current < 0 || wasReact !== pane.react) {
-      if (pane.react) {
-        showReact()
-      } else {
-        showVanilla()
-      }
+    code.replaceChildren(...pane.blocks.map((b) => codeBlock(b.code, b.language)))
+    // Un onglet qui a le même rendu que le précédent (HTML puis JavaScript) ne le recrée pas.
+    if (pane.show !== shown) {
+      pane.show()
+      shown = pane.show
     }
-    current = index
+  }
+  // HTML et JavaScript d'un exemple général partagent leur rendu.
+  if (module.html && module.js) {
+    const both = panes.filter((p) => p.label === 'HTML' || p.label === 'JavaScript')
+    for (const pane of both) {
+      pane.show = both[0].show
+    }
   }
   panes.forEach((pane, i) => {
     const button = document.createElement('button')
@@ -138,8 +183,9 @@ export function renderExample(id: string, title?: string, text?: string): HTMLEl
     button.addEventListener('click', () => select(i))
     tabs.append(button)
   })
+  // Premier rendu une fois l'exemple dans la page : les balises <tif-…> ne créent leur composant qu'à ce moment-là.
   if (panes.length) {
-    select(0)
+    queueMicrotask(() => select(0))
   }
   return section
 }

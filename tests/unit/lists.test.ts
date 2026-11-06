@@ -125,6 +125,16 @@ describe('search select', () => {
     expect(document.querySelector('.tif-select-button')).toBeNull()
   })
 
+  it('treats an empty written option as the empty choice, not as an option', () => {
+    const form = html('<select name="s"><option value="">— None —</option><option value="a">A</option></select>')
+    const select = new TifSearchSelect(form.querySelector('select')!)
+    expect(select.value).toBe('')
+    expect(select.button.textContent).toBe('— None —')
+    select.open()
+    expect(labels(select.panel)).toEqual(['— None —', 'A'])
+    expect(Object.fromEntries(new FormData(form))).toEqual({ s: '' })
+  })
+
   it('emits create from the footer button', () => {
     const element = h('div')
     document.body.append(element)

@@ -1,21 +1,34 @@
 import { useState } from 'react'
+import * as Tif from 'tidyinputfields'
 import { TifField } from './tif-react.tsx'
 
-export const html = `
-<form class="bd-stack" id="dates">
+export const tag = `
+<form class="bd-stack">
   <tif-date name="due" label="Due date"></tif-date>
-  <input type="date" name="start" value="2026-11-06" data-tif="date">
+  <tif-date name="start" value="2026-11-06" first-day="1"></tif-date>
+</form>
+`
+
+export const attributes = `
+<form class="bd-stack">
+  <input type="date" name="due" data-tif="date" data-tif-label="Due date">
+  <input type="date" name="start" value="2026-11-06" data-tif="date" data-tif-first-day="1">
+</form>
+`
+
+export const apiHtml = `
+<form class="bd-stack">
+  <div id="due"></div>
   <output></output>
 </form>
 `
 
-// @js
-export function js(root: HTMLElement) {
-  const form = root.querySelector<HTMLFormElement>('#dates')!
-  const show = () => (form.querySelector('output')!.textContent = JSON.stringify(Object.fromEntries(new FormData(form))))
+// @api
+export function api(root: HTMLElement) {
+  const host = root.querySelector<HTMLElement>('#due')!
+  const due = new Tif.TifDate(host, { name: 'due', label: 'Due date', value: '2027-03-15' })
   // The form receives ISO dates; the field shows the format of the language.
-  form.addEventListener('change', show)
-  queueMicrotask(show)
+  host.addEventListener('change', () => (root.querySelector('output')!.textContent = `due = "${due.value}"`))
 }
 
 // @react

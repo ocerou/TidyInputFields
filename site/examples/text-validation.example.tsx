@@ -1,8 +1,9 @@
 import { useState, type FormEvent } from 'react'
+import * as Tif from 'tidyinputfields'
 import { TifField } from './tif-react.tsx'
 
-export const html = `
-<form class="bd-stack" id="contact" novalidate>
+export const tag = `
+<form class="bd-stack" novalidate>
   <tif-text name="name" placeholder="Name (required)" required></tif-text>
   <tif-text name="email" type="email" placeholder="E-mail (required)" required></tif-text>
   <tif-date name="due" required></tif-date>
@@ -10,12 +11,57 @@ export const html = `
 </form>
 `
 
-// @js
-export function js(root: HTMLElement) {
-  const form = root.querySelector<HTMLFormElement>('#contact')!
+export const attributes = `
+<form class="bd-stack" novalidate>
+  <input name="name" placeholder="Name (required)" required data-tif="text">
+  <input name="email" type="email" placeholder="E-mail (required)" required data-tif="text">
+  <input name="due" type="date" required data-tif="date">
+  <button class="tif-btn tif-btn-primary">Send</button>
+</form>
+`
+
+export const apiHtml = `
+<form class="bd-stack" novalidate>
+  <div id="name"></div>
+  <div id="email"></div>
+  <div id="due"></div>
+  <button class="tif-btn tif-btn-primary">Send</button>
+</form>
+`
+
+// @tag
+export function tagScript(root: HTMLElement) {
+  const form = root.querySelector('form')!
   form.addEventListener('submit', (event) => {
     event.preventDefault()
     // Same convention as Bootstrap: .was-validated shows the native validity of every field.
+    form.classList.add('was-validated')
+    if (form.checkValidity()) {
+      alert(JSON.stringify(Object.fromEntries(new FormData(form))))
+    }
+  })
+}
+
+// @attributes
+export function attributesScript(root: HTMLElement) {
+  const form = root.querySelector('form')!
+  form.addEventListener('submit', (event) => {
+    event.preventDefault()
+    form.classList.add('was-validated')
+    if (form.checkValidity()) {
+      alert(JSON.stringify(Object.fromEntries(new FormData(form))))
+    }
+  })
+}
+
+// @api
+export function api(root: HTMLElement) {
+  new Tif.TifText(root.querySelector<HTMLElement>('#name')!, { name: 'name', placeholder: 'Name (required)', required: true })
+  new Tif.TifText(root.querySelector<HTMLElement>('#email')!, { name: 'email', type: 'email', placeholder: 'E-mail (required)', required: true })
+  new Tif.TifDate(root.querySelector<HTMLElement>('#due')!, { name: 'due', required: true })
+  const form = root.querySelector('form')!
+  form.addEventListener('submit', (event) => {
+    event.preventDefault()
     form.classList.add('was-validated')
     if (form.checkValidity()) {
       alert(JSON.stringify(Object.fromEntries(new FormData(form))))

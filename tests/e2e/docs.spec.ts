@@ -25,6 +25,25 @@ test.describe('documentation', () => {
     expect(errors).toEqual([])
   })
 
+  test('every component example is shown in three ways, each one building a real component', async ({ page }) => {
+    test.setTimeout(120000)
+    const pages = ['text', 'select', 'switch', 'unit', 'selector', 'date', 'time', 'date-time', 'period', 'search-select', 'multi-select', 'lookup', 'sortable-list']
+    for (const id of pages) {
+      await page.goto(`${docs}#/${id}`)
+      const blocks = page.locator('.bd-example-block').filter({ has: page.getByRole('tab', { name: 'data-tif attributes' }) })
+      expect(await blocks.count(), id).toBeGreaterThan(0)
+      for (let i = 0; i < (await blocks.count()); i++) {
+        const block = blocks.nth(i)
+        await expect(block.getByRole('tab')).toHaveText(['Tag', 'data-tif attributes', 'JavaScript API', 'React'])
+        for (const tab of ['Tag', 'data-tif attributes', 'JavaScript API', 'React']) {
+          await block.getByRole('tab', { name: tab, exact: true }).click()
+          // Chaque façon construit le composant : ses éléments .tif sont là.
+          await expect(block.locator('.bd-example .tif').first(), `${id} ${i} ${tab}`).toBeAttached()
+        }
+      }
+    }
+  })
+
   test('the React example works like the HTML one', async ({ page }) => {
     await page.goto(`${docs}#/introduction`)
     const block = page.locator('.bd-example-block').first()

@@ -39,8 +39,11 @@ export const components: Page[] = [
     title: 'Text, number, text area',
     lead: 'Native fields, dressed: <code>&lt;tif-text&gt;</code>, <code>&lt;tif-number&gt;</code>, <code>&lt;tif-textarea&gt;</code>.',
     blocks: [
-      { example: 'text-basic', title: 'Examples' },
-      { example: 'text-dress', title: 'Dressing existing fields', text: 'On an existing field, the component adds its classes and gives them back on <code>dispose()</code>. A field that already carries Bootstrap\'s <code>.form-control</code> keeps Bootstrap\'s look.' },
+      {
+        example: 'text-basic',
+        title: 'Examples',
+        text: 'With <code>data-tif</code>, the component dresses the existing field and gives it back on <code>dispose()</code>. A field that already carries Bootstrap\'s <code>.form-control</code> keeps Bootstrap\'s look.',
+      },
       { example: 'text-validation', title: 'Validation', text: 'Native validation works as usual; add <code>.was-validated</code> to the form (as in Bootstrap) to show it.' },
       { heading: 'Options' },
       { text: '<p><b>Text</b> — <code>&lt;tif-text&gt;</code>, <code>data-tif="text"</code>, <code>Tif.TifText</code></p>' },

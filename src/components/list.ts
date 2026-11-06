@@ -321,10 +321,16 @@ export function footSwitch(label: string, checked: boolean, onChange: (checked: 
   return h('label', { class: 'tif-listbox-switch' }, input, label)
 }
 
-/** Options lues dans des <option> / <optgroup> : data-pill, data-inactive. */
+/**
+ * Options lues dans des <option> / <optgroup> : data-pill, data-inactive. L'option vide (value="") n'est pas un
+ * choix : c'est l'absence de choix (voir emptyLabelFromElements).
+ */
 export function optionsFromElements(parent: ParentNode): ListOption[] {
   const options: ListOption[] = []
   for (const option of parent.querySelectorAll('option')) {
+    if (option.value === '') {
+      continue
+    }
     const group = option.parentElement instanceof HTMLOptGroupElement ? option.parentElement.label : undefined
     options.push({
       value: option.value,
@@ -335,4 +341,10 @@ export function optionsFromElements(parent: ParentNode): ListOption[] {
     })
   }
   return options
+}
+
+/** Libellé de l'option vide écrite (<option value="">— Aucun —</option>), '' s'il n'y en a pas. */
+export function emptyLabelFromElements(parent: ParentNode): string {
+  const empty = [...parent.querySelectorAll('option')].find((o) => o.value === '')
+  return (empty?.textContent ?? '').trim()
 }
