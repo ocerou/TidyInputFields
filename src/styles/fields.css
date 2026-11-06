@@ -139,6 +139,32 @@ tif-textarea {
   background-color: var(--_surface);
 }
 
+/* Zone discrète au repos (ni survolée, ni active, ni panneau ouvert) : pas de pictogramme non plus — flèche des listes,
+   calendrier, horloge, loupe, flèches du nombre, liste des devises. Seule la valeur se lit. */
+.tif-select.tif-quiet:not(:hover, :focus),
+.tif-select-button.tif-quiet:not(:hover, :focus, [aria-expanded='true']) {
+  background-image: none;
+}
+
+.tif-field.tif-quiet:not(:hover, :focus-within, :has([aria-expanded='true'])) > :is(svg, .tif-picker-button, .tif-lookup-clear) {
+  visibility: hidden;
+}
+
+.tif-input.tif-quiet[type='number']:not(:hover, :focus) {
+  appearance: textfield;
+}
+
+.tif-input.tif-quiet[type='number']:not(:hover, :focus)::-webkit-inner-spin-button,
+.tif-input.tif-quiet[type='number']:not(:hover, :focus)::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.tif-field.tif-quiet:not(:hover, :focus-within) .tif-money-select {
+  appearance: none;
+  border-inline-start-color: transparent !important;
+}
+
 /* Interrupteur : bouton gris sur piste en creux pour « non », blanc sur l'accent pour « oui ». */
 .tif-switch {
   appearance: none;

@@ -120,3 +120,18 @@ test.describe('search-select fed by fetch', () => {
     await expect(page.locator('.tif-listbox-panel:visible')).toContainText('First 20 of 31')
   })
 })
+
+test.describe('quiet fields', () => {
+  test('show no icon until hovered or focused', async ({ page }) => {
+    await page.goto(`${docs}#/theming`)
+    const example = page.locator('#example-theme-quiet .bd-example')
+    const calendar = example.locator('tif-date .tif-picker-button')
+    await expect(calendar).toBeHidden()
+    await expect(example.locator('tif-select select')).toHaveCSS('background-image', 'none')
+    await expect(example.locator('tif-search-select .tif-select-button')).toHaveCSS('background-image', 'none')
+    await example.locator('tif-date .tif-field').hover()
+    await expect(calendar).toBeVisible()
+    await example.locator('tif-select select').focus()
+    await expect(example.locator('tif-select select')).not.toHaveCSS('background-image', 'none')
+  })
+})

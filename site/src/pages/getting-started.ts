@@ -223,7 +223,7 @@ import 'tidyinputfields/css'
       },
       { heading: 'Quiet fields' },
       {
-        text: '<p>With <code>quiet</code>, a field has no frame until it is hovered or focused: reading and editing look the same on a record page.</p>',
+        text: '<p>With <code>quiet</code>, a field has no frame and no icon (arrow of a list, calendar, clock, magnifier, arrows of a number) until it is hovered or focused: reading and editing look the same on a record page.</p>',
       },
       { example: 'theme-quiet' },
       { heading: 'Sizes and states' },
