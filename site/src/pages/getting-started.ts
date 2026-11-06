@@ -233,6 +233,27 @@ import 'tidyinputfields/css'
     ],
   },
   {
+    id: 'sizes',
+    group,
+    title: 'Sizes',
+    lead: 'Three sizes for every input: small, default and large, like Bootstrap\'s <code>-sm</code> and <code>-lg</code>.',
+    blocks: [
+      {
+        text: '<p>Add <code>.tif-sm</code> or <code>.tif-lg</code> to the field\'s tag, or to any element around it — a form, a table cell, a card: every field inside takes that size. A field dressed over a Bootstrap <code>.form-control-sm</code> / <code>.form-select-sm</code> (or <code>-lg</code>) takes it too. The size changes the text, the height of the field and its corners; the panels (calendar, list) keep the size of the page.</p>',
+      },
+      {
+        table: [
+          ['<code>.tif-sm</code>', 'Text × 0.875, small corners (<code>--tif-radius-sm</code>).'],
+          ['<code>.tif-lg</code>', 'Text × 1.25, large corners (<code>--tif-radius-lg</code>).'],
+          ['<code>--tif-scale</code>', 'The factor itself, for another size: <code>style="--tif-scale: 1.1"</code>.'],
+        ],
+        columns: ['Class / variable', 'Effect'],
+      },
+      { heading: 'Every input in the three sizes' },
+      { example: 'sizes-table' },
+    ],
+  },
+  {
     id: 'bootstrap',
     group,
     title: 'Bootstrap',

@@ -518,3 +518,20 @@ code {
     display: none;
   }
 }
+
+/* Page « Sizes » : chaque champ dans les trois tailles. */
+.bd-sizes {
+  inline-size: 100%;
+  margin: 0;
+}
+
+.bd-sizes td {
+  min-inline-size: 220px;
+  vertical-align: middle;
+}
+
+.bd-sizes th[scope],
+.bd-sizes tbody th {
+  vertical-align: middle;
+  white-space: nowrap;
+}

@@ -22,7 +22,8 @@ tif-color-picker {
   border-radius: var(--_radius);
   background: var(--_surface);
   color: var(--_ink);
-  font: inherit;
+  font-family: var(--_font);
+  font-size: var(--_font-size);
   text-align: start;
   cursor: pointer;
 }

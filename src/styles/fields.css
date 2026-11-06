@@ -171,8 +171,8 @@ tif-textarea {
   position: relative;
   flex: none;
   box-sizing: border-box;
-  inline-size: 34px;
-  block-size: 20px;
+  inline-size: calc(34px * var(--tif-scale, 1));
+  block-size: calc(20px * var(--tif-scale, 1));
   margin: 0;
   border: 1px solid var(--_line-strong);
   border-radius: 999px;
@@ -189,8 +189,8 @@ tif-textarea {
   position: absolute;
   inset-block-start: 2px;
   inset-inline-start: 2px;
-  inline-size: 14px;
-  block-size: 14px;
+  inline-size: calc(14px * var(--tif-scale, 1));
+  block-size: calc(14px * var(--tif-scale, 1));
   border-radius: 50%;
   background: var(--_ink-mute);
   transition:
@@ -204,13 +204,13 @@ tif-textarea {
 }
 
 .tif-switch:checked::before {
-  transform: translateX(14px);
+  transform: translateX(calc(14px * var(--tif-scale, 1)));
   background: #fff;
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
 }
 
 .tif-switch:checked:dir(rtl)::before {
-  transform: translateX(-14px);
+  transform: translateX(calc(-14px * var(--tif-scale, 1)));
 }
 
 .tif-switch:hover:not(:disabled):not(:checked) {

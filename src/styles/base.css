@@ -19,7 +19,9 @@
   border-radius: var(--_radius);
   background: var(--_surface);
   color: var(--_ink);
-  font: inherit;
+  /* Taille de la librairie, comme les champs natifs (et non celle de la page). */
+  font-family: var(--_font);
+  font-size: var(--_font-size);
   line-height: 1.5;
   transition:
     border-color 0.15s ease-in-out,
@@ -85,14 +87,14 @@
 /* Tailles, comme -sm / -lg de Bootstrap. */
 .tif-sm,
 .tif:has(.form-control-sm, .form-select-sm) {
-  --_font-size: calc(var(--tif-font-size, var(--bs-body-font-size, 13px)) * 0.875);
-  --_radius: var(--tif-radius-sm, var(--bs-border-radius-sm, 3px));
+  --tif-scale: 0.875;
+  --tif-radius: var(--tif-radius-sm, var(--bs-border-radius-sm, 3px));
 }
 
 .tif-lg,
 .tif:has(.form-control-lg, .form-select-lg) {
-  --_font-size: calc(var(--tif-font-size, var(--bs-body-font-size, 13px)) * 1.25);
-  --_radius: var(--tif-radius-lg, var(--bs-border-radius-lg, 8px));
+  --tif-scale: 1.25;
+  --tif-radius: var(--tif-radius-lg, var(--bs-border-radius-lg, 8px));
 }
 
 /* Icônes : à la taille et à la couleur du texte. */

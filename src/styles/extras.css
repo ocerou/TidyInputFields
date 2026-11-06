@@ -93,7 +93,7 @@ tif-file {
 .tif-range-input {
   appearance: none;
   inline-size: 100%;
-  block-size: 20px;
+  block-size: calc(20px * var(--tif-scale, 1));
   margin: 0;
   background: transparent;
   cursor: pointer;
@@ -121,9 +121,9 @@ tif-file {
 
 .tif-range-input::-webkit-slider-thumb {
   appearance: none;
-  inline-size: 18px;
-  block-size: 18px;
-  margin-top: -6px;
+  inline-size: calc(18px * var(--tif-scale, 1));
+  block-size: calc(18px * var(--tif-scale, 1));
+  margin-top: calc(3px - 9px * var(--tif-scale, 1));
   border: 2px solid var(--_accent);
   border-radius: 50%;
   background: var(--_surface);
@@ -131,8 +131,8 @@ tif-file {
 }
 
 .tif-range-input::-moz-range-thumb {
-  inline-size: 14px;
-  block-size: 14px;
+  inline-size: calc(14px * var(--tif-scale, 1));
+  block-size: calc(14px * var(--tif-scale, 1));
   border: 2px solid var(--_accent);
   border-radius: 50%;
   background: var(--_surface);
@@ -184,7 +184,7 @@ tif-file {
   display: inline-flex;
   gap: 2px;
   color: var(--tif-rating-color, #e3a008);
-  font-size: var(--tif-rating-size, 1.35em);
+  font-size: var(--tif-rating-size, calc(var(--_font-size) * 1.35));
   line-height: 1;
 }
 

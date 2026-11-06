@@ -135,3 +135,19 @@ test.describe('quiet fields', () => {
     await expect(example.locator('tif-select select')).not.toHaveCSS('background-image', 'none')
   })
 })
+
+test.describe('sizes', () => {
+  test('every input is smaller with .tif-sm and larger with .tif-lg', async ({ page }) => {
+    await page.goto(`${docs}#/sizes`)
+    const rows = page.locator('.bd-sizes tbody tr')
+    await expect(rows).toHaveCount(22)
+    // Taille du texte de chaque champ dans ses trois cellules (le premier élément .tif de la cellule).
+    const sizes = await rows.evaluateAll((list) =>
+      list.map((row) => [row.querySelector('th')!.textContent, ...[...row.querySelectorAll('td')].map((td) => parseFloat(getComputedStyle(td.querySelector('.tif, .tif-switch')!).fontSize))]),
+    )
+    for (const [name, small, normal, large] of sizes as [string, number, number, number][]) {
+      expect(small, `${name} small`).toBeLessThan(normal)
+      expect(large, `${name} large`).toBeGreaterThan(normal)
+    }
+  })
+})
