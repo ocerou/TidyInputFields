@@ -32,15 +32,15 @@ tif-period {
   flex: none;
   align-items: center;
   justify-content: center;
-  inline-size: 22px;
-  block-size: 22px;
+  inline-size: calc(22px * var(--tif-scale, 1));
+  block-size: calc(22px * var(--tif-scale, 1));
   margin: 0;
   padding: 0;
   border: 0;
   border-radius: var(--_radius-sm);
   background: transparent;
   color: var(--_ink-mute);
-  font-size: 14px;
+  font-size: calc(14px * var(--tif-scale, 1));
   cursor: pointer;
 }
 

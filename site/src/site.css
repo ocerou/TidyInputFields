@@ -519,19 +519,27 @@ code {
   }
 }
 
-/* Page « Sizes » : chaque champ dans les trois tailles. */
+/* Page « Sizes » : le contrôle choisi, une ligne par taille. */
 .bd-sizes {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
   inline-size: 100%;
-  margin: 0;
 }
 
-.bd-sizes td {
-  min-inline-size: 220px;
-  vertical-align: middle;
+.bd-size-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
-.bd-sizes th[scope],
-.bd-sizes tbody th {
-  vertical-align: middle;
-  white-space: nowrap;
+.bd-size-row > code {
+  flex: none;
+  inline-size: 72px;
+  font-size: 12px;
+}
+
+.bd-size-row > div {
+  flex: 1;
+  min-inline-size: 0;
 }

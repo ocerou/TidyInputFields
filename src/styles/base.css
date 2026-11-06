@@ -84,16 +84,45 @@
   background: var(--_warn-wash);
 }
 
-/* Tailles, comme -sm / -lg de Bootstrap. */
+/* Tailles : facteur du texte (et donc de la hauteur du champ), petits coins en dessous de la taille normale, grands
+   au-dessus. sm et lg valent aussi pour les classes -sm / -lg de Bootstrap. */
+.tif-xxs {
+  --tif-scale: 0.7;
+}
+
+.tif-xs {
+  --tif-scale: 0.8;
+}
+
 .tif-sm,
 .tif:has(.form-control-sm, .form-select-sm) {
   --tif-scale: 0.875;
-  --tif-radius: var(--tif-radius-sm, var(--bs-border-radius-sm, 3px));
 }
 
 .tif-lg,
 .tif:has(.form-control-lg, .form-select-lg) {
   --tif-scale: 1.25;
+}
+
+.tif-xl {
+  --tif-scale: 1.5;
+}
+
+.tif-xxl {
+  --tif-scale: 1.75;
+}
+
+.tif-xxs,
+.tif-xs,
+.tif-sm,
+.tif:has(.form-control-sm, .form-select-sm) {
+  --tif-radius: var(--tif-radius-sm, var(--bs-border-radius-sm, 3px));
+}
+
+.tif-lg,
+.tif-xl,
+.tif-xxl,
+.tif:has(.form-control-lg, .form-select-lg) {
   --tif-radius: var(--tif-radius-lg, var(--bs-border-radius-lg, 8px));
 }
 

@@ -137,17 +137,23 @@ test.describe('quiet fields', () => {
 })
 
 test.describe('sizes', () => {
-  test('every input is smaller with .tif-sm and larger with .tif-lg', async ({ page }) => {
+  test('every control grows from .tif-xxs to .tif-xxl', async ({ page }) => {
+    test.setTimeout(90000)
     await page.goto(`${docs}#/sizes`)
-    const rows = page.locator('.bd-sizes tbody tr')
-    await expect(rows).toHaveCount(22)
-    // Taille du texte de chaque champ dans ses trois cellules (le premier élément .tif de la cellule).
-    const sizes = await rows.evaluateAll((list) =>
-      list.map((row) => [row.querySelector('th')!.textContent, ...[...row.querySelectorAll('td')].map((td) => parseFloat(getComputedStyle(td.querySelector('.tif, .tif-switch')!).fontSize))]),
-    )
-    for (const [name, small, normal, large] of sizes as [string, number, number, number][]) {
-      expect(small, `${name} small`).toBeLessThan(normal)
-      expect(large, `${name} large`).toBeGreaterThan(normal)
+    const block = page.locator('#example-sizes-preview')
+    const list = block.locator('#size-control select')
+    const controls = await list.locator('option').evaluateAll((options) => options.map((o) => (o as HTMLOptionElement).value))
+    expect(controls).toHaveLength(22)
+    for (const control of controls) {
+      await list.selectOption(control)
+      const rows = block.locator('.bd-size-row')
+      await expect(rows).toHaveCount(7)
+      await expect(rows.first().locator('.tif, .tif-switch').first()).toBeAttached()
+      // Taille du texte du premier élément du champ, de la plus petite taille à la plus grande.
+      const sizes = await rows.evaluateAll((list) => list.map((row) => parseFloat(getComputedStyle(row.querySelector('.tif, .tif-switch')!).fontSize)))
+      for (let i = 1; i < sizes.length; i++) {
+        expect(sizes[i], `${control} ${i}`).toBeGreaterThan(sizes[i - 1])
+      }
     }
   })
 })
