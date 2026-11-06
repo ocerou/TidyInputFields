@@ -1,0 +1,458 @@
+/* Zones de date, d'heure, de date et heure, de période ; listes à panneau (reprises par les listes du lot suivant). */
+
+tif-date,
+tif-time,
+tif-date-time,
+tif-period {
+  display: inline-block;
+  max-inline-size: 100%;
+  vertical-align: middle;
+}
+
+/* Zone de saisie avec son bouton (calendrier, horloge) en bout de zone. */
+.tif-picker {
+  gap: 2px;
+  padding-inline-end: 4px;
+}
+
+.tif-picker-input {
+  inline-size: 100%;
+}
+
+.tif-date {
+  inline-size: 11.5em;
+}
+
+.tif-time {
+  inline-size: 7.5em;
+}
+
+.tif-picker-button {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  inline-size: 22px;
+  block-size: 22px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--_radius-sm);
+  background: transparent;
+  color: var(--_ink-mute);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.tif-picker-button:hover,
+.tif-picker-button[aria-expanded='true'] {
+  background: var(--_accent-wash);
+  color: var(--_accent);
+}
+
+.tif-picker-button[hidden] {
+  display: none;
+}
+
+/* Flèches gauche / droite retournées en écriture de droite à gauche. */
+.tif-flip-rtl:dir(rtl) .tif-icon,
+.tif-flip-rtl:dir(rtl).tif-icon {
+  transform: scaleX(-1);
+}
+
+/* Boutons-liens des pieds de panneau. */
+.tif-link-btn {
+  margin: 0;
+  padding: 3px 6px;
+  border: 0;
+  border-radius: var(--_radius-sm);
+  background: transparent;
+  color: var(--_accent);
+  font: inherit;
+  font-size: 0.95em;
+  cursor: pointer;
+}
+
+.tif-link-btn:hover {
+  background: var(--_accent-wash);
+}
+
+.tif-panel-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  margin-block-start: 6px;
+  padding-block-start: 6px;
+  border-block-start: 1px solid var(--_line);
+}
+
+.tif-panel-foot.tif-wrap {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+/* Calendrier. */
+.tif-date-panel {
+  inline-size: 252px;
+  padding: 8px;
+}
+
+.tif-calendar-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-block-end: 6px;
+}
+
+.tif-calendar-title {
+  flex: 1;
+  margin: 0;
+  padding: 4px;
+  border: 0;
+  border-radius: var(--_radius);
+  background: transparent;
+  color: var(--_ink);
+  font: inherit;
+  font-weight: 650;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+.tif-calendar-title:hover:not(:disabled) {
+  background: var(--_alt);
+  color: var(--_accent);
+}
+
+.tif-calendar-title:disabled {
+  cursor: default;
+}
+
+.tif-calendar-grid {
+  display: grid;
+  gap: 2px;
+}
+
+.tif-calendar-days {
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.tif-calendar-months {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.tif-calendar-weekday {
+  padding: 2px 0;
+  color: var(--_ink-mute);
+  font-size: 0.85em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.tif-calendar-grid button {
+  margin: 0;
+  padding: 5px 0;
+  border: 1px solid transparent;
+  border-radius: var(--_radius);
+  background: transparent;
+  color: var(--_ink);
+  font: inherit;
+  font-size: 0.96em;
+  font-variant-numeric: tabular-nums;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+.tif-calendar-months button {
+  padding: 10px 0;
+}
+
+.tif-calendar-grid button:hover {
+  background: var(--_alt);
+}
+
+.tif-calendar-grid button.tif-other {
+  color: var(--_ink-mute);
+}
+
+.tif-calendar-grid button.tif-today {
+  border-color: var(--_accent);
+}
+
+.tif-calendar-grid button[aria-pressed='true'] {
+  background: var(--_accent);
+  color: var(--_on-accent);
+}
+
+/* Horloge : deux colonnes (heures, minutes) qui défilent, raccourcis en pied. */
+.tif-time-panel {
+  inline-size: 220px;
+  padding: 8px;
+}
+
+.tif-time-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.tif-time-column {
+  display: flex;
+  flex-direction: column;
+  max-block-size: 180px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--_line);
+  border-radius: var(--_radius-sm);
+}
+
+.tif-time-column button {
+  margin: 0;
+  padding: 4px 10px;
+  border: 0;
+  background: transparent;
+  color: var(--_ink);
+  font-family: var(--tif-mono, 'Cascadia Mono', Consolas, ui-monospace, monospace);
+  font-size: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.tif-time-column button:hover {
+  background: var(--_alt);
+}
+
+.tif-time-column button[aria-pressed='true'] {
+  background: var(--_accent-wash);
+  color: var(--_accent-ink);
+}
+
+/* Date et heure : l'heure, plus courte, à la suite de la date ; le fuseau en complément de fin. */
+.tif-date-time {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 6px;
+  max-inline-size: 100%;
+}
+
+.tif-addon {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+  border: 1px solid var(--_line);
+  border-radius: var(--_radius-sm);
+  background: var(--_alt);
+  color: var(--_ink-mute);
+  font-size: 0.92em;
+  white-space: nowrap;
+}
+
+.tif-addon[hidden] {
+  display: none;
+}
+
+/* Bouton qui ouvre une liste (période, puis listes avec recherche) : allure d'une liste déroulante. */
+.tif-select-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+  min-inline-size: 12em;
+  max-inline-size: 100%;
+  block-size: var(--tif-field-h, calc(1.5em + 0.75rem + 2px));
+  margin: 0;
+  padding-block: 0;
+  padding-inline: var(--_field-pad-x) 26px;
+  border: 1px solid var(--_line-strong);
+  border-radius: var(--_radius);
+  background-color: var(--_surface);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--_ink-mute) 50%),
+    linear-gradient(135deg, var(--_ink-mute) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 52%,
+    calc(100% - 9px) 52%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  color: var(--_ink);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.tif-select-button:dir(rtl) {
+  background-position:
+    9px 52%,
+    14px 52%;
+}
+
+.tif-select-value {
+  flex: 1;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tif-select-button:focus,
+.tif-select-button[aria-expanded='true'] {
+  border-color: var(--_accent);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--_focus-ring);
+}
+
+.tif-select-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tif-select-button.tif-quiet {
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.tif-select-button.tif-quiet:hover,
+.tif-select-button.tif-quiet:focus,
+.tif-select-button.tif-quiet[aria-expanded='true'] {
+  border-color: var(--_line-strong);
+  background-color: var(--_surface);
+}
+
+/* Panneau de liste : recherche en tête, options, pied. */
+.tif-listbox-panel {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 260px;
+  max-block-size: none;
+  padding: 0;
+  overflow: hidden;
+  outline: none;
+}
+
+.tif-listbox-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-block-end: 1px solid var(--_line);
+  color: var(--_ink-mute);
+}
+
+.tif-listbox-search-input {
+  flex: 1;
+  min-inline-size: 0;
+  block-size: 26px;
+  margin: 0;
+  padding: 0 2px;
+  border: 0;
+  background: transparent;
+  color: var(--_ink);
+  font: inherit;
+  outline: none;
+}
+
+.tif-listbox-search .tif-icon-btn {
+  inline-size: 22px;
+  block-size: 22px;
+}
+
+.tif-listbox-title {
+  flex: 1;
+  color: var(--_ink);
+  font-weight: 600;
+}
+
+/* En bout de liste, la molette ne fait pas défiler la page (ce qui refermerait le panneau). */
+.tif-listbox {
+  max-block-size: 260px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px 0;
+  outline: none;
+}
+
+.tif-period-panel .tif-listbox {
+  max-block-size: 380px;
+}
+
+.tif-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.tif-option[data-active='true'] {
+  background: var(--_accent-wash);
+  color: var(--_accent-ink);
+}
+
+.tif-option .tif-icon {
+  flex: none;
+  color: var(--_accent);
+}
+
+.tif-option-label {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.tif-option-empty {
+  color: var(--_ink-mute);
+}
+
+.tif-option-note {
+  flex: none;
+  color: var(--_ink-mute);
+  font-size: 0.85em;
+}
+
+.tif-listbox mark {
+  padding: 0 1px;
+  border-radius: 2px;
+  background: var(--_warn-wash);
+  color: inherit;
+  font-weight: inherit;
+}
+
+.tif-listbox-sep {
+  block-size: 1px;
+  margin: 4px 0;
+  background: var(--_line);
+}
+
+.tif-no-results {
+  padding: 8px 10px;
+  color: var(--_ink-mute);
+}
+
+.tif-listbox-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px;
+  border-block-start: 1px solid var(--_line);
+  color: var(--_ink-mute);
+  font-size: 0.85em;
+}
+
+/* Dates précises d'une période. */
+.tif-period-between {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+}
+
+.tif-period-between label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--_ink-soft);
+  font-size: 0.92em;
+}
+
+.tif-period-between .tif-btn {
+  align-self: flex-end;
+}

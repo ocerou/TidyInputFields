@@ -216,6 +216,42 @@ app.append(
 // Les balises créent leurs champs en entrant dans la page.
 showSent()
 
+// Dates et heures, dans un formulaire : il reçoit les valeurs ISO, la zone montre le format de la langue.
+const datesForm = document.createElement('form')
+datesForm.id = 'dates-form'
+datesForm.className = 'demo-form'
+datesForm.innerHTML = `
+  <label for="d-due">Date — <code>&lt;tif-date&gt;</code></label>
+  <tif-date name="due" input-id="d-due" required></tif-date>
+  <label for="d-start">Date — <code>&lt;input type="date" data-tif&gt;</code></label>
+  <input type="date" id="d-start" name="start" value="2026-11-06" data-tif="date">
+  <label for="d-at">Time — <code>&lt;tif-time&gt;</code></label>
+  <tif-time name="at" input-id="d-at" value="14:30"></tif-time>
+  <label for="d-meeting">Date and time — <code>&lt;tif-date-time&gt;</code></label>
+  <tif-date-time name="meeting" input-id="d-meeting" value="2026-11-20T09:00" time-zone="America/New_York"></tif-date-time>
+  <span>Period — <code>&lt;tif-period&gt;</code></span>
+  <tif-period name="signature" field="Signature" all-label="All signatures" id="d-signature"></tif-period>
+  <span>Period, relative only</span>
+  <tif-period name="window" all-label="Any time" relative-only value='{"operator":"period","unit":"quarter","from":0,"to":0}'></tif-period>
+`
+Tif.init(datesForm)
+const datesSent = h('pre', { id: 'dates-data', class: 'demo-sent' })
+const showDates = () => {
+  datesSent.textContent = JSON.stringify(Object.fromEntries(new FormData(datesForm)), null, 2)
+}
+datesForm.addEventListener('input', showDates)
+datesForm.addEventListener('change', showDates)
+datesForm.addEventListener('submit', (event) => event.preventDefault())
+
+app.append(
+  section(
+    'Dates and times',
+    'Quick typing ("1/1/27", "15", "1430", "14h30"), a calendar that zooms out to months and years, a clock, and relative periods. Alt+↓ opens a panel.',
+    h('div', { class: 'demo-columns' }, datesForm, datesSent),
+  ),
+)
+showDates()
+
 // Modale Bootstrap : panneau et confirmation à l'intérieur.
 if (withBootstrap) {
   const modal = h(

@@ -83,12 +83,19 @@ npm run test:e2e   # browser tests (Playwright; locally with the installed Edge)
 |---|---|---|
 | Native fields | `text`, `number`, `textarea`, `select`, `switch` | available |
 | Simple | `unit` (number followed by its unit), `selector` (segmented choice) | available |
-| Date and time | `date`, `time`, `date-time`, `period` | planned |
+| Date and time | `date`, `time`, `date-time`, `period` | available |
 | Lists | `search-select`, `multi-select`, `lookup`, `sortable-list` | planned |
 | Colour | `color-picker` | planned |
 
 Common options of the native fields: `name`, `value`, `placeholder`, `required`, `disabled`, `readonly`, `label`
 (aria-label), `inputId` (id of the created field, attribute `input-id`), `quiet` (frameless until hover or focus).
+
+Dates and times show the format of the language (`22/11/2027`, `11/22/2027`, `22.11.2027`) and send ISO values
+(`2027-11-22`, `14:30`, `2027-11-22T14:30`) through a hidden field. Quick typing: `1/1/27`, `15` (this month),
+`010127`, `1430`, `14h30`. Alt+↓ opens the calendar or the clock; ↑ ↓ step the time by one minute (Shift: 15).
+Placed on an existing `<input type="date">`, the component turns it into that hidden field and gives it back on
+`dispose()`. A `period` sends its value as JSON: `{"operator":"period","unit":"month","from":0,"to":0}` (this
+month, follows the calendar), `{"operator":"past"}` or `{"operator":"between","from":"…","to":"…"}`.
 
 ## Licence
 

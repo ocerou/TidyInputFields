@@ -47,7 +47,14 @@ export interface FloatingOptions {
   matchWidth?: boolean
   /** Appelé à la fermeture, quelle qu'en soit la raison. */
   onClose?: (reason: CloseReason) => void
+  /** Élément qui reprend le focus quand Échap ferme le panneau (par défaut le champ d'ancrage). */
+  returnFocus?: HTMLElement
+  /** Échap pressé : rend true si le panneau l'a traité lui-même (retour à un écran précédent) et doit rester ouvert. */
+  onEscape?: () => boolean
 }
+
+/** Panneaux ouverts, du plus ancien au plus récent : Échap ne ferme que le dernier. */
+const stack: Floating[] = []
 
 /** Un panneau flottant rattaché à un champ. */
 export class Floating {
@@ -75,6 +82,7 @@ export class Floating {
       return
     }
     this.#open = true
+    stack.push(this)
     containerFor(this.anchor).append(this.panel)
     this.position()
     const listeners = new AbortController()
@@ -83,8 +91,7 @@ export class Floating {
     document.addEventListener(
       'pointerdown',
       (event) => {
-        const target = event.target as Node
-        if (!this.panel.contains(target) && !this.anchor.contains(target)) {
+        if (!this.owns(event.target as Node)) {
           this.close('outside')
         }
       },
@@ -95,7 +102,7 @@ export class Floating {
       (event) => {
         // Seul un défilement qui a réellement déplacé le champ ferme le panneau : un événement en retard (défilement
         // fait juste avant l'ouverture, pour amener le champ à l'écran) ne compte pas.
-        if (!(event.target instanceof Node && this.panel.contains(event.target)) && this.#anchorMoved()) {
+        if (!(event.target instanceof Node && this.owns(event.target)) && this.#anchorMoved()) {
           this.close('scroll')
         }
       },
@@ -105,11 +112,14 @@ export class Floating {
     document.addEventListener(
       'keydown',
       (event) => {
-        if (event.key === 'Escape') {
+        // Seul le panneau le plus récent répond (un calendrier ouvert dans un autre panneau se ferme seul).
+        if (event.key === 'Escape' && stack[stack.length - 1] === this) {
           // Échap ferme le panneau, pas la fenêtre modale qui le contient.
           event.stopPropagation()
           event.preventDefault()
-          this.close('escape')
+          if (!this.#options.onEscape?.()) {
+            this.close('escape')
+          }
         }
       },
       { capture: true, signal },
@@ -144,25 +154,54 @@ export class Floating {
     return !this.#anchorAt || Math.abs(now.top - this.#anchorAt.top) > 1 || Math.abs(now.left - this.#anchorAt.left) > 1
   }
 
-  /** Ferme le panneau ; Échap rend le focus au champ. */
+  /**
+   * Le nœud fait partie du panneau : le panneau lui-même, son champ, ou un panneau ouvert depuis l'intérieur (le
+   * calendrier d'une zone de date posée dans le panneau, par exemple).
+   */
+  owns(node: Node | null): boolean {
+    if (!node) {
+      return false
+    }
+    return this.panel.contains(node) || this.anchor.contains(node) || this.#children().some((child) => child.owns(node))
+  }
+
+  /** Panneaux ouverts depuis l'intérieur de celui-ci. */
+  #children(): Floating[] {
+    return stack.filter((f) => f !== this && this.panel.contains(f.anchor))
+  }
+
+  /** Ferme le panneau (et ceux ouverts depuis l'intérieur) ; Échap rend le focus au champ. */
   close(reason: CloseReason = 'api'): void {
     if (!this.#open) {
       return
     }
+    for (const child of this.#children()) {
+      child.close('api')
+    }
     this.#open = false
-    this.#listeners?.abort()
-    this.#listeners = null
+    this.#forget()
     this.panel.remove()
     if (reason === 'escape') {
-      this.anchor.focus()
+      ;(this.#options.returnFocus ?? this.anchor).focus()
     }
     this.#options.onClose?.(reason)
   }
 
-  /** Ferme sans rappeler onClose et oublie le panneau. */
-  dispose(): void {
+  #forget(): void {
     this.#listeners?.abort()
     this.#listeners = null
+    const index = stack.indexOf(this)
+    if (index >= 0) {
+      stack.splice(index, 1)
+    }
+  }
+
+  /** Ferme sans rappeler onClose et oublie le panneau. */
+  dispose(): void {
+    for (const child of this.#children()) {
+      child.dispose()
+    }
+    this.#forget()
     this.#open = false
     this.panel.remove()
   }

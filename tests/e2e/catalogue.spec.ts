@@ -134,6 +134,103 @@ test.describe('simple fields', () => {
   })
 })
 
+test.describe('dates and times', () => {
+  const sent = async (page: import('@playwright/test').Page) => JSON.parse((await page.locator('#dates-data').textContent()) ?? '{}')
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/')
+    await page.selectOption('#language', 'fr')
+  })
+
+  test('type a date quickly, validated when leaving the field', async ({ page }) => {
+    const due = page.locator('#d-due')
+    await expect(due).toHaveAttribute('placeholder', 'jj/mm/aaaa')
+    await due.fill('15/3/27')
+    expect((await sent(page)).due).toBe('')
+    await page.keyboard.press('Tab')
+    await expect(due).toHaveValue('15/03/2027')
+    expect((await sent(page)).due).toBe('2027-03-15')
+  })
+
+  test('choose a day in the calendar, keeping the focus in the field', async ({ page }) => {
+    const start = page.locator('#d-start')
+    await expect(start).toHaveValue('06/11/2026')
+    await start.locator('xpath=following-sibling::button').click()
+    const panel = page.locator('.tif-date-panel')
+    await expect(panel).toBeVisible()
+    await expect(start).toBeFocused()
+    await panel.locator('[data-date="2026-11-24"]').click()
+    await expect(panel).toHaveCount(0)
+    await expect(start).toHaveValue('24/11/2026')
+    await expect(start).toBeFocused()
+    expect((await sent(page)).start).toBe('2026-11-24')
+  })
+
+  test('pick a time with the clock', async ({ page }) => {
+    const at = page.locator('#d-at')
+    await at.click()
+    await page.keyboard.press('Alt+ArrowDown')
+    const panel = page.locator('.tif-time-panel')
+    await panel.locator('.tif-time-column').first().getByRole('button', { name: '08', exact: true }).click()
+    await expect(panel).toBeVisible()
+    await panel.locator('.tif-time-column').nth(1).getByRole('button', { name: '45', exact: true }).click()
+    await expect(panel).toHaveCount(0)
+    expect((await sent(page)).at).toBe('08:45')
+  })
+
+  test('choose a relative period with the keyboard', async ({ page }) => {
+    const button = page.locator('#d-signature button')
+    await button.focus()
+    await page.keyboard.press('ArrowDown')
+    const panel = page.locator('.tif-period-panel')
+    await expect(panel).toBeVisible()
+    for (let i = 0; i < 6; i++) {
+      await page.keyboard.press('ArrowDown')
+    }
+    await page.keyboard.press('ArrowRight')
+    await expect(panel.locator('.tif-listbox-search-input')).toBeFocused()
+    await page.keyboard.type('janvier 2027')
+    await page.keyboard.press('Enter')
+    await expect(panel).toHaveCount(0)
+    await expect(button).toHaveText('Signature : janvier 2027')
+    await expect(button).toBeFocused()
+    expect(JSON.parse((await sent(page)).signature)).toEqual({ operator: 'period', unit: 'month', from: 2, to: 2 })
+  })
+
+  test('apply specific dates through a calendar opened inside the panel', async ({ page }) => {
+    await page.locator('#d-signature button').click()
+    const panel = page.locator('.tif-period-panel')
+    await panel.getByRole('option', { name: 'Dates précises' }).click()
+    const from = panel.locator('.tif-picker-input').first()
+    await expect(from).toBeFocused()
+    await panel.locator('.tif-picker-button').first().click()
+    const calendar = page.locator('.tif-date-panel')
+    await expect(calendar).toBeVisible()
+    await calendar.locator('[data-date="2026-11-02"]').click()
+    await expect(calendar).toHaveCount(0)
+    await expect(panel).toBeVisible()
+    await panel.locator('.tif-picker-input').nth(1).fill('30/11/2026')
+    await panel.getByRole('button', { name: 'Appliquer' }).click()
+    await expect(panel).toHaveCount(0)
+    await expect(page.locator('#d-signature button')).toHaveText('Signature : 02/11/2026 – 30/11/2026')
+  })
+
+  test('close nested panels one at a time with Escape', async ({ page }) => {
+    await page.locator('#d-signature button').click()
+    const panel = page.locator('.tif-period-panel')
+    await panel.getByRole('option', { name: 'Dates précises' }).click()
+    await page.keyboard.press('Alt+ArrowDown')
+    await expect(page.locator('.tif-date-panel')).toBeVisible()
+    await page.keyboard.press('Escape')
+    await expect(page.locator('.tif-date-panel')).toHaveCount(0)
+    await expect(panel.locator('.tif-period-between')).toBeVisible()
+    await page.keyboard.press('Escape')
+    await expect(panel.getByRole('option', { name: 'Mois en cours' })).toBeVisible()
+    await page.keyboard.press('Escape')
+    await expect(panel).toHaveCount(0)
+  })
+})
+
 test.describe('with Bootstrap', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/bootstrap.html')
