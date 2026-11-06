@@ -96,10 +96,17 @@ l'appelant), react-router, `recordLink`, `ConfirmDialog`. Utilitaires repris pre
 3. **Dates et heures** : date, time, date-time (fuseau), period. → publication `0.1.0`.
 4. **Listes** : search-select, multi-select, lookup, sortable-list.
 5. **Couleur** : color-picker et son panneau, avec la pipette. → publication `1.0.0`.
+6. **Documentation** (ajoutée à la demande d'Olivier) : site `site/` à la manière de Bootstrap ; chaque exemple de
+   composant en trois façons (balise, data-tif, API JavaScript) plus React.
 
 Chaque lot : reprise du composant, section du catalogue, tests, commit.
 
+**État au 2026-11-06 : les lots 0 à 5 et la documentation sont faits** (15 composants, 101 tests unitaires,
+27 tests navigateur, CI GitHub Actions). Rien n'est encore publié : ni sur npm, ni le site en ligne.
+
 ## À décider
 
+- Publication : version (`0.1.0` ou directement `1.0.0`), paquet npm (compte d'Olivier), site sur GitHub Pages.
 - Réservation du nom : paquet npm, domaine.
 - Éditeur riche : plus tard (module à part avec TipTap, ou rien).
+- Enveloppe React : la garder à copier depuis la doc, ou la livrer comme sous-paquet `tidyinputfields/react`.
