@@ -19,6 +19,21 @@ test.describe('range', () => {
   })
 })
 
+test.describe('rating', () => {
+  test('previews on hover, chooses by click and keyboard', async ({ page }) => {
+    await page.goto(`${docs}#/rating`)
+    const block = page.locator('.bd-example-block').first()
+    const rating = block.locator('tif-rating').first()
+    await rating.getByRole('radio', { name: '5 stars out of 5' }).hover()
+    await expect(rating.locator('.tif-rating')).toHaveClass(/tif-rating-hover/)
+    await rating.getByRole('radio', { name: '4 stars out of 5' }).click()
+    await expect(rating.getByRole('radio', { name: '4 stars out of 5' })).toHaveAttribute('aria-checked', 'true')
+    await expect(rating.getByRole('radio', { name: '4 stars out of 5' })).toBeFocused()
+    await page.keyboard.press('ArrowLeft')
+    await expect(rating.getByRole('radio', { name: '3 stars out of 5' })).toHaveAttribute('aria-checked', 'true')
+  })
+})
+
 test.describe('tags', () => {
   test('creates, suggests, removes, and the form sends one value per tag', async ({ page }) => {
     await page.goto(`${docs}#/tags`)

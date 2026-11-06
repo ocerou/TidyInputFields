@@ -430,4 +430,39 @@ export const components: Page[] = [
       { table: [['<code>input</code>', 'While the thumb moves.'], ['<code>change</code>', 'When it is released.']], columns: ['Event', 'Description'] },
     ],
   },
+  {
+    id: 'rating',
+    group: forms,
+    title: 'Rating',
+    lead: 'A rating from 0 to <code>max</code> stars, chosen like a group of radio buttons.',
+    blocks: [
+      {
+        example: 'rating-basic',
+        title: 'Examples',
+        text: 'A click chooses the rating; a click on the current one removes it (<code>clearable</code>). Hovered stars show the rating that a click would give. Read-only, a decimal rating fills a star by half. The colour and the size follow <code>--tif-rating-color</code> and <code>--tif-rating-size</code>.',
+      },
+      keyboard([
+        ['← → ↑ ↓', 'One star more or less (left and right reversed in right-to-left pages).'],
+        ['Home / End', 'One star / all of them.'],
+        ['1 … 9', 'That many stars.'],
+        ['0, Delete, Backspace', 'Removes the rating.'],
+      ]),
+      { heading: 'Options' },
+      {
+        options: Tif.TifRating,
+        descriptions: {
+          name: field.name,
+          value: 'Number of stars (0: no rating).',
+          max: 'Number of stars shown.',
+          clearable: 'A click on the current rating removes it.',
+          readonly: 'Shown only; a decimal rating fills a star by half.',
+          disabled: field.disabled,
+          label: 'Accessible name (“Rating” by default).',
+          inputId: 'Id of the group.',
+        },
+      },
+      { heading: 'Events' },
+      { table: nativeEvents, columns: ['Event', 'Description'] },
+    ],
+  },
 ]

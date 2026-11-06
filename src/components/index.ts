@@ -8,6 +8,7 @@ import { TifMultiSelect } from './multi-select.ts'
 import { TifNumber } from './number.ts'
 import { TifPeriod } from './period.ts'
 import { TifRange } from './range.ts'
+import { TifRating } from './rating.ts'
 import { TifSearchSelect } from './search-select.ts'
 import { TifSelect } from './select.ts'
 import { TifSelector } from './selector.ts'
@@ -40,6 +41,7 @@ export { TifSortableList, type SortableItem } from './sortable-list.ts'
 export { TifColorPicker, colorSample, colorValue } from './color-picker.ts'
 export { TifTags } from './tags.ts'
 export { TifRange } from './range.ts'
+export { TifRating } from './rating.ts'
 export { parseColor, splitColor, composeColor, type Color } from '../utils/color.ts'
 export type { Unit } from '../utils/unit.ts'
 export type { DatePeriod, PeriodUnit } from '../utils/period.ts'
@@ -64,6 +66,7 @@ for (const type of [
   TifColorPicker,
   TifTags,
   TifRange,
+  TifRating,
 ]) {
   register(type)
 }

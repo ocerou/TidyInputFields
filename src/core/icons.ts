@@ -11,14 +11,18 @@ import chevronLeft from 'bootstrap-icons/icons/chevron-left.svg?raw'
 import chevronRight from 'bootstrap-icons/icons/chevron-right.svg?raw'
 import chevronUp from 'bootstrap-icons/icons/chevron-up.svg?raw'
 import clock from 'bootstrap-icons/icons/clock.svg?raw'
+import cloudArrowUp from 'bootstrap-icons/icons/cloud-arrow-up.svg?raw'
 import eraser from 'bootstrap-icons/icons/eraser.svg?raw'
 import exclamationTriangle from 'bootstrap-icons/icons/exclamation-triangle.svg?raw'
 import eyedropper from 'bootstrap-icons/icons/eyedropper.svg?raw'
+import fileEarmark from 'bootstrap-icons/icons/file-earmark.svg?raw'
 import gripVertical from 'bootstrap-icons/icons/grip-vertical.svg?raw'
 import pencil from 'bootstrap-icons/icons/pencil.svg?raw'
 import person from 'bootstrap-icons/icons/person.svg?raw'
 import plusLg from 'bootstrap-icons/icons/plus-lg.svg?raw'
 import search from 'bootstrap-icons/icons/search.svg?raw'
+import star from 'bootstrap-icons/icons/star.svg?raw'
+import starFill from 'bootstrap-icons/icons/star-fill.svg?raw'
 import trash from 'bootstrap-icons/icons/trash.svg?raw'
 import xLg from 'bootstrap-icons/icons/x-lg.svg?raw'
 
@@ -37,12 +41,16 @@ const builtin = {
   down: arrowDown,
   edit: pencil,
   eyedropper,
+  file: fileEarmark,
   grip: gripVertical,
   left: arrowLeft,
   person,
   right: arrowRight,
   search,
+  star,
+  starFill,
   up: arrowUp,
+  upload: cloudArrowUp,
   warning: exclamationTriangle,
 }
 

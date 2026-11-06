@@ -178,3 +178,58 @@ tif-file {
   color: var(--_ink-mute);
   font-size: 0.82em;
 }
+
+/* Note en étoiles : chaque étoile est une étoile vide, recouverte de l'étoile pleine sur la part remplie. */
+.tif-rating {
+  display: inline-flex;
+  gap: 2px;
+  color: var(--tif-rating-color, #e3a008);
+  font-size: var(--tif-rating-size, 1.35em);
+  line-height: 1;
+}
+
+.tif-star {
+  position: relative;
+  display: inline-flex;
+  margin: 0;
+  padding: 1px;
+  border: 0;
+  border-radius: var(--_radius-sm);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+button.tif-star {
+  cursor: pointer;
+}
+
+button.tif-star:focus-visible {
+  outline: 2px solid var(--_accent);
+  outline-offset: 1px;
+}
+
+.tif-star-empty {
+  display: inline-flex;
+  color: var(--_line-strong);
+}
+
+.tif-star-full {
+  position: absolute;
+  inset: 1px;
+  display: inline-flex;
+  overflow: hidden;
+  inline-size: var(--tif-star-fill, 0%);
+}
+
+.tif-rating-hover .tif-star-full {
+  opacity: 0.75;
+}
+
+.tif-rating[aria-disabled] {
+  opacity: 0.5;
+}
+
+.tif-rating[aria-disabled] button.tif-star {
+  cursor: not-allowed;
+}
