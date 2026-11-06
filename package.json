@@ -1,0 +1,67 @@
+{
+  "name": "tidyinputfields",
+  "version": "0.0.0",
+  "description": "Tidy, dependency-free form input components — plain JavaScript and CSS.",
+  "license": "MIT",
+  "author": "Olivier CEROU",
+  "type": "module",
+  "keywords": [
+    "form",
+    "input",
+    "components",
+    "vanilla",
+    "web-components",
+    "bootstrap",
+    "datepicker",
+    "select",
+    "i18n",
+    "accessible"
+  ],
+  "homepage": "https://github.com/ocerou/TidyInputFields#readme",
+  "bugs": {
+    "url": "https://github.com/ocerou/TidyInputFields/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ocerou/TidyInputFields.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/tidyinputfields.js",
+  "module": "./dist/tidyinputfields.js",
+  "types": "./dist/types/index.d.ts",
+  "unpkg": "./dist/tidyinputfields.min.js",
+  "jsdelivr": "./dist/tidyinputfields.min.js",
+  "style": "./dist/tidyinputfields.css",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/tidyinputfields.js"
+    },
+    "./css": "./dist/tidyinputfields.css",
+    "./tidyinputfields.css": "./dist/tidyinputfields.css",
+    "./locales/*": "./dist/locales/*",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && tsc -p tsconfig.build.json && node scripts/build-locales.ts",
+    "lint": "oxlint && tsc -p tsconfig.json",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "check": "npm run lint && npm test && npm run build"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0",
+    "@types/node": "24.19.2",
+    "bootstrap": "5.3.8",
+    "bootstrap-icons": "1.13.2",
+    "happy-dom": "21.0.4",
+    "jquery": "3.7.1",
+    "oxlint": "1.91.0",
+    "typescript": "6.0.2",
+    "vite": "8.3.6",
+    "vitest": "5.1.0"
+  }
+}
