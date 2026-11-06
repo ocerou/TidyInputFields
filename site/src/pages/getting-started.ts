@@ -45,6 +45,7 @@ export const gettingStarted: Page[] = [
           <li><a href="#/date">Date</a>, <a href="#/time">time</a>, <a href="#/date-time">date and time</a>, <a href="#/period">period</a>: quick typing, calendar, clock, relative periods.</li>
           <li><a href="#/search-select">Search select</a>, <a href="#/multi-select">multi select</a>, <a href="#/lookup">lookup</a>: long lists, remote sources.</li>
           <li><a href="#/sortable-list">Sortable list</a>: objects attached to a main object, reordered by drag and drop.</li>
+          <li><a href="#/color-picker">Colour picker</a>: range, intensity, transparency, RGB and hex, eyedropper.</li>
         </ul>`,
       },
     ],

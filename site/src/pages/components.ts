@@ -328,4 +328,32 @@ export const components: Page[] = [
       },
     ],
   },
+  {
+    id: 'color-picker',
+    group: 'Colour',
+    title: 'Colour picker',
+    lead: 'One field showing the colour, its code and its transparency; a panel modelled on the “Colours” dialog of office suites.',
+    blocks: [
+      {
+        example: 'color-basic',
+        title: 'Examples',
+        text: 'The panel offers the full range (hue left to right, saturation top to bottom), the intensity, the transparency, Red / Green / Blue / Hex, the new colour next to the current one, and an eyedropper where the browser has one (Chrome, Edge). Placed on an <code>&lt;input type="color"&gt;</code>, the component turns it into the hidden field that holds the value.',
+      },
+      keyboard([
+        ['Enter, Space, ↓', 'Opens the panel, the cursor in “Red”.'],
+        ['Tab', 'Red, Green, Blue, Hex, %, then the buttons — and back to Red.'],
+        ['← → ↑ ↓ (Shift: × 10)', 'Move the range and the sliders, once clicked.'],
+        ['Enter', 'Applies the colour.'],
+        ['Escape', 'Closes without changing anything.'],
+      ]),
+      { heading: 'Value' },
+      {
+        text: '<p><code>#RRGGBB</code> when the colour is opaque, <code>#RRGGBBAA</code> otherwise, <code>\'\'</code> once removed. The initial value can be written in hexadecimal (<code>#06f</code>, <code>062b6f</code>, <code>#062B6F80</code>) or RGB (<code>rgb(6, 43, 111)</code>, <code>rgba(6, 43, 111, 0.5)</code>). <code>Tif.colorValue(value)</code> renders it read-only.</p>',
+      },
+      { heading: 'Options' },
+      { options: Tif.TifColorPicker, descriptions: { name: field.name, value: 'Initial colour.', disabled: field.disabled, label: field.label, inputId: 'Id of the field, for <code>&lt;label for&gt;</code>.', quiet: field.quiet } },
+      { heading: 'Events' },
+      { table: panelEvents('color-picker'), columns: ['Event', 'Description'] },
+    ],
+  },
 ]

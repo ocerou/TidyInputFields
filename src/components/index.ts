@@ -1,5 +1,6 @@
 // Composants de la librairie, enregistrés à l'import : data-tif="…", balises <tif-…> et plugins jQuery.
 import { register } from '../core/registry.ts'
+import { TifColorPicker } from './color-picker.ts'
 import { TifDate } from './date.ts'
 import { TifDateTime } from './date-time.ts'
 import { TifLookup } from './lookup.ts'
@@ -34,6 +35,8 @@ export { TifSearchSelect, type ListSource } from './search-select.ts'
 export { TifMultiSelect } from './multi-select.ts'
 export { TifLookup, type LookupSource } from './lookup.ts'
 export { TifSortableList, type SortableItem } from './sortable-list.ts'
+export { TifColorPicker, colorSample, colorValue } from './color-picker.ts'
+export { parseColor, splitColor, composeColor, type Color } from '../utils/color.ts'
 export type { Unit } from '../utils/unit.ts'
 export type { DatePeriod, PeriodUnit } from '../utils/period.ts'
 export { periodRange } from '../utils/period.ts'
@@ -54,6 +57,7 @@ for (const type of [
   TifMultiSelect,
   TifLookup,
   TifSortableList,
+  TifColorPicker,
 ]) {
   register(type)
 }

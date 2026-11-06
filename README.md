@@ -94,7 +94,7 @@ npm run test:e2e   # browser tests (Playwright; locally with the installed Edge)
 | Simple | `unit` (number followed by its unit), `selector` (segmented choice) | available |
 | Date and time | `date`, `time`, `date-time`, `period` | available |
 | Lists | `search-select`, `multi-select`, `lookup`, `sortable-list` | available |
-| Colour | `color-picker` | planned |
+| Colour | `color-picker` | available |
 
 Common options of the native fields: `name`, `value`, `placeholder`, `required`, `disabled`, `readonly`, `label`
 (aria-label), `inputId` (id of the created field, attribute `input-id`), `quiet` (frameless until hover or focus).
