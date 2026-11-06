@@ -1,0 +1,7 @@
+/* TidyInputFields — feuille de style.
+   Pas de couche CSS (@layer) : les règles hors couche l'emportent toujours sur celles d'une couche, et les remises à
+   zéro des pages (reboot de Bootstrap : button { border-radius: 0 }, mark, h2…) écraseraient la librairie. Les règles
+   sont donc des classes préfixées tif-, de faible spécificité : une classe de la page, chargée après, les surcharge. */
+@import './tokens.css';
+@import './base.css';
+@import './overlays.css';

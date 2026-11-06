@@ -23,7 +23,8 @@ Librairie open-source de zones de saisie en JS + CSS sans framework, tirée des 
 3. **Initialisation par attributs** : `Tif.init(root)` au chargement, `Tif.observe()` optionnel (MutationObserver) pour
    les champs ajoutés ou retirés après coup.
 4. **Balise** `<tif-x>` : enveloppe fine qui crée le plugin dans `connectedCallback` et le libère dans
-   `disconnectedCallback`. Associée aux formulaires (`ElementInternals`). Pas de Shadow DOM.
+   `disconnectedCallback`. Pas de Shadow DOM : le composant crée ses champs natifs dans la balise, donc les formulaires
+   et la validation les voient sans `ElementInternals` (décidé au lot 1, plus simple et sans doublon de valeur).
 5. **Pont jQuery** optionnel : si jQuery est présent, `$('.x').tifDate()`, comme Bootstrap 5.
 
 Sortie : TypeScript compilé par Vite en `tidyinputfields.js` (module ES), `tidyinputfields.min.js` (script classique,
@@ -61,7 +62,9 @@ pas livrés.
 
 - React, Vue, Angular, Svelte : via les balises `<tif-…>` ; enveloppes typées plus tard.
 - HTMX, Turbo, Livewire : `Tif.observe()` initialise et libère les champs.
-- Tailwind et CSS maison : tout le CSS dans `@layer tif`, que toute règle de l'utilisateur surcharge.
+- Tailwind et CSS maison : classes préfixées `tif-` de faible spécificité, réglages par variables `--tif-*`. Pas de
+  `@layer` (abandonné au lot 1) : les règles hors couche l'emportent toujours, et le reboot de Bootstrap
+  (`button { border-radius: 0 }`, `mark`, `h2`…) écrasait la librairie.
 - Rendu côté serveur : l'import ne touche jamais à `window`.
 - CSP stricte : ni `eval`, ni `<style>` injecté.
 - Droite à gauche : propriétés CSS logiques, `dir="rtl"` respecté.

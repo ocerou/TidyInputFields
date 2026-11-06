@@ -4,13 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>TidyInputFields</title>
+    <link rel="stylesheet" href="./demo.css" />
   </head>
   <body>
-    <h1>TidyInputFields</h1>
-    <p>Version <span id="version"></span></p>
-    <script type="module">
-      import { version } from '../src/index.ts'
-      document.getElementById('version').textContent = version
-    </script>
+    <main id="app" class="demo"></main>
+    <script type="module" src="./catalogue.ts"></script>
   </body>
 </html>

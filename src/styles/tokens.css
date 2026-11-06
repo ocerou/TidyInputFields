@@ -1,0 +1,148 @@
+/* Variables de la librairie, reprises du système visuel de MyCRM.
+
+   Trois niveaux, du plus fort au plus faible :
+   1. --tif-* : réglages publics, à poser où l'on veut (:root, une carte, un champ) pour changer l'allure ;
+   2. --bs-*  : les variables de Bootstrap 5.3, quand Bootstrap est dans la page ;
+   3. --tif-d-* : nos valeurs par défaut, claires ou sombres.
+   Les composants lisent les variables résolues --_* posées sur leurs propres éléments, si bien qu'un thème sombre posé
+   sur une partie de la page seulement (data-bs-theme ou data-tif-theme) s'applique aussi. */
+:root {
+  --tif-d-surface: #fff;
+  --tif-d-alt: #f3f5f2;
+  --tif-d-sunk: #edefec;
+  --tif-d-line: #dce0dc;
+  --tif-d-line-strong: #c3c9c3;
+  --tif-d-ink: #232a2c;
+  --tif-d-ink-soft: #4e5a5c;
+  --tif-d-ink-mute: #75817f;
+  --tif-d-accent: #0e7c86;
+  --tif-d-accent-ink: #0a5f67;
+  --tif-d-accent-wash: #e2f1f2;
+  --tif-d-on-accent: #fff;
+  --tif-d-focus-ring: rgb(14 124 134 / 0.2);
+  --tif-d-ok: #4f8232;
+  --tif-d-warn: #9a6510;
+  --tif-d-warn-wash: #f7eedc;
+  --tif-d-warn-line: #e0c795;
+  --tif-d-crit: #a83a34;
+  --tif-d-crit-wash: #f8e8e6;
+  --tif-d-crit-line: #e5b5b0;
+  --tif-d-lift: 0 12px 44px rgb(35 42 44 / 0.22);
+  --tif-d-backdrop: rgb(35 42 44 / 0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tif-theme='light']):not([data-bs-theme='light']) {
+    --tif-d-surface: #1a2026;
+    --tif-d-alt: #212930;
+    --tif-d-sunk: #0d1114;
+    --tif-d-line: #2c353c;
+    --tif-d-line-strong: #3d4850;
+    --tif-d-ink: #dde3e2;
+    --tif-d-ink-soft: #a8b3b2;
+    --tif-d-ink-mute: #7c8887;
+    --tif-d-accent: #35b4be;
+    --tif-d-accent-ink: #6fd2d9;
+    --tif-d-accent-wash: #123037;
+    --tif-d-on-accent: #06232a;
+    --tif-d-focus-ring: rgb(53 180 190 / 0.25);
+    --tif-d-ok: #8cbf63;
+    --tif-d-warn: #d9a250;
+    --tif-d-warn-wash: #2c2213;
+    --tif-d-warn-line: #574227;
+    --tif-d-crit: #e58279;
+    --tif-d-crit-wash: #2e1917;
+    --tif-d-crit-line: #5c302c;
+    --tif-d-lift: 0 12px 44px rgb(0 0 0 / 0.55);
+    --tif-d-backdrop: rgb(0 0 0 / 0.5);
+  }
+}
+
+[data-tif-theme='dark'],
+[data-bs-theme='dark'] {
+  --tif-d-surface: #1a2026;
+  --tif-d-alt: #212930;
+  --tif-d-sunk: #0d1114;
+  --tif-d-line: #2c353c;
+  --tif-d-line-strong: #3d4850;
+  --tif-d-ink: #dde3e2;
+  --tif-d-ink-soft: #a8b3b2;
+  --tif-d-ink-mute: #7c8887;
+  --tif-d-accent: #35b4be;
+  --tif-d-accent-ink: #6fd2d9;
+  --tif-d-accent-wash: #123037;
+  --tif-d-on-accent: #06232a;
+  --tif-d-focus-ring: rgb(53 180 190 / 0.25);
+  --tif-d-ok: #8cbf63;
+  --tif-d-warn: #d9a250;
+  --tif-d-warn-wash: #2c2213;
+  --tif-d-warn-line: #574227;
+  --tif-d-crit: #e58279;
+  --tif-d-crit-wash: #2e1917;
+  --tif-d-crit-line: #5c302c;
+  --tif-d-lift: 0 12px 44px rgb(0 0 0 / 0.55);
+  --tif-d-backdrop: rgb(0 0 0 / 0.5);
+}
+
+[data-tif-theme='light'],
+[data-bs-theme='light'] {
+  --tif-d-surface: #fff;
+  --tif-d-alt: #f3f5f2;
+  --tif-d-sunk: #edefec;
+  --tif-d-line: #dce0dc;
+  --tif-d-line-strong: #c3c9c3;
+  --tif-d-ink: #232a2c;
+  --tif-d-ink-soft: #4e5a5c;
+  --tif-d-ink-mute: #75817f;
+  --tif-d-accent: #0e7c86;
+  --tif-d-accent-ink: #0a5f67;
+  --tif-d-accent-wash: #e2f1f2;
+  --tif-d-on-accent: #fff;
+  --tif-d-focus-ring: rgb(14 124 134 / 0.2);
+  --tif-d-ok: #4f8232;
+  --tif-d-warn: #9a6510;
+  --tif-d-warn-wash: #f7eedc;
+  --tif-d-warn-line: #e0c795;
+  --tif-d-crit: #a83a34;
+  --tif-d-crit-wash: #f8e8e6;
+  --tif-d-crit-line: #e5b5b0;
+  --tif-d-lift: 0 12px 44px rgb(35 42 44 / 0.22);
+  --tif-d-backdrop: rgb(35 42 44 / 0.35);
+}
+
+/* Variables résolues, sur les éléments de la librairie. */
+.tif,
+.tif-panel,
+.tif-dialog {
+  --_surface: var(--tif-surface, var(--bs-body-bg, var(--tif-d-surface)));
+  --_alt: var(--tif-alt, var(--bs-tertiary-bg, var(--tif-d-alt)));
+  --_sunk: var(--tif-sunk, var(--bs-secondary-bg, var(--tif-d-sunk)));
+  --_line: var(--tif-line, var(--bs-border-color-translucent, var(--tif-d-line)));
+  --_line-strong: var(--tif-line-strong, var(--bs-border-color, var(--tif-d-line-strong)));
+  --_ink: var(--tif-ink, var(--bs-body-color, var(--tif-d-ink)));
+  --_ink-soft: var(--tif-ink-soft, var(--bs-secondary-color, var(--tif-d-ink-soft)));
+  --_ink-mute: var(--tif-ink-mute, var(--bs-secondary-color, var(--tif-d-ink-mute)));
+  --_accent: var(--tif-accent, var(--bs-primary, var(--tif-d-accent)));
+  --_accent-ink: var(--tif-accent-ink, var(--bs-primary-text-emphasis, var(--tif-d-accent-ink)));
+  --_accent-wash: var(--tif-accent-wash, var(--bs-primary-bg-subtle, var(--tif-d-accent-wash)));
+  /* Bootstrap n'a pas de variable « texte sur couleur primaire » : ses boutons primaires écrivent en blanc. */
+  --_on-accent: var(--tif-on-accent, var(--bs-white, var(--tif-d-on-accent)));
+  --_focus-ring: var(--tif-focus-ring, var(--bs-focus-ring-color, var(--tif-d-focus-ring)));
+  --_ok: var(--tif-ok, var(--bs-success, var(--tif-d-ok)));
+  --_warn: var(--tif-warn, var(--bs-warning-text-emphasis, var(--tif-d-warn)));
+  --_warn-wash: var(--tif-warn-wash, var(--bs-warning-bg-subtle, var(--tif-d-warn-wash)));
+  --_warn-line: var(--tif-warn-line, var(--bs-warning-border-subtle, var(--tif-d-warn-line)));
+  --_crit: var(--tif-crit, var(--bs-form-invalid-color, var(--bs-danger, var(--tif-d-crit))));
+  --_crit-wash: var(--tif-crit-wash, var(--bs-danger-bg-subtle, var(--tif-d-crit-wash)));
+  --_crit-line: var(--tif-crit-line, var(--bs-form-invalid-border-color, var(--bs-danger-border-subtle, var(--tif-d-crit-line))));
+  --_lift: var(--tif-lift, var(--bs-box-shadow, var(--tif-d-lift)));
+  --_backdrop: var(--tif-backdrop, var(--tif-d-backdrop));
+  --_font: var(--tif-font, var(--bs-body-font-family, 'Segoe UI', system-ui, -apple-system, sans-serif));
+  --_font-size: var(--tif-font-size, var(--bs-body-font-size, 13px));
+  --_radius: var(--tif-radius, var(--bs-border-radius, 5px));
+  --_radius-sm: var(--tif-radius-sm, var(--bs-border-radius-sm, 3px));
+  --_radius-lg: var(--tif-radius-lg, var(--bs-border-radius-lg, 8px));
+  --_field-pad-x: var(--tif-field-pad-x, 0.7em);
+  --_z-panel: var(--tif-z-panel, 1075);
+  color-scheme: light dark;
+}

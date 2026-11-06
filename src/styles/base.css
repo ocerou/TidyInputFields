@@ -1,0 +1,207 @@
+/* Allure commune des zones de saisie, des boutons et des icônes. Propriétés logiques (inline / block) pour les langues
+   écrites de droite à gauche. */
+.tif {
+  font-family: var(--_font);
+  font-size: var(--_font-size);
+  color: var(--_ink);
+}
+
+/* Zone visible d'un champ : même hauteur qu'un .form-control de Bootstrap à taille de police égale. */
+.tif-field {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  min-inline-size: 0;
+  block-size: var(--tif-field-h, calc(1.5em + 0.75rem + 2px));
+  padding-inline: var(--_field-pad-x);
+  border: 1px solid var(--_line-strong);
+  border-radius: var(--_radius);
+  background: var(--_surface);
+  color: var(--_ink);
+  font: inherit;
+  line-height: 1.5;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+}
+
+.tif-field:focus-within {
+  border-color: var(--_accent);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--_focus-ring);
+}
+
+.tif-field input,
+.tif-field select,
+.tif-field textarea {
+  min-inline-size: 0;
+  flex: 1 1 auto;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  outline: none;
+  box-shadow: none;
+}
+
+/* Désactivé, lecture seule. */
+.tif-field:has(:disabled),
+.tif[aria-disabled='true'] .tif-field {
+  background: var(--_alt);
+  color: var(--_ink-mute);
+  cursor: not-allowed;
+}
+
+/* Validation : classes de Bootstrap (.is-invalid, .is-valid, .was-validated) et zone obligatoire vide. */
+.tif-field.is-invalid,
+.tif-field:has(.is-invalid),
+.tif.is-invalid .tif-field,
+.was-validated .tif-field:has(:invalid) {
+  border-color: var(--_crit);
+}
+
+.tif-field.is-invalid:focus-within,
+.tif-field:has(.is-invalid):focus-within,
+.tif.is-invalid .tif-field:focus-within,
+.was-validated .tif-field:has(:invalid):focus-within {
+  box-shadow: 0 0 0 3px var(--_crit-wash);
+}
+
+.tif-field.is-valid,
+.tif-field:has(.is-valid),
+.tif.is-valid .tif-field,
+.was-validated .tif-field:has(:valid) {
+  border-color: var(--_ok);
+}
+
+.tif-field.tif-missing,
+.tif.tif-missing .tif-field {
+  border-color: var(--_warn-line);
+  background: var(--_warn-wash);
+}
+
+/* Tailles, comme -sm / -lg de Bootstrap. */
+.tif-sm,
+.tif:has(.form-control-sm, .form-select-sm) {
+  --_font-size: calc(var(--tif-font-size, var(--bs-body-font-size, 13px)) * 0.875);
+  --_radius: var(--tif-radius-sm, var(--bs-border-radius-sm, 3px));
+}
+
+.tif-lg,
+.tif:has(.form-control-lg, .form-select-lg) {
+  --_font-size: calc(var(--tif-font-size, var(--bs-body-font-size, 13px)) * 1.25);
+  --_radius: var(--tif-radius-lg, var(--bs-border-radius-lg, 8px));
+}
+
+/* Icônes : à la taille et à la couleur du texte. */
+.tif-icon {
+  inline-size: 1em;
+  block-size: 1em;
+  flex-shrink: 0;
+  vertical-align: -0.125em;
+}
+
+/* Mots trouvés par une recherche. */
+.tif mark,
+.tif-panel mark {
+  padding: 0;
+  background: var(--_accent-wash);
+  color: inherit;
+  font-weight: 600;
+}
+
+/* Boutons de la librairie (fenêtres, panneaux). */
+.tif-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  block-size: var(--tif-field-h, calc(1.5em + 0.75rem + 2px));
+  padding-inline: 0.9em;
+  border: 1px solid var(--_line-strong);
+  border-radius: var(--_radius);
+  background: var(--_surface);
+  color: var(--_ink);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tif-btn:hover {
+  background: var(--_alt);
+}
+
+.tif-btn:focus-visible {
+  outline: none;
+  border-color: var(--_accent);
+  box-shadow: 0 0 0 3px var(--_focus-ring);
+}
+
+.tif-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.tif-btn-primary {
+  border-color: var(--_accent);
+  background: var(--_accent);
+  color: var(--_on-accent);
+}
+
+.tif-btn-primary:hover {
+  background: var(--_accent-ink);
+  border-color: var(--_accent-ink);
+}
+
+.tif-btn-danger {
+  border-color: var(--_crit);
+  background: var(--_crit);
+  color: #fff;
+}
+
+.tif-btn-danger:hover {
+  filter: brightness(0.92);
+  background: var(--_crit);
+}
+
+/* Bouton d'icône seule (croix, crayon, flèches). */
+.tif-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 1.9em;
+  block-size: 1.9em;
+  padding: 0;
+  border: 0;
+  border-radius: var(--_radius-sm);
+  background: transparent;
+  color: var(--_ink-mute);
+  font: inherit;
+  cursor: pointer;
+}
+
+.tif-icon-btn:hover {
+  background: var(--_alt);
+  color: var(--_ink);
+}
+
+.tif-icon-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--_focus-ring);
+}
+
+/* Texte réservé aux lecteurs d'écran. */
+.tif-visually-hidden {
+  position: absolute !important;
+  inline-size: 1px !important;
+  block-size: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}

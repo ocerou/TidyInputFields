@@ -1,0 +1,112 @@
+/* Mise en page du catalogue (pas de la librairie). */
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  background: var(--bs-body-bg, light-dark(#f7f8f6, #12161a));
+  color: var(--bs-body-color, light-dark(#232a2c, #dde3e2));
+  font-family: var(--bs-body-font-family, 'Segoe UI', system-ui, sans-serif);
+  font-size: 14px;
+}
+
+:root[data-tif-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-tif-theme='dark'] {
+  color-scheme: dark;
+}
+
+.demo {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+.demo header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-bottom: 24px;
+}
+
+.demo header h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.demo header .spacer {
+  flex: 1;
+}
+
+.demo section {
+  margin-bottom: 28px;
+  padding: 18px 20px;
+  border: 1px solid light-dark(#dce0dc, #2c353c);
+  border-radius: 8px;
+  background: var(--bs-tertiary-bg, light-dark(#fff, #1a2026));
+}
+
+.demo section h2 {
+  margin: 0 0 4px;
+  font-size: 16px;
+}
+
+.demo section > p {
+  margin: 0 0 14px;
+  opacity: 0.75;
+}
+
+.demo .row-demo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+
+.demo .icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 8px;
+}
+
+.demo .icons div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.demo .icons svg {
+  font-size: 18px;
+}
+
+.demo table {
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.demo td,
+.demo th {
+  padding: 4px 14px 4px 0;
+  text-align: start;
+}
+
+.demo code {
+  font-family: 'Cascadia Mono', Consolas, ui-monospace, monospace;
+  font-size: 12px;
+}
+
+.demo output {
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.demo-panel {
+  width: 260px;
+  padding: 8px 10px !important;
+}

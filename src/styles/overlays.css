@@ -1,0 +1,54 @@
+/* Panneaux flottants et fenêtre de confirmation. */
+.tif-panel {
+  position: fixed;
+  z-index: var(--_z-panel);
+  box-sizing: border-box;
+  max-block-size: var(--tif-panel-max-h, min(360px, calc(100vh - 16px)));
+  overflow: auto;
+  padding: 4px;
+  border: 1px solid var(--_line);
+  border-radius: var(--_radius-lg);
+  background: var(--_surface);
+  color: var(--_ink);
+  box-shadow: var(--_lift);
+  font-family: var(--_font);
+  font-size: var(--_font-size);
+  line-height: 1.5;
+}
+
+.tif-dialog {
+  box-sizing: border-box;
+  inline-size: min(420px, calc(100vw - 32px));
+  padding: 0;
+  border: 0;
+  border-radius: var(--_radius-lg);
+  background: var(--_surface);
+  color: var(--_ink);
+  box-shadow: var(--_lift);
+  font-family: var(--_font);
+  font-size: var(--_font-size);
+  line-height: 1.5;
+}
+
+.tif-dialog::backdrop {
+  background: var(--tif-backdrop, var(--tif-d-backdrop));
+}
+
+.tif-dialog-title {
+  margin: 0;
+  padding: 16px 18px 0;
+  font-size: 1.15em;
+  font-weight: 600;
+}
+
+.tif-dialog-body {
+  padding: 10px 18px 0;
+  color: var(--_ink-soft);
+}
+
+.tif-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 18px;
+}
