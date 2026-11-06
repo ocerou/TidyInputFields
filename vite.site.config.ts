@@ -18,5 +18,8 @@ export default defineConfig({
     },
   },
   server: { port: 5181, strictPort: true },
+  // Cache propre au site : le catalogue de test tourne en même temps pendant les tests.
+  cacheDir: fileURLToPath(new URL('./node_modules/.vite-site', import.meta.url)),
+  optimizeDeps: { include: ['react', 'react-dom/client', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'prismjs'] },
   build: { outDir: '../site-dist', emptyOutDir: true },
 })
