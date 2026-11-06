@@ -17,6 +17,7 @@ import { createElement } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import * as Tif from 'tidyinputfields'
 import { codeBlock, type Language } from './highlight.ts'
+import { tr } from './i18n.ts'
 
 type Script = (root: HTMLElement) => void
 type ExampleModule = {
@@ -145,24 +146,24 @@ export function renderExample(id: string, title?: string, text?: string): HTMLEl
     return text ? [{ code: withImports(source, text), language: 'ts' as const }] : []
   }
   if (module.tag) {
-    panes.push({ label: 'Tag', blocks: [html(module.tag), ...script('tag')], show: vanilla(module.tag, module.tagScript, 'tag') })
+    panes.push({ label: tr('Tag'), blocks: [html(module.tag), ...script('tag')], show: vanilla(module.tag, module.tagScript, 'tag') })
   }
   if (module.attributes) {
-    panes.push({ label: 'data-tif attributes', blocks: [html(module.attributes), ...script('attributes')], show: vanilla(module.attributes, module.attributesScript, 'attributes') })
+    panes.push({ label: tr('data-tif attributes'), blocks: [html(module.attributes), ...script('attributes')], show: vanilla(module.attributes, module.attributesScript, 'attributes') })
   }
   if (module.api) {
-    panes.push({ label: 'JavaScript API', blocks: [...(module.apiHtml ? [html(module.apiHtml)] : []), ...script('api')], show: vanilla(module.apiHtml ?? '', module.api, 'api') })
+    panes.push({ label: tr('JavaScript API'), blocks: [...(module.apiHtml ? [html(module.apiHtml)] : []), ...script('api')], show: vanilla(module.apiHtml ?? '', module.api, 'api') })
   }
   if (module.html) {
-    panes.push({ label: 'HTML', blocks: [html(module.html)], show: vanilla(module.html, module.js) })
+    panes.push({ label: tr('HTML'), blocks: [html(module.html)], show: vanilla(module.html, module.js) })
   }
   if (module.js && region(source, 'js')) {
     // Exemple général : le JavaScript accompagne le HTML, même rendu.
-    panes.push({ label: 'JavaScript', blocks: script('js'), show: vanilla(module.html ?? '', module.js) })
+    panes.push({ label: tr('JavaScript'), blocks: script('js'), show: vanilla(module.html ?? '', module.js) })
   }
   if (module.ReactExample) {
     const text = region(source, 'react')
-    panes.push({ label: 'React', blocks: [{ code: withImports(source, text), language: 'tsx' }], show: react, react: true })
+    panes.push({ label: tr('React'), blocks: [{ code: withImports(source, text), language: 'tsx' }], show: react, react: true })
   }
 
   let shown: (() => void) | null = null
@@ -178,7 +179,7 @@ export function renderExample(id: string, title?: string, text?: string): HTMLEl
   }
   // HTML et JavaScript d'un exemple général partagent leur rendu.
   if (module.html && module.js) {
-    const both = panes.filter((p) => p.label === 'HTML' || p.label === 'JavaScript')
+    const both = panes.filter((p) => p.label === tr('HTML') || p.label === tr('JavaScript'))
     for (const pane of both) {
       pane.show = both[0].show
     }

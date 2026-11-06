@@ -89,7 +89,7 @@ new TifRichText(element, { name: 'notes', mentions: (query) => findPeople(query)
 
 ## Documentation
 
-**https://ocerou.github.io/TidyInputFields/** — every component, each example in three ways (tag, `data-tif` attributes, JavaScript API) and in React, with options, events and keyboard.
+**https://ocerou.github.io/TidyInputFields/** — every component, each example in three ways (tag, `data-tif` attributes, JavaScript API) and in React, with options, events and keyboard. In English, French, German, Spanish and Italian (the language menu switches the documentation and the components; translations in `site/locales/*.json`, checked by the tests).
 
 ```bash
 npm run docs       # documentation on http://localhost:5181

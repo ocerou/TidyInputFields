@@ -3,6 +3,7 @@ import * as Tif from 'tidyinputfields'
 import '../../src/styles/index.css'
 import 'tidyinputfields/rich-text'
 import './site.css'
+import { DOC_LOCALES, docLocale, setDocLocale, tr } from './i18n.ts'
 import { renderBlock, type Page } from './page.ts'
 import { pages } from './pages/index.ts'
 
@@ -31,17 +32,17 @@ const groups = [...new Set(pages.map((p) => p.group))]
 function navigation(current: Page): HTMLElement {
   const nav = document.createElement('nav')
   nav.className = 'bd-sidebar'
-  nav.setAttribute('aria-label', 'Documentation')
+  nav.setAttribute('aria-label', tr('Documentation'))
   for (const group of groups) {
     const title = document.createElement('div')
     title.className = 'bd-sidebar-group'
-    title.textContent = group
+    title.textContent = tr(group)
     const list = document.createElement('ul')
     for (const page of pages.filter((p) => p.group === group)) {
       const item = document.createElement('li')
       const link = document.createElement('a')
       link.href = `#/${page.id}`
-      link.textContent = page.title
+      link.textContent = tr(page.title)
       if (page === current) {
         link.setAttribute('aria-current', 'page')
       }
@@ -66,9 +67,9 @@ function header(): HTMLElement {
 
   const theme = document.createElement('select')
   theme.className = 'bd-control'
-  theme.setAttribute('aria-label', 'Theme')
+  theme.setAttribute('aria-label', tr('Theme'))
   for (const [value, label] of [['', 'Auto'], ['light', 'Light'], ['dark', 'Dark']]) {
-    theme.append(new Option(label, value, false, value === savedTheme))
+    theme.append(new Option(tr(label), value, false, value === savedTheme))
   }
   theme.addEventListener('change', () => {
     applyTheme(theme.value)
@@ -81,12 +82,16 @@ function header(): HTMLElement {
 
   const language = document.createElement('select')
   language.className = 'bd-control'
-  language.setAttribute('aria-label', 'Language of the components')
-  for (const [value, label] of [['en', 'English'], ['fr', 'Français'], ['de', 'Deutsch'], ['es', 'Español'], ['it', 'Italiano']]) {
-    language.append(new Option(label, value))
+  language.setAttribute('aria-label', tr('Language'))
+  for (const [value, label] of DOC_LOCALES) {
+    language.append(new Option(label, value, false, value === docLocale()))
   }
-  language.addEventListener('change', () => Tif.setLocale(language.value))
-  Tif.setLocale('en')
+  // La langue vaut pour la documentation et pour les composants des exemples.
+  language.addEventListener('change', () => {
+    setDocLocale(language.value)
+    applyLocale()
+    render()
+  })
 
   const github = document.createElement('a')
   github.className = 'bd-github'
@@ -96,7 +101,7 @@ function header(): HTMLElement {
   const menu = document.createElement('button')
   menu.type = 'button'
   menu.className = 'bd-menu'
-  menu.textContent = 'Menu'
+  menu.textContent = tr('Menu')
   menu.addEventListener('click', () => document.body.classList.toggle('bd-menu-open'))
 
   const spacer = document.createElement('span')
@@ -108,17 +113,17 @@ function header(): HTMLElement {
 function render() {
   const id = location.hash.replace(/^#\/?/, '').split('#')[0] || 'introduction'
   const page = pages.find((p) => p.id === id) ?? pages[0]
-  document.title = `${page.title} · TidyInputFields`
+  document.title = `${tr(page.title)} · TidyInputFields`
   document.body.classList.remove('bd-menu-open')
   Tif.dispose(app)
 
   const main = document.createElement('main')
   main.className = 'bd-main'
   const h1 = document.createElement('h1')
-  h1.textContent = page.title
+  h1.textContent = tr(page.title)
   const lead = document.createElement('p')
   lead.className = 'bd-lead'
-  lead.innerHTML = page.lead
+  lead.innerHTML = tr(page.lead)
   main.append(h1, lead, ...page.blocks.map(renderBlock))
 
   // Page précédente et suivante, comme dans la documentation de Bootstrap.
@@ -129,7 +134,7 @@ function render() {
     const link = document.createElement('a')
     if (other) {
       link.href = `#/${other.id}`
-      link.textContent = label ? `${label}${other.title}` : `${other.title} →`
+      link.textContent = label ? `${label}${tr(other.title)}` : `${tr(other.title)} →`
     }
     pager.append(link)
   }
@@ -142,5 +147,12 @@ function render() {
   window.scrollTo(0, 0)
 }
 
+/** Langue des composants et de la page (<html lang>), comme celle de la documentation. */
+function applyLocale() {
+  Tif.setLocale(docLocale())
+  root.lang = docLocale()
+}
+
 window.addEventListener('hashchange', render)
+applyLocale()
 render()

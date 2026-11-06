@@ -8,6 +8,8 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:5180',
     channel: process.env.CI ? undefined : 'msedge',
+    // La documentation suit la langue du navigateur : les tests la lisent en anglais.
+    locale: 'en-US',
   },
   webServer: [
     {

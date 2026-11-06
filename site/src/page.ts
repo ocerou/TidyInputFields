@@ -2,6 +2,7 @@
 import type { ComponentClass } from 'tidyinputfields'
 import { renderExample } from './example.ts'
 import { codeBlock, type Language } from './highlight.ts'
+import { tr } from './i18n.ts'
 
 /** Ligne d'un tableau d'options, d'événements ou de méthodes. */
 export type Row = [string, string, string?]
@@ -62,17 +63,17 @@ function table(columns: (string | undefined)[], rows: (string | Node)[][]): HTML
 export function renderBlock(block: Block): Node {
   // Un exemple peut aussi avoir un texte : il passe en premier.
   if ('example' in block) {
-    return renderExample(block.example, block.title, block.text)
+    return renderExample(block.example, block.title && tr(block.title), block.text && tr(block.text))
   }
   if ('text' in block) {
     const div = document.createElement('div')
     div.className = 'bd-text'
-    div.innerHTML = block.text
+    div.innerHTML = tr(block.text)
     return div
   }
   if ('heading' in block) {
     const h2 = document.createElement('h2')
-    h2.textContent = block.heading
+    h2.textContent = tr(block.heading)
     h2.id = block.id ?? block.heading.toLowerCase().replace(/[^a-z0-9]+/g, '-')
     return h2
   }
@@ -84,9 +85,9 @@ export function renderBlock(block: Block): Node {
     const rows = Object.keys(defaults).map((key) => [
       `<code>${key}</code><br><small><code>${kebab(key)}</code></small>`,
       `<code>${show(defaults[key])}</code>`,
-      block.descriptions[key] ?? '',
+      tr(block.descriptions[key] ?? ''),
     ])
-    return table(['Option / attribute', 'Default', 'Description'], rows)
+    return table([tr('Option / attribute'), tr('Default'), tr('Description')], rows)
   }
-  return table(block.columns, block.table.map((row) => row.map((cell) => cell ?? '')))
+  return table(block.columns.map((c) => c && tr(c)), block.table.map((row) => row.map((cell) => tr(cell ?? ''))))
 }

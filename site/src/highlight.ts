@@ -1,5 +1,6 @@
 // Coloration du code des exemples (Prism, seulement pour le site : la librairie n'en dépend pas).
 import Prism from 'prismjs'
+import { tr } from './i18n.ts'
 import 'prismjs/components/prism-markup'
 import 'prismjs/components/prism-css'
 import 'prismjs/components/prism-clike'
@@ -24,15 +25,15 @@ export function codeBlock(code: string, language: Language): HTMLElement {
   const copy = document.createElement('button')
   copy.type = 'button'
   copy.className = 'bd-copy'
-  copy.textContent = 'Copy'
+  copy.textContent = tr('Copy')
   copy.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(code)
-      copy.textContent = 'Copied'
+      copy.textContent = tr('Copied')
     } catch {
-      copy.textContent = 'Select and copy'
+      copy.textContent = tr('Select and copy')
     }
-    setTimeout(() => (copy.textContent = 'Copy'), 1500)
+    setTimeout(() => (copy.textContent = tr('Copy')), 1500)
   })
   const wrapper = document.createElement('div')
   wrapper.className = 'bd-code'
