@@ -68,6 +68,72 @@ test.describe('catalogue', () => {
   })
 })
 
+test.describe('simple fields', () => {
+  const sent = async (page: import('@playwright/test').Page) => JSON.parse((await page.locator('#form-data').textContent()) ?? '{}')
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/')
+  })
+
+  test('send their values with the form', async ({ page }) => {
+    expect(await sent(page)).toEqual({
+      title: '',
+      email: '',
+      quantity: '3',
+      notes: '',
+      active: 'on',
+      duration: '12',
+      price: '1250',
+      mode: 'keep',
+      size: 'M',
+    })
+    await page.fill('#f-title', 'Offer')
+    await page.selectOption('#f-country', 'it')
+    await page.click('#f-active')
+    expect(await sent(page)).toMatchObject({ title: 'Offer', country: 'it' })
+    expect((await sent(page)).active).toBeUndefined()
+  })
+
+  test('keep the unit right after the digits, agreed with the number', async ({ page }) => {
+    const input = page.locator('#f-duration')
+    const label = page.locator('#f-duration').locator('xpath=following-sibling::span')
+    await expect(label).toHaveText('months')
+    await input.fill('1')
+    await expect(label).toHaveText('month')
+    const inputBox = (await input.boundingBox())!
+    const labelBox = (await label.boundingBox())!
+    expect(labelBox.x - (inputBox.x + inputBox.width)).toBeLessThan(10)
+    await label.click()
+    await expect(input).toBeFocused()
+  })
+
+  test('choose with the keyboard in a selector', async ({ page }) => {
+    const group = page.getByRole('radiogroup', { name: 'Mode' })
+    await group.getByRole('radio', { name: 'Keep' }).focus()
+    await page.keyboard.press('ArrowRight')
+    await expect(group.getByRole('radio', { name: 'Update' })).toBeFocused()
+    await expect(group.getByRole('radio', { name: 'Update' })).toHaveAttribute('aria-checked', 'true')
+    expect((await sent(page)).mode).toBe('update')
+    await page.keyboard.press('ArrowLeft')
+    await page.keyboard.press('ArrowLeft')
+    expect((await sent(page)).mode).toBe('ask')
+    const widths = await group.getByRole('radio').evaluateAll((buttons) => buttons.map((b) => Math.round(b.getBoundingClientRect().width)))
+    expect(new Set(widths).size).toBe(1)
+  })
+
+  test('turn quiet', async ({ page }) => {
+    // toHaveCSS attend la fin de la transition de couleur.
+    const title = page.locator('#f-title')
+    const before = await title.evaluate((el) => getComputedStyle(el).borderTopColor)
+    await page.click('#quiet-fields')
+    await expect(title).toHaveClass(/tif-quiet/)
+    await expect(title).toHaveCSS('border-top-color', 'rgba(0, 0, 0, 0)')
+    await expect(page.locator('#f-duration').locator('xpath=..')).toHaveClass(/tif-quiet/)
+    await page.click('#quiet-fields')
+    await expect(title).toHaveCSS('border-top-color', before)
+  })
+})
+
 test.describe('with Bootstrap', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/bootstrap.html')

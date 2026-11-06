@@ -36,6 +36,26 @@ Or with plain `<script>` and `<link>` tags (global `Tif`):
 <script src="https://cdn.jsdelivr.net/npm/tidyinputfields/dist/tidyinputfields.min.js"></script>
 ```
 
+Three ways to get the same field:
+
+```html
+<!-- A tag: it creates the native field inside, the form sends it -->
+<tif-unit name="duration" unit="months" value="12"></tif-unit>
+
+<!-- An attribute on an existing field, dressed in place -->
+<select name="size" data-tif="selector"><option>S</option><option selected>M</option></select>
+```
+
+```js
+// The JavaScript API, Bootstrap style
+const unit = new Tif.TifUnit(element, { name: 'duration', unit: (n) => (n === 1 ? 'month' : 'months') })
+Tif.TifUnit.getInstance(element) === unit
+unit.value = '3'
+unit.dispose()
+```
+
+Fields that already carry Bootstrap classes (`.form-control`, `.form-select`, `.form-check-input`) keep Bootstrap's look.
+
 Language and translations:
 
 ```js
@@ -57,15 +77,18 @@ npm run check      # lint, types, unit tests, build
 npm run test:e2e   # browser tests (Playwright; locally with the installed Edge)
 ```
 
-## Planned components
+## Components
 
-| Group | Components |
-|---|---|
-| Native wrappers | text, number, textarea, select, switch |
-| Simple | unit, selector |
-| Date and time | date, time, date-time, period |
-| Lists | search-select, multi-select, lookup, sortable-list |
-| Colour | color-picker |
+| Group | Components | Status |
+|---|---|---|
+| Native fields | `text`, `number`, `textarea`, `select`, `switch` | available |
+| Simple | `unit` (number followed by its unit), `selector` (segmented choice) | available |
+| Date and time | `date`, `time`, `date-time`, `period` | planned |
+| Lists | `search-select`, `multi-select`, `lookup`, `sortable-list` | planned |
+| Colour | `color-picker` | planned |
+
+Common options of the native fields: `name`, `value`, `placeholder`, `required`, `disabled`, `readonly`, `label`
+(aria-label), `inputId` (id of the created field, attribute `input-id`), `quiet` (frameless until hover or focus).
 
 ## Licence
 

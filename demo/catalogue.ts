@@ -150,6 +150,72 @@ app.append(
   ),
 )
 
+// Champs simples, dans un vrai formulaire : ce qu'il enverrait s'affiche à côté.
+const fieldsForm = document.createElement('form')
+fieldsForm.id = 'fields-form'
+fieldsForm.className = 'demo-form'
+// Démo seulement : le catalogue écrit son HTML d'exemple tel qu'un utilisateur l'écrirait dans sa page.
+fieldsForm.innerHTML = `
+  <label for="f-title">Text — <code>&lt;tif-text&gt;</code></label>
+  <tif-text name="title" input-id="f-title" placeholder="Title" required></tif-text>
+  <label for="f-email">E-mail — <code>data-tif="text"</code></label>
+  <input id="f-email" name="email" data-tif="text" data-tif-type="email" placeholder="name@example.com">
+  <label for="f-quantity">Number — <code>&lt;tif-number&gt;</code></label>
+  <tif-number name="quantity" input-id="f-quantity" min="0" step="1" value="3"></tif-number>
+  <label for="f-notes">Text area — <code>&lt;tif-textarea&gt;</code></label>
+  <tif-textarea name="notes" input-id="f-notes" rows="3" placeholder="Notes"></tif-textarea>
+  <label for="f-country">Select — <code>&lt;tif-select&gt;</code></label>
+  <tif-select name="country" input-id="f-country" placeholder="Choose a country">
+    <option value="fr">France</option><option value="de">Germany</option><option value="it">Italy</option>
+  </tif-select>
+  <label for="f-active">Switch — <code>&lt;tif-switch&gt;</code></label>
+  <tif-switch name="active" input-id="f-active" checked></tif-switch>
+  <label for="f-duration">Unit, agreed — <code>new TifUnit()</code></label>
+  <div id="f-duration-host"></div>
+  <label for="f-price">Unit, right — <code>&lt;tif-unit&gt;</code></label>
+  <tif-unit name="price" input-id="f-price" unit="€" align="right" value="1250"></tif-unit>
+  <span id="f-mode-label">Selector — <code>&lt;tif-selector&gt;</code></span>
+  <tif-selector name="mode" label="Mode" value="keep">
+    <option value="keep">Keep</option><option value="update">Update</option><option value="ask">Ask</option>
+  </tif-selector>
+  <label for="f-size">Selector — <code>&lt;select data-tif&gt;</code></label>
+  <select id="f-size" name="size" data-tif="selector"><option>S</option><option selected>M</option><option>L</option><option>XL</option></select>
+`
+Tif.init(fieldsForm)
+const duration = new Tif.TifUnit(fieldsForm.querySelector<HTMLElement>('#f-duration-host')!, {
+  name: 'duration',
+  inputId: 'f-duration',
+  value: '12',
+  unit: (n: number | null) => (n === 1 ? 'month' : 'months'),
+})
+const sent = h('pre', { id: 'form-data', class: 'demo-sent' })
+const showSent = () => {
+  sent.textContent = JSON.stringify(Object.fromEntries(new FormData(fieldsForm)), null, 2)
+}
+fieldsForm.addEventListener('input', showSent)
+fieldsForm.addEventListener('change', showSent)
+showSent()
+
+const quiet = h('input', { id: 'quiet-fields', 'data-tif': 'switch' })
+Tif.init(h('div', {}, quiet))
+quiet.addEventListener('change', () => {
+  for (const element of fieldsForm.querySelectorAll<HTMLElement>('tif-text, tif-number, tif-textarea, tif-select, tif-unit, [data-tif="text"]')) {
+    const instance = (element as HTMLElement & { instance?: Tif.Component }).instance ?? Tif.TifText.getInstance(element)
+    instance?.setOptions({ quiet: quiet.checked })
+  }
+  duration.setOptions({ quiet: quiet.checked })
+})
+
+app.append(
+  section(
+    'Simple fields',
+    'Native fields, dressed. Use a tag, a data-tif attribute on an existing field, or the JavaScript API. The form sends their values as usual.',
+    h('div', { class: 'demo-columns' }, fieldsForm, h('div', {}, h('label', { class: 'demo-inline' }, quiet, ' Quiet fields'), sent)),
+  ),
+)
+// Les balises créent leurs champs en entrant dans la page.
+showSent()
+
 // Modale Bootstrap : panneau et confirmation à l'intérieur.
 if (withBootstrap) {
   const modal = h(

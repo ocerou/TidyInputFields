@@ -14,5 +14,6 @@ export { confirm, type ConfirmOptions } from './core/confirm.ts'
 export { icon, setIcons, iconNames, type IconName } from './core/icons.ts'
 export { h } from './core/dom.ts'
 export { t, getLocale, setLocale, setTranslator, addTranslations, onLocaleChange, type Translator, type TranslationParams } from './i18n/i18n.ts'
+export * from './components/index.ts'
 
 autoInit()

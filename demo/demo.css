@@ -106,6 +106,58 @@ body {
   opacity: 0.8;
 }
 
+.demo-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 24px;
+}
+
+@media (max-width: 760px) {
+  .demo-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.demo-form {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px 16px;
+}
+
+.demo-form > label,
+.demo-form > span {
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.demo-form > :nth-child(even),
+.demo-form > .tif-selector {
+  justify-self: start;
+}
+
+.demo-form > tif-textarea:nth-child(even) {
+  justify-self: stretch;
+}
+
+.demo-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.demo-sent {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: light-dark(#f3f5f2, #212930);
+  font-size: 12px;
+  white-space: pre-wrap;
+}
+
 .demo-panel {
   width: 260px;
   padding: 8px 10px !important;

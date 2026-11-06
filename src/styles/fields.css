@@ -1,0 +1,317 @@
+/* Champs simples : texte, nombre, zone de texte, liste, interrupteur, unité, sélecteur. */
+
+/* Balises <tif-…> : elles ne font qu'envelopper leur champ. */
+tif-text,
+tif-number,
+tif-select,
+tif-switch,
+tif-unit,
+tif-selector {
+  display: inline-block;
+  max-inline-size: 100%;
+  vertical-align: middle;
+}
+
+tif-textarea {
+  display: block;
+}
+
+.tif-mono,
+.tif-field .tif-mono {
+  font-family: var(--tif-mono, 'Cascadia Mono', Consolas, ui-monospace, 'SFMono-Regular', monospace);
+}
+
+/* Champ natif habillé (texte, nombre, zone de texte, liste). */
+.tif-input {
+  box-sizing: border-box;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  block-size: var(--tif-field-h, calc(1.5em + 0.75rem + 2px));
+  margin: 0;
+  padding-block: 0;
+  padding-inline: var(--_field-pad-x);
+  border: 1px solid var(--_line-strong);
+  border-radius: var(--_radius);
+  background-color: var(--_surface);
+  color: var(--_ink);
+  font-family: var(--_font);
+  font-size: var(--_font-size);
+  line-height: 1.5;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out,
+    background-color 0.12s;
+}
+
+.tif-input::placeholder {
+  color: var(--_ink-mute);
+  opacity: 1;
+}
+
+.tif-input:focus {
+  border-color: var(--_accent);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--_focus-ring);
+}
+
+.tif-input:disabled {
+  background-color: var(--_alt);
+  color: var(--_ink-mute);
+  cursor: not-allowed;
+}
+
+.tif-input[readonly] {
+  background-color: var(--_alt);
+}
+
+.tif-input.is-invalid,
+.was-validated .tif-input:invalid {
+  border-color: var(--_crit);
+}
+
+.tif-input.is-invalid:focus,
+.was-validated .tif-input:invalid:focus {
+  box-shadow: 0 0 0 3px var(--_crit-wash);
+}
+
+.tif-input.is-valid,
+.was-validated .tif-input:valid {
+  border-color: var(--_ok);
+}
+
+.tif-input.tif-missing {
+  border-color: var(--_warn-line);
+  background-color: var(--_warn-wash);
+}
+
+/* Zone de texte de plusieurs lignes. */
+.tif-textarea {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  min-block-size: calc(1.5em + 0.75rem + 2px);
+  padding-block: 0.4em;
+  resize: vertical;
+}
+
+/* Liste : flèche dessinée aux couleurs du thème, de l'autre côté en écriture de droite à gauche. */
+.tif-select {
+  appearance: none;
+  padding-inline-end: 26px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--_ink-mute) 50%),
+    linear-gradient(135deg, var(--_ink-mute) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 52%,
+    calc(100% - 9px) 52%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.tif-select:dir(rtl) {
+  background-position:
+    9px 52%,
+    14px 52%;
+}
+
+.tif-select:disabled {
+  cursor: not-allowed;
+}
+
+/* Zone discrète : sans cadre jusqu'au survol ou au focus (fiches où lecture et saisie se confondent). */
+.tif-input.tif-quiet,
+.tif-field.tif-quiet {
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.tif-input.tif-quiet:hover:not(:disabled),
+.tif-field.tif-quiet:hover {
+  border-color: var(--_line-strong);
+  background-color: var(--_surface);
+}
+
+.tif-input.tif-quiet:focus,
+.tif-field.tif-quiet:focus-within {
+  border-color: var(--_accent);
+  background-color: var(--_surface);
+}
+
+/* Interrupteur : bouton gris sur piste en creux pour « non », blanc sur l'accent pour « oui ». */
+.tif-switch {
+  appearance: none;
+  position: relative;
+  flex: none;
+  box-sizing: border-box;
+  inline-size: 34px;
+  block-size: 20px;
+  margin: 0;
+  border: 1px solid var(--_line-strong);
+  border-radius: 999px;
+  background: var(--_sunk);
+  vertical-align: middle;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+}
+
+.tif-switch::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 2px;
+  inset-inline-start: 2px;
+  inline-size: 14px;
+  block-size: 14px;
+  border-radius: 50%;
+  background: var(--_ink-mute);
+  transition:
+    transform 0.15s,
+    background-color 0.15s;
+}
+
+.tif-switch:checked {
+  border-color: var(--_accent);
+  background: var(--_accent);
+}
+
+.tif-switch:checked::before {
+  transform: translateX(14px);
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
+}
+
+.tif-switch:checked:dir(rtl)::before {
+  transform: translateX(-14px);
+}
+
+.tif-switch:hover:not(:disabled):not(:checked) {
+  border-color: var(--_ink-mute);
+}
+
+.tif-switch:focus-visible {
+  outline: 2px solid var(--_accent);
+  outline-offset: 2px;
+}
+
+.tif-switch:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Nombre avec unité : l'unité suit le chiffre, la zone s'ajuste à lui. */
+.tif-unit {
+  display: flex;
+  gap: 5px;
+  cursor: text;
+}
+
+.tif-unit.tif-unit-end {
+  justify-content: flex-end;
+}
+
+.tif-unit-input {
+  flex: none !important;
+  min-inline-size: 1ch !important;
+  max-inline-size: 100%;
+  text-align: inherit;
+}
+
+.tif-unit.tif-unit-end .tif-unit-input {
+  text-align: end;
+}
+
+.tif-unit-label {
+  color: var(--_ink-mute);
+  font-size: 0.95em;
+  white-space: nowrap;
+}
+
+.tif-unit-value {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.tif-unit-value.tif-unit-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Sélecteur : options côte à côte, de même largeur ; seuls les quatre coins de l'ensemble sont arrondis. */
+.tif-selector {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  box-sizing: border-box;
+  block-size: var(--tif-field-h, calc(1.5em + 0.75rem + 2px));
+  max-inline-size: 100%;
+  border: 1px solid var(--_line-strong);
+  border-radius: var(--_radius);
+  overflow: hidden;
+  background: var(--_surface);
+  vertical-align: middle;
+}
+
+.tif-selector button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  block-size: 100%;
+  margin: 0;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--_ink-soft);
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tif-selector button + button {
+  border-inline-start: 1px solid var(--_line-strong);
+}
+
+.tif-selector button:hover:not(:disabled):not([aria-checked='true']) {
+  background: var(--_accent-wash);
+  color: var(--_ink);
+}
+
+.tif-selector button[aria-checked='true'] {
+  background: var(--_accent);
+  color: var(--_on-accent);
+  font-weight: 600;
+}
+
+.tif-selector button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.tif-selector button .tif-icon {
+  font-size: 0.9em;
+  opacity: 0.85;
+}
+
+.tif-selector:focus-within {
+  border-color: var(--_accent);
+  box-shadow: 0 0 0 3px var(--_focus-ring);
+}
+
+.tif-selector button:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tif-input,
+  .tif-switch,
+  .tif-switch::before {
+    transition: none;
+  }
+}
