@@ -99,3 +99,24 @@ test.describe('tags', () => {
     await expect(skills).toBeFocused()
   })
 })
+
+test.describe('search-select fed by fetch', () => {
+  test('asks the API at each search, and again with the React filter', async ({ page }) => {
+    await page.goto(`${docs}#/search-select`)
+    const block = page.locator('#example-search-fetch')
+    // Libellé de la valeur de départ, lu par sourceLabel.
+    await expect(block.locator('.bd-example button').first()).toHaveText(/Hugo Martin/)
+    await block.locator('.bd-example button').first().click()
+    const panel = page.locator('.tif-listbox-panel:visible')
+    await expect(panel).toContainText('First 20 of 155')
+    await page.keyboard.type('chloe dubois')
+    await expect(panel.getByRole('option')).toHaveCount(1)
+    await page.keyboard.press('Enter')
+    await expect(block.locator('output')).toHaveText('p27')
+
+    await block.getByRole('tab', { name: 'React' }).click()
+    await block.locator('.bd-example select').selectOption('Lyon')
+    await block.locator('.bd-example button').first().click()
+    await expect(page.locator('.tif-listbox-panel:visible')).toContainText('First 20 of 31')
+  })
+})

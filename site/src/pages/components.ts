@@ -199,6 +199,11 @@ export const components: Page[] = [
       { example: 'search-basic', title: 'Examples', text: 'At rest, a classic drop-down list. A letter typed on the closed list opens it and starts the search. <code>empty-label</code> adds a choice to empty the field; <code>required</code> turns it orange while empty.' },
       { example: 'search-groups', title: 'Groups, pills, deactivated options', text: 'Options are grouped under headings (<code>groupOrder</code> first), carry a pill, and deactivated ones are hidden behind a switch in the footer — the current choice always stays offered.' },
       { example: 'search-remote', title: 'Remote source', text: 'For a list too long to be loaded: the <code>source</code> function is called after each keystroke and returns the first matches and their total (“first 20 of 300: refine the search”). The label can be a link, and a <b>New</b> button sends <code>create.tif.search-select</code>.' },
+      {
+        example: 'search-fetch',
+        title: 'Results from your API (fetch)',
+        text: 'The <code>source</code> calls your API with <code>fetch</code>: the search, the number of results wanted (<code>limit</code>) and the footer switch (<code>onlyActive</code>, shown by <code>active-filter</code>), and passes on <code>signal</code>, so that a request still running is cancelled when the user types again. It returns the options and the total of matches. <code>sourceLabel</code> gives the label of a value the list has not loaded (an initial value, a value set later). An error thrown by the source shows an empty list. In React, build the source from what it depends on (here the city) inside <code>useMemo</code>: a new source when the city changes, the same one otherwise. In this documentation, the page answers <code>/api/demo/people</code> itself.',
+      },
       keyboard([
         ['A letter', 'Opens the list and starts the search.'],
         ['↑ ↓', 'Moves in the list.'],

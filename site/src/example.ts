@@ -35,7 +35,8 @@ const modules = import.meta.glob<ExampleModule>('../examples/*.example.tsx', { e
 const sources = import.meta.glob<string>('../examples/*.example.tsx', { eager: true, query: '?raw', import: 'default' })
 
 const idOf = (path: string) => path.replace(/^.*\/(.+)\.example\.tsx$/, '$1')
-const byId = new Map(Object.keys(modules).map((path) => [idOf(path), { module: modules[path], source: sources[path] }]))
+// Fins de ligne ramenées à « \n » : un fichier enregistré sous Windows (CRLF) ne cache pas ses repères « // @… ».
+const byId = new Map(Object.keys(modules).map((path) => [idOf(path), { module: modules[path], source: sources[path].replace(/\r\n/g, '\n') }]))
 
 /** Retire l'indentation commune. */
 function dedent(text: string): string {
@@ -61,7 +62,7 @@ function importsFor(source: string, code: string): string[] {
     .split('\n')
     .filter((line) => line.startsWith('import '))
     .filter((line) => {
-      const names = line.match(/import\s+(?:\*\s+as\s+(\w+)|\{([^}]*)\}|(\w+))/)
+      const names = line.match(/import\s+(?:type\s+)?(?:\*\s+as\s+(\w+)|\{([^}]*)\}|(\w+))/)
       const used = (names?.[1] ?? names?.[3] ?? names?.[2] ?? '')
         .split(',')
         .map((n) => n.replace(/\btype\b/, '').trim().split(/\s+as\s+/).pop()!.trim())
@@ -72,8 +73,15 @@ function importsFor(source: string, code: string): string[] {
     .map((line) => line.replace(/'(\.\/[^']+)\.tsx?'/, "'$1'"))
 }
 
-/** Code JavaScript montré : ses imports, puis la fonction. */
-const withImports = (source: string, code: string) => [...importsFor(source, code), '', code].join('\n').trim()
+/**
+ * Code JavaScript montré : ses imports, le code commun de l'exemple (repère « // @shared », placé avant les autres :
+ * une source distante, un type), puis la fonction.
+ */
+const withImports = (source: string, code: string) => {
+  const shared = region(source, 'shared')
+  const full = shared ? `${shared}\n\n${code}` : code
+  return [...importsFor(source, full), '', full].join('\n').trim()
+}
 
 type Pane = { label: string; blocks: { code: string; language: Language }[]; show: () => void; react?: boolean }
 
