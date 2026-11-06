@@ -74,7 +74,7 @@ Every component, with live examples in HTML, JavaScript and React, options, even
 
 ```bash
 npm run docs       # documentation on http://localhost:5181
-npm run docs:build # static site in site-dist/
+npm run docs:build # one self-contained file, site-dist/index.html, that opens with a double-click
 ```
 
 ## Development
