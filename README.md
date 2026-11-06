@@ -68,11 +68,20 @@ i18next.on('languageChanged', Tif.setLocale)
 
 Elements added later (dialogs, HTMX, Turbo): `Tif.observe()` initialises and disposes them automatically.
 
+## Documentation
+
+Every component, with live examples in HTML, JavaScript and React, options, events and keyboard:
+
+```bash
+npm run docs       # documentation on http://localhost:5181
+npm run docs:build # static site in site-dist/
+```
+
 ## Development
 
 ```bash
 npm install
-npm run dev        # catalogue on http://localhost:5180 (and /bootstrap.html)
+npm run dev        # test catalogue on http://localhost:5180 (and /bootstrap.html)
 npm run check      # lint, types, unit tests, build
 npm run test:e2e   # browser tests (Playwright; locally with the installed Edge)
 ```

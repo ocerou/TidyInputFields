@@ -50,16 +50,25 @@
     "lint": "oxlint && tsc -p tsconfig.json",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "check": "npm run lint && npm test && npm run build"
+    "check": "npm run lint && npm test && npm run build",
+    "docs": "vite --config vite.site.config.ts",
+    "docs:build": "vite build --config vite.site.config.ts"
   },
   "devDependencies": {
     "@playwright/test": "1.65.0",
     "@types/node": "24.19.2",
+    "@types/prismjs": "1.26.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.2.1",
     "bootstrap": "5.3.8",
     "bootstrap-icons": "1.13.2",
     "happy-dom": "21.0.4",
     "jquery": "3.7.1",
     "oxlint": "1.91.0",
+    "prismjs": "1.30.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
     "typescript": "6.0.2",
     "vite": "8.3.6",
     "vitest": "5.1.0"

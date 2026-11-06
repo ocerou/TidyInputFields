@@ -16,7 +16,12 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true
+    "noImplicitOverride": true,
+    "jsx": "react-jsx",
+    "paths": {
+      "tidyinputfields": ["./src/index.ts"],
+      "tidyinputfields/css": ["./src/styles/index.css"]
+    }
   },
-  "include": ["src", "tests", "demo", "scripts", "vite.config.ts", "vitest.config.ts", "playwright.config.ts"]
+  "include": ["src", "tests", "demo", "site", "scripts", "vite.config.ts", "vite.site.config.ts", "vitest.config.ts", "playwright.config.ts"]
 }
