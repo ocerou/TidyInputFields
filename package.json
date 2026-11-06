@@ -15,7 +15,8 @@
     "datepicker",
     "select",
     "i18n",
-    "accessible"
+    "accessible",
+    "rich-text-editor"
   ],
   "homepage": "https://github.com/ocerou/TidyInputFields#readme",
   "bugs": {
@@ -43,6 +44,12 @@
       "types": "./dist/types/react/index.d.ts",
       "import": "./dist/react.js"
     },
+    "./rich-text": {
+      "types": "./dist/types/rich-text/index.d.ts",
+      "import": "./dist/rich-text.js"
+    },
+    "./rich-text/css": "./dist/rich-text.css",
+    "./rich-text.css": "./dist/rich-text.css",
     "./css": "./dist/tidyinputfields.css",
     "./tidyinputfields.css": "./dist/tidyinputfields.css",
     "./locales/*": "./dist/locales/*",
@@ -50,7 +57,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && vite build --config vite.react.config.ts && tsc -p tsconfig.build.json && node scripts/build-locales.ts",
+    "build": "vite build && vite build --config vite.react.config.ts && vite build --config vite.rich.config.ts && tsc -p tsconfig.build.json && node scripts/build-locales.ts",
     "lint": "oxlint && tsc -p tsconfig.json",
     "test": "vitest run",
     "test:e2e": "playwright test",
@@ -60,6 +67,28 @@
   },
   "devDependencies": {
     "@playwright/test": "1.65.0",
+    "@tiptap/core": "2.27.3",
+    "@tiptap/extension-bubble-menu": "2.27.3",
+    "@tiptap/extension-color": "2.27.3",
+    "@tiptap/extension-emoji": "2.27.3",
+    "@tiptap/extension-font-family": "2.27.3",
+    "@tiptap/extension-highlight": "2.27.3",
+    "@tiptap/extension-image": "2.27.3",
+    "@tiptap/extension-link": "2.27.3",
+    "@tiptap/extension-mention": "2.27.3",
+    "@tiptap/extension-placeholder": "2.27.3",
+    "@tiptap/extension-table": "2.27.3",
+    "@tiptap/extension-table-cell": "2.27.3",
+    "@tiptap/extension-table-header": "2.27.3",
+    "@tiptap/extension-table-row": "2.27.3",
+    "@tiptap/extension-task-item": "2.27.3",
+    "@tiptap/extension-task-list": "2.27.3",
+    "@tiptap/extension-text-align": "2.27.3",
+    "@tiptap/extension-text-style": "2.27.3",
+    "@tiptap/extension-underline": "2.27.3",
+    "@tiptap/pm": "2.27.3",
+    "@tiptap/starter-kit": "2.27.3",
+    "@tiptap/suggestion": "2.27.3",
     "@types/node": "24.19.2",
     "@types/prismjs": "1.26.6",
     "@types/react": "19.3.0",

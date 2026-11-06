@@ -1,0 +1,724 @@
+/* TidyInputFields — éditeur de texte riche (tidyinputfields/rich-text/css), repris de MyCRM. Il lit les variables
+   de la librairie : la feuille principale (tidyinputfields/css) doit être chargée aussi. */
+
+/* ---- Texte : même rendu en saisie et en lecture (classe tif-rich-content, à poser aussi sur un texte affiché). ---- */
+.tif-rich-content {
+  font-size: var(--_font-size);
+  line-height: 1.55;
+  color: var(--_ink);
+  overflow-wrap: anywhere;
+}
+.tif-rich-content > * + * {
+  margin-top: 0.5em;
+}
+.tif-rich-content p {
+  margin: 0;
+}
+.tif-rich-content h1 {
+  font-size: 1.46em;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 1em 0 0;
+}
+.tif-rich-content h2 {
+  font-size: 1.23em;
+  font-weight: 650;
+  line-height: 1.35;
+  margin: 0.95em 0 0;
+}
+.tif-rich-content h3 {
+  font-size: 1.08em;
+  font-weight: 650;
+  line-height: 1.4;
+  margin: 0.9em 0 0;
+}
+.tif-rich-content :is(h1, h2, h3):first-child {
+  margin-top: 0;
+}
+.tif-rich-content ul,
+.tif-rich-content ol {
+  margin: 0;
+  padding-left: 1.4em;
+}
+.tif-rich-content li + li {
+  margin-top: 0.15em;
+}
+.tif-rich-content li p {
+  margin: 0;
+}
+.tif-rich-content a {
+  color: var(--_accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.tif-rich-content s {
+  color: var(--_ink-mute);
+}
+.tif-rich-content blockquote {
+  margin: 0;
+  padding: 2px 0 2px 12px;
+  border-left: 3px solid var(--_accent);
+  color: var(--_ink-soft);
+}
+.tif-rich-content code {
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  font-size: 0.92em;
+  padding: 1px 4px;
+  border-radius: var(--_radius-sm);
+  background: var(--_sunk);
+  color: var(--_ink);
+}
+.tif-rich-content pre {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: var(--_radius);
+  background: var(--_sunk);
+  border: 1px solid var(--_line);
+  overflow-x: auto;
+}
+.tif-rich-content pre code {
+  padding: 0;
+  background: none;
+  white-space: pre;
+}
+.tif-rich-content hr {
+  border: 0;
+  border-top: 1px solid var(--_line-strong);
+  margin: 12px 0;
+  opacity: 1;
+}
+.tif-rich-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--_radius);
+  border: 1px solid var(--_line);
+}
+.tif-rich-content mark {
+  padding: 0 1px;
+  border-radius: 2px;
+  color: inherit;
+  font-weight: inherit;
+}
+.tif-rich-content table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+  margin: 2px 0;
+}
+.tif-rich-content th,
+.tif-rich-content td {
+  position: relative;
+  border: 1px solid var(--_line-strong);
+  padding: 5px 8px;
+  vertical-align: top;
+  min-width: 40px;
+}
+.tif-rich-content th {
+  background: var(--_alt);
+  font-weight: 600;
+  text-align: left;
+}
+.tif-rich-content th p,
+.tif-rich-content td p {
+  margin: 0;
+}
+.tif-rich-content .selectedCell {
+  background: var(--_accent-wash);
+}
+.tif-rich-content .column-resize-handle {
+  position: absolute;
+  top: 0;
+  bottom: -1px;
+  right: -2px;
+  width: 3px;
+  background: var(--_accent);
+  pointer-events: none;
+  z-index: 2;
+}
+.tif-rich-content.resize-cursor,
+.tif-rich-content .resize-cursor {
+  cursor: col-resize;
+}
+.tif-rich-content ul[data-type='taskList'] {
+  list-style: none;
+  padding-left: 2px;
+}
+.tif-rich-content ul[data-type='taskList'] > li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.tif-rich-content ul[data-type='taskList'] > li > label {
+  flex: none;
+  padding-top: 2px;
+}
+.tif-rich-content ul[data-type='taskList'] > li > label input {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: var(--_accent);
+}
+.tif-rich-content ul[data-type='taskList'] > li > div {
+  flex: 1;
+  min-width: 0;
+}
+.tif-rich-content ul[data-type='taskList'] > li[data-checked='true'] > div {
+  color: var(--_ink-mute);
+  text-decoration: line-through;
+}
+.tif-rich-content span[data-type='mention'] {
+  padding: 0 4px;
+  border-radius: var(--_radius-sm);
+  background: var(--_accent-wash);
+  color: var(--_accent-ink);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.tif-rich-content span[data-type='emoji'] {
+  font-size: 1.1em;
+}
+
+/* ---- Éditeur : une marge à gauche pour la poignée des blocs, bordure au survol, accent et halo au focus. ---- */
+/* Toute la largeur disponible, même dans une colonne flexible qui ne l'étire pas. */
+tif-rich-text {
+  display: block;
+  align-self: stretch;
+}
+.tif-rich-text {
+  display: block;
+  align-self: stretch;
+  position: relative;
+  box-sizing: border-box;
+  padding: 6px 8px 6px 28px;
+  border: 1px solid var(--_line-strong);
+  border-radius: var(--_radius);
+  background: var(--_surface);
+  transition:
+    border-color 0.12s,
+    box-shadow 0.12s;
+}
+.tif-rich-text:hover {
+  border-color: var(--_ink-mute);
+}
+.tif-rich-text:focus-within {
+  border-color: var(--_accent);
+  box-shadow: 0 0 0 3px var(--_focus-ring);
+}
+.tif-rich-text.tif-disabled {
+  background: var(--_alt);
+  opacity: 0.7;
+}
+.tif-rich-text.tif-disabled,
+.tif-rich-text.tif-readonly {
+  padding-left: 8px;
+}
+.tif-rich-text[aria-busy='true'] {
+  cursor: progress;
+}
+.tif-rich-text .tif-rich-content {
+  min-height: var(--tif-rich-min-h, 120px);
+  outline: none;
+  caret-color: var(--_accent);
+}
+.tif-rich-text .tif-rich-content .is-empty::before {
+  content: attr(data-placeholder);
+  color: var(--_ink-mute);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+.tif-rich-text .tif-rich-content ::selection {
+  background: var(--_accent-wash);
+}
+.tif-rich-text .tableWrapper {
+  overflow-x: auto;
+  padding: 8px 22px 22px 0;
+  margin-top: -8px;
+}
+.tif-rich-text .tableWrapper + * {
+  margin-top: 0;
+}
+.tif-rich-error {
+  margin-top: 4px;
+  font-size: 0.92em;
+  color: var(--_crit);
+}
+
+/* Images : quatre poignées d'angle quand l'image est choisie, pour changer sa largeur. */
+.tif-rich-image {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: top;
+  line-height: 0;
+}
+.tif-rich-image.tif-selected img {
+  outline: 2px solid var(--_accent);
+}
+.tif-rich-image-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  box-sizing: border-box;
+  border: 2px solid var(--_surface);
+  border-radius: 50%;
+  background: var(--_accent);
+  box-shadow: 0 0 0 1px var(--_accent);
+  display: none;
+  touch-action: none;
+}
+.tif-rich-text:not(.tif-disabled, .tif-readonly) .tif-rich-image.tif-selected .tif-rich-image-handle,
+.tif-rich-text:not(.tif-disabled, .tif-readonly) .tif-rich-image:hover .tif-rich-image-handle {
+  display: block;
+}
+.tif-rich-image-handle.tif-nw {
+  top: -5px;
+  left: -5px;
+  cursor: nwse-resize;
+}
+.tif-rich-image-handle.tif-ne {
+  top: -5px;
+  right: -5px;
+  cursor: nesw-resize;
+}
+.tif-rich-image-handle.tif-sw {
+  bottom: -5px;
+  left: -5px;
+  cursor: nesw-resize;
+}
+.tif-rich-image-handle.tif-se {
+  bottom: -5px;
+  right: -5px;
+  cursor: nwse-resize;
+}
+
+/* Poignée des blocs et « + » dessous. */
+.tif-rich-grip {
+  position: absolute;
+  left: 3px;
+  width: 22px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--_radius-sm);
+  background: transparent;
+  color: var(--_ink-mute);
+  cursor: grab;
+  touch-action: none;
+}
+.tif-rich-grip[hidden] {
+  display: none;
+}
+.tif-rich-grip:hover,
+.tif-rich-grip[aria-expanded='true'] {
+  background: var(--_alt);
+  color: var(--_ink);
+}
+.tif-rich-grip:active {
+  cursor: grabbing;
+}
+.tif-rich-grip.tif-rich-add {
+  height: 20px;
+  cursor: pointer;
+}
+.tif-rich-grip svg {
+  width: 14px;
+  height: 14px;
+}
+.tif-rich-drop-marker {
+  position: absolute;
+  left: 28px;
+  right: 8px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--_accent);
+  pointer-events: none;
+}
+.tif-rich-moving {
+  opacity: 0.35;
+}
+
+/* Outils des tableaux. */
+.tif-rich-table-tools {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.tif-rich-table-tools > * {
+  pointer-events: auto;
+}
+.tif-rich-table-grip {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--_line-strong);
+  border-radius: var(--_radius-sm);
+  background: var(--_surface);
+  color: var(--_ink-mute);
+  cursor: grab;
+  touch-action: none;
+  box-shadow: var(--_lift);
+  transform: translate(-50%, -50%);
+}
+.tif-rich-table-grip:hover {
+  color: var(--_ink);
+  border-color: var(--_accent);
+}
+.tif-rich-table-grip:active {
+  cursor: grabbing;
+}
+.tif-rich-table-grip svg {
+  width: 12px;
+  height: 12px;
+}
+.tif-rich-table-grip.tif-column {
+  width: 24px;
+  height: 12px;
+}
+.tif-rich-table-grip.tif-row {
+  width: 12px;
+  height: 24px;
+}
+.tif-rich-table-plus {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--_radius-sm);
+  background: var(--_alt);
+  color: var(--_ink-mute);
+  cursor: pointer;
+  opacity: 0.55;
+  transition:
+    opacity 0.12s,
+    background 0.12s;
+}
+.tif-rich-table-plus:hover {
+  opacity: 1;
+  background: var(--_accent-wash);
+  color: var(--_accent);
+}
+.tif-rich-table-plus svg {
+  width: 12px;
+  height: 12px;
+}
+.tif-rich-table-plus.tif-column {
+  width: 16px;
+}
+.tif-rich-table-plus.tif-row {
+  height: 16px;
+}
+.tif-rich-table-marker {
+  position: absolute;
+  background: var(--_accent);
+  border-radius: 2px;
+  pointer-events: none;
+}
+.tif-rich-table-marker.tif-row {
+  height: 3px;
+}
+.tif-rich-table-marker.tif-column {
+  width: 3px;
+}
+
+/* ---- Éléments flottants : barre de sélection, menus, sélecteur d'emojis. ---- */
+.tippy-box[data-theme~='tif'] {
+  background: transparent;
+  box-shadow: none;
+}
+.tippy-box[data-theme~='tif'] .tippy-content {
+  padding: 0;
+}
+.tif-rich-floating {
+  box-sizing: border-box;
+  background: var(--_surface);
+  border: 1px solid var(--_line);
+  border-radius: var(--_radius-lg);
+  box-shadow: var(--_lift);
+  color: var(--_ink);
+  line-height: 1.4;
+}
+.tif-rich-floating button {
+  font: inherit;
+}
+.tif-rich-floating svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+.tif-rich-title {
+  padding: 6px 8px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--_ink-mute);
+}
+.tif-rich-empty {
+  padding: 8px;
+  color: var(--_ink-mute);
+}
+
+/* Barre de sélection. */
+.tif-rich-toolbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding: 3px;
+}
+.tif-rich-toolbar button {
+  height: 28px;
+  min-width: 28px;
+  padding: 0 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--_radius-sm);
+  background: transparent;
+  color: var(--_ink-soft);
+  cursor: pointer;
+  font-size: 0.96em;
+}
+.tif-rich-toolbar button:hover,
+.tif-rich-toolbar button[aria-expanded='true'] {
+  background: var(--_alt);
+  color: var(--_ink);
+}
+.tif-rich-toolbar button[aria-pressed='true'] {
+  color: var(--_accent);
+}
+.tif-rich-toolbar button.tif-with-label {
+  gap: 4px;
+  padding: 0 7px;
+  white-space: nowrap;
+}
+.tif-rich-toolbar button.tif-with-label svg {
+  width: 12px;
+  height: 12px;
+}
+.tif-rich-toolbar input {
+  box-sizing: border-box;
+  height: 28px;
+  width: 230px;
+  max-width: 60vw;
+  padding: 0 8px;
+  border: 1px solid var(--_line-strong);
+  border-radius: var(--_radius-sm);
+  background: var(--_surface);
+  color: var(--_ink);
+  font: inherit;
+}
+.tif-rich-toolbar input:focus {
+  outline: none;
+  border-color: var(--_accent);
+}
+.tif-rich-divider {
+  width: 1px;
+  align-self: stretch;
+  margin: 4px 3px;
+  background: var(--_line);
+}
+.tif-rich-letter {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--_radius-sm);
+  font-weight: 650;
+  line-height: 1;
+}
+.tif-rich-letter.tif-background {
+  box-sizing: border-box;
+  border: 1px solid var(--_line-strong);
+}
+/* Listes de la barre (type de bloc, couleurs, taille, police), sous la barre. */
+.tif-rich-toolbar-panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 2;
+  min-width: 190px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  background: var(--_surface);
+  border: 1px solid var(--_line);
+  border-radius: var(--_radius-lg);
+  box-shadow: var(--_lift);
+}
+.tif-rich-toolbar-panel > button {
+  justify-content: flex-start;
+  gap: 9px;
+  width: 100%;
+  height: auto;
+  min-height: 28px;
+  padding: 4px 8px;
+  text-align: left;
+  color: var(--_ink);
+}
+.tif-rich-toolbar-panel > button[aria-checked='true'] {
+  color: var(--_accent);
+}
+.tif-rich-toolbar-panel.tif-colors {
+  width: 238px;
+}
+.tif-rich-swatches {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 3px;
+  padding: 2px 4px 6px;
+}
+.tif-rich-swatches button {
+  height: 30px;
+  border: 1px solid transparent;
+}
+.tif-rich-swatches button[aria-pressed='true'] {
+  border-color: var(--_accent);
+}
+
+/* Menus des blocs, des personnes, d'un bloc ou d'un tableau. */
+.tif-rich-menu {
+  position: fixed;
+  z-index: var(--_z-panel);
+  width: 262px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 4px;
+}
+.tif-rich-menu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 5px 8px;
+  border: 0;
+  border-radius: var(--_radius-sm);
+  background: transparent;
+  color: var(--_ink);
+  text-align: left;
+  cursor: pointer;
+}
+.tif-rich-menu button.tif-selected {
+  background: var(--_alt);
+}
+.tif-rich-menu button:disabled {
+  color: var(--_ink-mute);
+  cursor: default;
+}
+.tif-rich-menu button.tif-danger {
+  color: var(--_crit);
+}
+.tif-rich-menu-icon {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  border: 1px solid var(--_line);
+  border-radius: var(--_radius);
+  background: var(--_surface);
+  color: var(--_ink-soft);
+}
+.tif-rich-menu button.tif-small .tif-rich-menu-icon {
+  width: 22px;
+  height: 22px;
+  border: 0;
+  background: transparent;
+}
+.tif-rich-menu small {
+  display: block;
+  color: var(--_ink-mute);
+  font-size: 0.88em;
+}
+.tif-rich-menu hr {
+  border: 0;
+  border-top: 1px solid var(--_line);
+  margin: 4px 0;
+  opacity: 1;
+}
+
+/* Sélecteur d'emojis : un carré, les thèmes en onglets, la grille du thème choisi. */
+.tif-rich-emojis {
+  position: fixed;
+  z-index: var(--_z-panel);
+  width: 342px;
+  height: 340px;
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+}
+.tif-rich-emoji-themes {
+  display: flex;
+  gap: 1px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--_line);
+}
+.tif-rich-emoji-themes button {
+  flex: 1;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: var(--_radius-sm) var(--_radius-sm) 0 0;
+  background: transparent;
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+  filter: grayscale(0.7);
+  opacity: 0.75;
+}
+.tif-rich-emoji-themes button:hover {
+  background: var(--_alt);
+  filter: none;
+  opacity: 1;
+}
+.tif-rich-emoji-themes button[aria-selected='true'] {
+  border-bottom-color: var(--_accent);
+  filter: none;
+  opacity: 1;
+}
+.tif-rich-emoji-grid {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  align-content: start;
+  gap: 1px;
+}
+.tif-rich-emoji-grid button {
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: var(--_radius-sm);
+  background: transparent;
+  font-size: 21px;
+  line-height: 1;
+  cursor: pointer;
+}
+.tif-rich-emoji-grid button.tif-selected {
+  background: var(--_accent-wash);
+  box-shadow: inset 0 0 0 1px var(--_accent);
+}
+.tif-rich-emojis .tif-rich-empty {
+  flex: 1;
+}
+.tif-rich-emoji-footer {
+  padding: 5px 6px 2px;
+  border-top: 1px solid var(--_line);
+  font-size: 12px;
+  color: var(--_ink-mute);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

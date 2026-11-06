@@ -76,6 +76,17 @@ import { TifField } from 'tidyinputfields/react'
 <TifField component="date" name="due" value={due} onChange={(value) => setDue(String(value))} />
 ```
 
+The rich text editor is a separate entry point, so that the main library stays dependency-free: it bundles
+[Tiptap](https://tiptap.dev) (MIT), nothing else to install. A bar on the selection, `/` for blocks, `@` for
+mentions (your callback), `/:` for emojis, tables and images (your upload callback); the value is cleaned HTML.
+
+```js
+import 'tidyinputfields/rich-text/css'
+import { TifRichText } from 'tidyinputfields/rich-text'
+
+new TifRichText(element, { name: 'notes', mentions: (query) => findPeople(query), uploadImage: (file) => upload(file) })
+```
+
 ## Documentation
 
 **https://ocerou.github.io/TidyInputFields/** — every component, each example in three ways (tag, `data-tif` attributes, JavaScript API) and in React, with options, events and keyboard.
@@ -104,6 +115,7 @@ npm run test:e2e   # browser tests (Playwright; locally with the installed Edge)
 | Lists | `search-select`, `multi-select`, `lookup`, `sortable-list` | available |
 | Colour | `color-picker` | available |
 | More fields | `tags`, `range`, `rating`, `money`, `file` | available |
+| Rich text | `rich-text` (Notion-like editor), separate entry point `tidyinputfields/rich-text` | available |
 
 Common options of the native fields: `name`, `value`, `placeholder`, `required`, `disabled`, `readonly`, `label`
 (aria-label), `inputId` (id of the created field, attribute `input-id`), `quiet` (frameless until hover or focus).

@@ -109,12 +109,15 @@ l'appelant), react-router, `recordLink`, `ConfirmDialog`. Utilitaires repris pre
    - `file` : zone de dépôt + bouton, liste des fichiers (nom, taille, retrait), `accept`, `multiple`, `maxSize`,
      `maxFiles` ; les fichiers restent dans le `<input type="file">` natif (DataTransfer) : le formulaire les envoie.
    - Écarté : le téléphone (une mise en forme juste demande une base de numérotation par pays, ~150 Ko).
-8. **Éditeur riche** : InputRichText de MyCRM dans un module à part, `tidyinputfields-rich-text`, TipTap en
-   dépendance de ce seul module.
+8. **Éditeur riche** : InputRichText de MyCRM en sous-chemin `tidyinputfields/rich-text` (choix d'Olivier le 06/11),
+   Tiptap 2 (MIT) embarqué dans `dist/rich-text.js` (rien à installer, la librairie principale reste sans dépendance),
+   licences dans `dist/rich-text.licenses.md`. Barre de sélection, « / », « @ » (rappel `mentions`), « /: », poignée
+   des blocs, tableaux à la Notion, images par rappel `uploadImage` (`{ src, id? }`, `imageSrc(id)`), collage nettoyé.
+   Ce qui était propre à MyCRM (annuaire, table Image, contacts du compte) devient des rappels.
 
 Chaque lot : reprise du composant, section du catalogue, tests, commit.
 
-**État au 2026-11-06 : les lots 0 à 7 sont faits** (20 composants, 125 tests unitaires, 32 tests navigateur,
+**État au 2026-11-06 : les lots 0 à 8 sont faits** (20 composants + l'éditeur riche, 137 tests unitaires, 36 tests navigateur,
 CI GitHub Actions). Documentation en ligne : https://ocerou.github.io/TidyInputFields/ (publiée par la CI).
 `tidyinputfields/react` livré (TifField, useTif). Rien sur npm pour l'instant (décision d'Olivier).
 

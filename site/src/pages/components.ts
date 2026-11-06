@@ -1,5 +1,6 @@
 // Pages des composants : exemples, options (lues dans DEFAULTS), événements, méthodes.
 import * as Tif from 'tidyinputfields'
+import { TifRichText } from 'tidyinputfields/rich-text'
 import type { Page, Row } from '../page.ts'
 
 const forms = 'Forms'
@@ -535,6 +536,75 @@ export const components: Page[] = [
           ['<code>removeFile(file)</code>', 'Removes a file.'],
           ['<code>input</code>, <code>change</code>', 'Sent by the native field after each change.'],
           ['<code>Tif.formatSize(bytes)</code>, <code>Tif.parseSize(text)</code>', 'Sizes in the language, and read from a text.'],
+        ],
+        columns: ['Property / method / event', 'Description'],
+      },
+    ],
+  },
+  {
+    id: 'rich-text',
+    group: 'Rich text',
+    title: 'Rich text editor',
+    lead: 'A Notion-like editor: no fixed toolbar, a bar on the selection, <code>/</code> for blocks, <code>@</code> for mentions, tables and images. A separate entry point, <code>tidyinputfields/rich-text</code>.',
+    blocks: [
+      {
+        text: '<p>The editor is built on <a href="https://tiptap.dev">Tiptap</a> (MIT), bundled in the module: nothing else to install, and the main library stays dependency-free. Load it after the library, with its stylesheet:</p>',
+      },
+      {
+        code: `import 'tidyinputfields/css'
+import 'tidyinputfields/rich-text/css'
+import 'tidyinputfields'
+import { TifRichText } from 'tidyinputfields/rich-text'`,
+        language: 'ts',
+      },
+      {
+        text: '<p>Without a bundler: <code>dist/rich-text.css</code> and <code>dist/rich-text.min.js</code> after <code>tidyinputfields.min.js</code> (global <code>TifRichText</code>). The licences of the bundled packages are in <code>dist/rich-text.licenses.md</code>.</p>',
+      },
+      {
+        example: 'rich-text-basic',
+        title: 'Examples',
+        text: 'Selecting text shows a bar: block type, bold, italic, underline, strike, code, link, alignment, colours, size and font. <code>/</code> opens the blocks (titles, lists, tasks, quote, code, table, divider, image, mention, emoji); the grip left of each block moves it (drag) or opens its options (click), the <b>+</b> adds a line below. Hovering a table shows grips to move or change rows and columns, and <b>+</b> to add them; column borders can be dragged. Text pasted from Word, Google Docs or a web page keeps only the editor formatting. The initial value is the HTML written in the element, in the <code>&lt;textarea&gt;</code>, or <code>value</code>; plain text becomes paragraphs.',
+      },
+      keyboard([
+        ['/', 'Blocks menu; type to filter it.'],
+        ['@', 'Mentions (with <code>mentions</code>).'],
+        ['/:', 'Emoji picker (<code>/:smile</code> searches).'],
+        ['↑ ↓ ← →, Enter, Tab', 'Move in the open menu and choose.'],
+        ['Ctrl+B, Ctrl+I, Ctrl+U', 'Bold, italic, underline.'],
+        ['Escape', 'Closes the menu; otherwise gives back the text from before the typing and leaves the editor.'],
+      ]),
+      { heading: 'Value' },
+      {
+        text: '<p>The cleaned HTML (<code>\'\'</code> when empty), in a hidden field named <code>name</code>, or in the <code>&lt;textarea&gt;</code> the editor is placed on. Only the editor formatting is kept: no script, no event attribute, safe links only. To show a saved text, clean it with <code>sanitizeHtml(html)</code> and give its container the class <code>tif-rich-content</code>: same rendering as in the editor.</p>',
+      },
+      { heading: 'Options' },
+      {
+        options: TifRichText,
+        descriptions: {
+          name: field.name,
+          value: 'Initial HTML (or plain text).',
+          placeholder: 'Help shown in the empty editor, before “Type / for blocks”.',
+          disabled: field.disabled,
+          readonly: field.readonly,
+          required: 'The editor must not be empty (on a <code>&lt;textarea&gt;</code>, native validation).',
+          label: field.label,
+          inputId: 'Id of the editable zone, for <code>&lt;label for&gt;</code>.',
+          uploadImage: '<code>(file) =&gt; { src, id?, alt? }</code> (or a promise): sends an image (blocks menu, paste, drop). With <code>id</code>, only <code>data-image-id</code> is saved. Without it, no image. JavaScript only.',
+          imageSrc: '<code>(id) =&gt; url</code>: address of an image saved by its id. JavaScript only.',
+          imageFormats: 'Image types accepted.',
+          mentions: '<code>(query) =&gt; { id, label, detail?, group?, kind? }[]</code> (or a promise): the people offered by <code>@</code>. Without it, no mention. JavaScript only.',
+          emojis: 'Emoji picker (<code>/:</code>).',
+        },
+      },
+      {
+        table: [
+          ['<code>value</code>', 'The HTML, <code>\'\'</code> when empty.'],
+          ['<code>text</code>', 'The text without formatting.'],
+          ['<code>focus()</code>', 'Puts the cursor in the editor.'],
+          ['<code>editor</code>', 'The Tiptap editor, for advanced uses.'],
+          ['<code>input</code>', 'On the element, after each change.'],
+          ['<code>change</code>', 'On the element, when the editor is left and the text has changed.'],
+          ['<code>sanitizeHtml(html)</code>, <code>plainText(html)</code>, <code>cleanPastedHtml(html)</code>', 'Cleans a text to show it, gives its plain text, cleans pasted HTML.'],
         ],
         columns: ['Property / method / event', 'Description'],
       },

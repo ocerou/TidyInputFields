@@ -1,6 +1,7 @@
 // Site de documentation : barre du haut, menu à gauche, une page par sujet (navigation par #/id).
 import * as Tif from 'tidyinputfields'
 import '../../src/styles/index.css'
+import 'tidyinputfields/rich-text'
 import './site.css'
 import { renderBlock, type Page } from './page.ts'
 import { pages } from './pages/index.ts'

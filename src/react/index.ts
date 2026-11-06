@@ -31,6 +31,7 @@ export type TifComponentName =
   | 'rating'
   | 'money'
   | 'file'
+  | 'rich-text'
 
 type TifTag = HTMLElement & { instance: Component | null; value: unknown }
 

@@ -70,7 +70,14 @@ const KEPT = new Set(['d', 'cx', 'cy', 'r', 'rx', 'ry', 'x', 'y', 'width', 'heig
 
 /** Icône en SVG, à la taille et à la couleur du texte, masquée aux lecteurs d'écran. */
 export function icon(name: IconName): SVGSVGElement {
-  const source = overrides[name] ?? builtin[name]
+  return svgIcon(overrides[name] ?? builtin[name], name)
+}
+
+/**
+ * Icône construite depuis un SVG (même règle : seules les formes simples, sans innerHTML) ; sert aux modules qui ont
+ * leurs propres icônes (éditeur riche).
+ */
+export function svgIcon(source: string, name = 'custom'): SVGSVGElement {
   const svg = document.createElementNS(SVG, 'svg')
   svg.setAttribute('viewBox', /viewBox="([^"]+)"/.exec(source)?.[1] ?? '0 0 16 16')
   svg.setAttribute('width', '1em')
