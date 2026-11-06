@@ -99,14 +99,26 @@ l'appelant), react-router, `recordLink`, `ConfirmDialog`. Utilitaires repris pre
 6. **Documentation** (ajoutée à la demande d'Olivier) : site `site/` à la manière de Bootstrap ; chaque exemple de
    composant en trois façons (balise, data-tif, API JavaScript) plus React.
 
+7. **Nouveaux composants** (choisis par Olivier le 06/11, absents de MyCRM), un commit chacun :
+   - `tags` : étiquettes ; Entrée ou virgule crée, Retour arrière retire la dernière, collage découpé, sans doublon,
+     suggestions facultatives (`options`), `allowNew`, `max` ; le formulaire reçoit une valeur par étiquette.
+   - `range` : curseur natif habillé, valeur affichée (avec unité), min / max / step, graduations facultatives.
+   - `rating` : note en étoiles de 0 à `max`, clavier (flèches, Origine, Fin, 0), lecture seule, demi-étoiles en lecture.
+   - `money` : montant mis en forme dans la langue en quittant la zone (séparateurs, décimales de la devise), saisie
+     brute au focus, devise fixe ou choisie dans une liste ; valeur envoyée en nombre (`1234.5`) et code devise.
+   - `file` : zone de dépôt + bouton, liste des fichiers (nom, taille, retrait), `accept`, `multiple`, `maxSize`,
+     `maxFiles` ; les fichiers restent dans le `<input type="file">` natif (DataTransfer) : le formulaire les envoie.
+   - Écarté : le téléphone (une mise en forme juste demande une base de numérotation par pays, ~150 Ko).
+8. **Éditeur riche** : InputRichText de MyCRM dans un module à part, `tidyinputfields-rich-text`, TipTap en
+   dépendance de ce seul module.
+
 Chaque lot : reprise du composant, section du catalogue, tests, commit.
 
-**État au 2026-11-06 : les lots 0 à 5 et la documentation sont faits** (15 composants, 101 tests unitaires,
-27 tests navigateur, CI GitHub Actions). Rien n'est encore publié : ni sur npm, ni le site en ligne.
+**État au 2026-11-06 : les lots 0 à 6 sont faits** (15 composants, 101 tests unitaires, 27 tests navigateur,
+CI GitHub Actions). Documentation en ligne : https://ocerou.github.io/TidyInputFields/ (publiée par la CI).
+`tidyinputfields/react` livré (TifField, useTif). Rien sur npm pour l'instant (décision d'Olivier).
 
 ## À décider
 
-- Publication : version (`0.1.0` ou directement `1.0.0`), paquet npm (compte d'Olivier), site sur GitHub Pages.
+- Publication npm : version (`0.1.0` ou `1.0.0`), compte npm d'Olivier — plus tard.
 - Réservation du nom : paquet npm, domaine.
-- Éditeur riche : plus tard (module à part avec TipTap, ou rien).
-- Enveloppe React : la garder à copier depuis la doc, ou la livrer comme sous-paquet `tidyinputfields/react`.

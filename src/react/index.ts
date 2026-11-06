@@ -26,6 +26,11 @@ export type TifComponentName =
   | 'lookup'
   | 'sortable-list'
   | 'color-picker'
+  | 'tags'
+  | 'range'
+  | 'rating'
+  | 'money'
+  | 'file'
 
 type TifTag = HTMLElement & { instance: Component | null; value: unknown }
 

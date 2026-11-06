@@ -329,6 +329,52 @@ export const components: Page[] = [
     ],
   },
   {
+    id: 'tags',
+    group: lists,
+    title: 'Tags',
+    lead: 'Each word typed becomes a tag: free keywords, or a choice among suggestions.',
+    blocks: [
+      {
+        example: 'tags-basic',
+        title: 'Examples',
+        text: 'Enter, a comma or a semicolon creates the tag; a pasted list is split; duplicates are ignored. With suggestions, <code>allow-new="false"</code> accepts only them, and <code>max</code> limits the number of tags. The form receives one value per tag. Placed on an existing <code>&lt;input&gt;</code>, the component uses it as the typing field and reads its value (<code>a, b, c</code>).',
+      },
+      keyboard([
+        ['Enter, comma, semicolon', 'Creates the tag (the form is not submitted while there is text to turn into a tag).'],
+        ['Backspace', 'In the empty field, removes the last tag.'],
+        ['↑ ↓, Enter', 'Moves in the suggestions and chooses one.'],
+        ['Leaving the field', 'The text left becomes a tag.'],
+      ]),
+      { heading: 'Options' },
+      {
+        options: Tif.TifTags,
+        descriptions: {
+          name: 'Name sent with the form, once per tag.',
+          value: 'Initial tags: array, JSON or comma-separated text.',
+          options: 'Suggestions: <code>{ value, label }[]</code> (otherwise the <code>&lt;option&gt;</code> written in the tag).',
+          allowNew: 'Accepts tags that are not among the suggestions.',
+          max: 'Maximum number of tags (0: no limit).',
+          separators: 'Characters that create the tag, besides Enter.',
+          placeholder: field.placeholder,
+          disabled: field.disabled,
+          required: 'Orange while there is no tag.',
+          label: field.label,
+          inputId: field.inputId,
+          quiet: field.quiet,
+        },
+      },
+      {
+        table: [
+          ['<code>add(text)</code>', 'Adds a tag; returns false when refused (duplicate, full, not a suggestion).'],
+          ['<code>remove(value)</code>', 'Removes a tag.'],
+          ['<code>value</code>', 'The values of the tags, in order.'],
+          ['<code>input</code>, <code>change</code>', 'Sent on the element after each change.'],
+        ],
+        columns: ['Method / event', 'Description'],
+      },
+    ],
+  },
+  {
     id: 'color-picker',
     group: 'Colour',
     title: 'Colour picker',

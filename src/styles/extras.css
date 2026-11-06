@@ -1,0 +1,75 @@
+/* Composants ajoutés au lot 6 : étiquettes, curseur, note, montant, fichiers. */
+
+tif-tags,
+tif-range,
+tif-rating,
+tif-money,
+tif-file {
+  display: inline-block;
+  max-inline-size: 100%;
+  vertical-align: middle;
+}
+
+/* Étiquettes : la zone grandit avec ses étiquettes, la saisie prend la place qui reste. */
+.tif-tags {
+  flex-wrap: wrap;
+  gap: 4px;
+  inline-size: 24em;
+  max-inline-size: 100%;
+  block-size: auto;
+  min-block-size: var(--tif-field-h, calc(1.5em + 0.75rem + 2px));
+  padding-block: 3px;
+  padding-inline: 4px var(--_field-pad-x);
+  cursor: text;
+}
+
+.tif-tags-input {
+  flex: 1 1 6em;
+  min-inline-size: 6em;
+  block-size: 1.9em;
+}
+
+.tif-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  max-inline-size: 100%;
+  padding-block: 1px;
+  padding-inline: 8px 2px;
+  border-radius: var(--_radius-sm);
+  background: var(--_accent-wash);
+  color: var(--_accent-ink);
+  line-height: 1.6;
+}
+
+.tif-tag-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tif-tag-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 18px;
+  block-size: 18px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--_radius-sm);
+  background: transparent;
+  color: inherit;
+  font-size: 0.8em;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.tif-tag-remove:hover {
+  background: rgb(0 0 0 / 0.08);
+  opacity: 1;
+}
+
+.tif-tag-remove[hidden] {
+  display: none;
+}
