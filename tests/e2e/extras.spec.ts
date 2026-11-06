@@ -3,6 +3,22 @@ import { expect, test } from '@playwright/test'
 // Composants du lot 6, sur leurs pages de documentation.
 const docs = 'http://localhost:5181/'
 
+test.describe('range', () => {
+  test('moves with the keyboard and shows the value with its unit', async ({ page }) => {
+    await page.goto(`${docs}#/range`)
+    const block = page.locator('.bd-example-block').first()
+    const discount = block.locator('tif-range').nth(1)
+    const input = discount.locator('input[type="range"]')
+    await input.focus()
+    await page.keyboard.press('ArrowRight')
+    await expect(discount.locator('output')).toHaveText('20 %')
+    await page.keyboard.press('End')
+    await expect(discount.locator('output')).toHaveText('50 %')
+    const fill = await discount.locator('.tif-range').evaluate((el) => (el as HTMLElement).style.getPropertyValue('--tif-range-fill'))
+    expect(fill).toBe('100%')
+  })
+})
+
 test.describe('tags', () => {
   test('creates, suggests, removes, and the form sends one value per tag', async ({ page }) => {
     await page.goto(`${docs}#/tags`)

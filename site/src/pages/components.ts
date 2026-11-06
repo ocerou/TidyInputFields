@@ -402,4 +402,32 @@ export const components: Page[] = [
       { table: panelEvents('color-picker'), columns: ['Event', 'Description'] },
     ],
   },
+  {
+    id: 'range',
+    group: forms,
+    title: 'Range',
+    lead: 'The native range slider, dressed: the filled part in the primary colour, the value next to it, with its unit.',
+    blocks: [
+      {
+        example: 'range-basic',
+        title: 'Examples',
+        text: 'The native <code>&lt;input type="range"&gt;</code> holds the value: the form sends it, and the keyboard is the browser\'s (arrows, Page Up / Down, Home, End). The value is shown in the format of the language, followed by its unit; <code>ticks</code> shows the bounds under the slider.',
+      },
+      { heading: 'Options' },
+      {
+        options: Tif.TifRange,
+        descriptions: {
+          ...field,
+          min: 'Smallest value.',
+          max: 'Largest value.',
+          step: 'Step.',
+          unit: 'Unit after the value: a text, or a function of the number (JavaScript only).',
+          ticks: 'Shows the bounds under the slider.',
+          showValue: 'Shows the value next to the slider.',
+        },
+      },
+      { heading: 'Events' },
+      { table: [['<code>input</code>', 'While the thumb moves.'], ['<code>change</code>', 'When it is released.']], columns: ['Event', 'Description'] },
+    ],
+  },
 ]
